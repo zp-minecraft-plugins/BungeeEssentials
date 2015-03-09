@@ -43,7 +43,7 @@ public class CommandManager implements Listener {
 
                 for(Map.Entry<String, Integer> blockedCommand : blockedCommands) {
 
-                    if(command.startsWith(blockedCommand.getKey())) {
+                    if(command.toLowerCase().startsWith(blockedCommand.getKey())) {
 
                         if(instance.getConfigs().getRoles().getRole(proxiedPlayer.getUniqueId()) < blockedCommand.getValue() || blockedCommand.getValue() < 0) {
 

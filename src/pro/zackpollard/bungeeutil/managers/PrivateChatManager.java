@@ -65,7 +65,7 @@ public class PrivateChatManager implements Listener {
 
             if(player != null) {
 
-                if (player == from || player == to) {
+                if (player != from || player != to) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getSocialSpyMessageFormat(from.getName(), to.getName(), message));
                 }

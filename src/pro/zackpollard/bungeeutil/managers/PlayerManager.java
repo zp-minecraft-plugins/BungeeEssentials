@@ -62,7 +62,7 @@ public class PlayerManager implements Listener {
 
         Gson gson = new GsonBuilder().create();
 
-        instance.getLogger().info(instance.getConfigs().getMessages().getPrefix() + "Loading playername -> uuid cache!");
+        System.out.println(instance.getConfigs().getMessages().getPrefix() + "Loading playername -> uuid cache!");
 
         for(File playerFile : dataFolder.listFiles(new FilenameFilter() {
             @Override
@@ -114,7 +114,7 @@ public class PlayerManager implements Listener {
 
         if(gsonPlayer.getLastKnownName() != null && playerNameCache.containsKey(gsonPlayer.getLastKnownName().toLowerCase())) {
 
-            playerNameCache.remove(gsonPlayer.getLastKnownName());
+            playerNameCache.remove(gsonPlayer.getLastKnownName().toLowerCase());
         }
 
         playerNameCache.put(player.getName().toLowerCase(), player.getUniqueId());
@@ -292,7 +292,7 @@ public class PlayerManager implements Listener {
 
     public GSONPlayer getPlayer(String name) {
 
-        UUID uuid = this.playerNameCache.get(name);
+        UUID uuid = this.playerNameCache.get(name.toLowerCase());
 
         if(uuid != null) {
 
@@ -304,16 +304,21 @@ public class PlayerManager implements Listener {
 
     public GSONPlayer getPlayerBestGuess(String partName) {
 
-        GSONPlayer gsonPlayer = null;
+        GSONPlayer gsonPlayer;
 
         partName = partName.toLowerCase();
 
-        for(GSONPlayer player : this.gsonPlayerCache.values()) {
+        gsonPlayer = this.getPlayer(partName);
 
-            if(player.getLastKnownName().toLowerCase().startsWith(partName)) {
+        if(gsonPlayer == null) {
 
-                gsonPlayer = instance.getPlayerManager().getPlayer(player.getUUID());
-                break;
+            for (GSONPlayer player : this.gsonPlayerCache.values()) {
+
+                if (player.getLastKnownName().toLowerCase().startsWith(partName)) {
+
+                    gsonPlayer = instance.getPlayerManager().getPlayer(player.getUUID());
+                    break;
+                }
             }
         }
 

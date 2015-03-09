@@ -141,7 +141,7 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
                     for(String string : instance.getConfigs().getMainConfig().getBlockedCommandsWhenMuted()) {
 
-                        if(command.startsWith(string)) {
+                        if(command.toLowerCase().startsWith(string)) {
 
                             if (gsonMute.getDuration() == (long) 0) {
 

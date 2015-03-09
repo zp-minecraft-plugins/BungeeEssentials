@@ -17,6 +17,9 @@ public class GSONConfig {
     private final Map<String, Integer> blockedCommands;
     private final Set<String> blockedCommandsWhenMuted;
 
+    private transient boolean blockedCommandsConverted;
+    private transient boolean blockedCommandsMutedConverted;
+
 
     public GSONConfig() {
 
@@ -45,10 +48,32 @@ public class GSONConfig {
 
     public Map<String, Integer> getBlockedCommands() {
 
+        if(blockedCommandsConverted) {
+
+            for(Map.Entry<String, Integer> entry : new HashMap<>(blockedCommands).entrySet()) {
+
+                blockedCommands.remove(entry.getKey());
+                blockedCommands.put(entry.getKey().toLowerCase(), entry.getValue());
+            }
+
+            blockedCommandsConverted = true;
+        }
+
         return blockedCommands;
     }
 
     public Set<String> getBlockedCommandsWhenMuted() {
+
+        if(blockedCommandsMutedConverted) {
+
+            for(String string : new HashSet<>(blockedCommandsWhenMuted)) {
+
+                blockedCommandsWhenMuted.remove(string);
+                blockedCommandsWhenMuted.add(string.toLowerCase());
+            }
+
+            blockedCommandsConverted = true;
+        }
 
         return blockedCommandsWhenMuted;
     }

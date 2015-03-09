@@ -55,7 +55,7 @@ public class StaffChatManager implements Listener {
 
         for(ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
 
-            if(chatEnabled.contains(proxiedPlayer.getUniqueId())) {
+            if(instance.getConfigs().getRoles().getRole(proxiedPlayer.getUniqueId()) >= instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getStaffChat()) {
 
                 proxiedPlayer.sendMessage(instance.getConfigs().getMessages().getStaffChatFormat(from.getName(), message));
             }
