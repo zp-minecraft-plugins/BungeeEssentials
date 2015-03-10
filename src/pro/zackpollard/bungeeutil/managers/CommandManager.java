@@ -102,6 +102,10 @@ public class CommandManager implements Listener {
             commands.add(new CMDMessage(instance, "msg", "message", "pm", "tell", "m", "t", "whisper"));
         }
 
+        if(instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMessageToggle() != -1) {
+            commands.add(new CMDMessageToggle(instance, "messagetoggle", "msgtoggle", "pmtoggle", "togglemessage", "togglemsg", "togglepm"));
+        }
+
         if(instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMute() != -1) {
             commands.add(new CMDMute(instance, "mute"));
         }

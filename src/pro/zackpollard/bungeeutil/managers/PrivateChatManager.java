@@ -7,10 +7,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * @Author zack
@@ -22,6 +19,7 @@ public class PrivateChatManager implements Listener {
 
     private final Map<UUID, UUID> replier = new HashMap<>();
     private final Map<UUID, ProxiedPlayer> spies = new WeakHashMap<>();
+    private final Set<UUID> disabledMessaging = new HashSet<>();
 
     public PrivateChatManager(BungeeEssentials instance) {
 
@@ -58,18 +56,26 @@ public class PrivateChatManager implements Listener {
         replier.put(from.getUniqueId(), to.getUniqueId());
         replier.put(to.getUniqueId(), from.getUniqueId());
 
-        to.sendMessage(instance.getConfigs().getMessages().getPrivateChatMessageReceivedFormat(from.getName(), message));
-        from.sendMessage(instance.getConfigs().getMessages().getPrivateChatMessageSentFormat(to.getName(), message));
+        if(instance.getConfigs().getRoles().getRole(from.getUniqueId()) >=
+                instance.getConfigs().getMainConfig().getPermissions().getOverridePermissions().getOverrideDisabledPrivateMessaging() ||
+                !disabledMessaging.contains(to.getUniqueId())) {
 
-        for(ProxiedPlayer player : spies.values()) {
+            to.sendMessage(instance.getConfigs().getMessages().getPrivateChatMessageReceivedFormat(from.getName(), message));
+            from.sendMessage(instance.getConfigs().getMessages().getPrivateChatMessageSentFormat(to.getName(), message));
 
-            if(player != null) {
+            for (ProxiedPlayer player : spies.values()) {
 
-                if (player != from || player != to) {
+                if (player != null) {
 
-                    player.sendMessage(instance.getConfigs().getMessages().getSocialSpyMessageFormat(from.getName(), to.getName(), message));
+                    if (player != from || player != to) {
+
+                        player.sendMessage(instance.getConfigs().getMessages().getSocialSpyMessageFormat(from.getName(), to.getName(), message));
+                    }
                 }
             }
+        } else {
+
+            from.sendMessage(instance.getConfigs().getMessages().getPrivateChatMessagingDisabled(to.getName()));
         }
     }
 
@@ -99,5 +105,18 @@ public class PrivateChatManager implements Listener {
     public boolean isSpy(UUID spy) {
 
         return spies.containsKey(spy);
+    }
+
+    public boolean togglePrivateChat(ProxiedPlayer player) {
+
+        if(disabledMessaging.contains(player.getUniqueId())) {
+
+            disabledMessaging.remove(player.getUniqueId());
+            return false;
+        } else {
+
+            disabledMessaging.add(player.getUniqueId());
+            return true;
+        }
     }
 }

@@ -6,10 +6,13 @@ public class GSONPermissions {
 
     private final GSONChatPermissions chat;
 
+    private final GSONOverridePermissions overrides;
+
     public GSONPermissions() {
 
         commands = new GSONCommandPermissions();
         chat = new GSONChatPermissions();
+        overrides = new GSONOverridePermissions();
     }
 
     public GSONCommandPermissions getCommandPermissions() {
@@ -20,5 +23,10 @@ public class GSONPermissions {
     public GSONChatPermissions getChatPermissions() {
 
         return chat;
+    }
+
+    public GSONOverridePermissions getOverridePermissions() {
+
+        return overrides;
     }
 }

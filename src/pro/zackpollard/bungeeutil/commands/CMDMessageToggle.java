@@ -16,7 +16,7 @@ public class CMDMessageToggle extends BungeeEssentialsCommand {
 
     public CMDMessageToggle(BungeeEssentials instance, String name, String... alias) {
 
-        super(instance, name, instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getSocialSpy(), alias);
+        super(instance, name, instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMessageToggle(), alias);
         this.instance = instance;
         instance.getProxy().getPluginManager().registerCommand(instance, this);
     }
@@ -36,7 +36,7 @@ public class CMDMessageToggle extends BungeeEssentialsCommand {
 
             if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(instance.getPrivateChatManager().toggleSpying(player)) {
+                if(instance.getPrivateChatManager().togglePrivateChat(player)) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getCmdSocialSpyEnabled());
                 } else {

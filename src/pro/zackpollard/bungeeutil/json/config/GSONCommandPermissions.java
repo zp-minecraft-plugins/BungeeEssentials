@@ -13,6 +13,7 @@ public class GSONCommandPermissions {
     private final int crestart;
     private final int kick;
     private final int message;
+    private int messageToggle;
     private final int mute;
     private final int onlineStaff;
     private final int removeRole;
@@ -53,6 +54,7 @@ public class GSONCommandPermissions {
         reply = 0;
         report = 0;
         message = 0;
+        messageToggle = 0;
         search = 2;
         setRole = 4;
         slowChat = 1;
@@ -204,5 +206,9 @@ public class GSONCommandPermissions {
 
     public int getReport() {
         return report;
+    }
+
+    public int getMessageToggle() {
+        return messageToggle;
     }
 }

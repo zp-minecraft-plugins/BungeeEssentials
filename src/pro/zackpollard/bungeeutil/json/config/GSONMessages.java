@@ -51,6 +51,7 @@ public class GSONMessages {
     private final String staffChatFormat;
     private final String privateChatMessageReceivedFormat;
     private final String privateChatMessageSentFormat;
+    private final String privateChatMessagingDisabled;
     private final String socialSpyMessageFormat;
     private final String cmdSocialSpyEnabled;
     private final String cmdSocialSpyDisabled;
@@ -176,6 +177,8 @@ public class GSONMessages {
         reportMessage = "%2[%3Report%2]%r - %eFrom %l%reporter% about %l%reportee%%f: %message%";
 
         advertisingBlocked = "%cDo not advertise on this server!";
+
+        privateChatMessagingDisabled = "%cYou can't send a message to this player as they have private messaging disabled!";
     }
 
     public String getPrefix() {
@@ -528,5 +531,11 @@ public class GSONMessages {
                 .replace("%reporter%", reporter)
                 .replace("%reportee%", reportee)
                 .replace("%message%", message));
+    }
+
+    public BaseComponent[] getPrivateChatMessagingDisabled(String receiver) {
+
+        return generateMessage(true, privateChatMessagingDisabled
+                .replace("%receiver%", receiver));
     }
 }
