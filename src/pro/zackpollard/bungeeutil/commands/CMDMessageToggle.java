@@ -23,7 +23,7 @@ public class CMDMessageToggle extends BungeeEssentialsCommand {
 
     /**
      *
-     * /socialspy
+     * /messagetoggle
      *
      */
 
@@ -38,10 +38,10 @@ public class CMDMessageToggle extends BungeeEssentialsCommand {
 
                 if(instance.getPrivateChatManager().togglePrivateChat(player)) {
 
-                    player.sendMessage(instance.getConfigs().getMessages().getCmdSocialSpyEnabled());
+                    player.sendMessage(instance.getConfigs().getMessages().getCmdMessageToggleEnabled());
                 } else {
 
-                    player.sendMessage(instance.getConfigs().getMessages().getCmdSocialSpyDisabled());
+                    player.sendMessage(instance.getConfigs().getMessages().getCmdMessageToggleDisabled());
                 }
             } else {
 

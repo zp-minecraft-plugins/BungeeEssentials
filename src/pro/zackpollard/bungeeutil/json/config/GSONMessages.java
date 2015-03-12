@@ -63,6 +63,8 @@ public class GSONMessages {
     private final String chatSimilarityBlocked;
     private final String reportMessage;
     private final String advertisingBlocked;
+    private final String cmdMessageToggleDisabled;
+    private final String cmdMessageToggleEnabled;
 
     public GSONMessages() {
 
@@ -105,6 +107,10 @@ public class GSONMessages {
         staffTempMuteWhileLongerTempMuteExists = "%cYou cannot tempmute this player while a longer tempmute already exists!";
 
         commandPermissionDenied = "%cYou cannot use this command as you do not have the required permissions!";
+
+        cmdMessageToggleDisabled = "%cYou have %ldisabled private messaging and now you will not be able to be messaged by other players!";
+
+        cmdMessageToggleEnabled = "%cYou have %lenabled private messaging and now you will be able to be messaged by other players!";
 
         cmdSetRoleSuccess = "%a%l%playername%%r%a was given the role %l%rolename%!";
 
@@ -531,6 +537,16 @@ public class GSONMessages {
                 .replace("%reporter%", reporter)
                 .replace("%reportee%", reportee)
                 .replace("%message%", message));
+    }
+
+    public BaseComponent[] getCmdMessageToggleDisabled() {
+
+        return generateMessage(false, cmdMessageToggleDisabled);
+    }
+
+    public BaseComponent[] getCmdMessageToggleEnabled() {
+
+        return generateMessage(false, cmdMessageToggleEnabled);
     }
 
     public BaseComponent[] getPrivateChatMessagingDisabled(String receiver) {
