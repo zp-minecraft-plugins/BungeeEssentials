@@ -65,7 +65,9 @@ public class CMDKick extends BungeeEssentialsCommand {
 
                         proxiedPlayer.disconnect(instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason));
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdKickSuccess(proxiedPlayer.getName(), reason));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveKickAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found online!"));

@@ -40,7 +40,10 @@ public class CMDUnbanIP extends BungeeEssentialsCommand {
                     if(gsonIP.getCurrentBan() != null) {
 
                         gsonIP.setCurrentBan(null);
-                        sender.sendMessage(instance.getConfigs().getMessages().getCmdUnbanIPSuccess(gsonIP.getIP()));
+
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdUnbanIPSuccess(gsonIP.getIP()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveIPUnBanAlerts());
                     } else {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A ban was not in place for that IP!"));

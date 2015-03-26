@@ -48,8 +48,10 @@ public class CMDUnmute extends BungeeEssentialsCommand {
                             mutee.sendMessage(instance.getConfigs().getMessages().getCmdPlayerUnmuted());
                         }
                         gsonPlayer.setCurrentMute(null);
-                        sender.sendMessage(instance.getConfigs().getMessages().getCmdUnmuteSuccess(gsonPlayer.getLastKnownName()));
 
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdUnmuteSuccess(gsonPlayer.getLastKnownName()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveUnMuteAlerts());
                     } else {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "There was no mute in place for that player."));

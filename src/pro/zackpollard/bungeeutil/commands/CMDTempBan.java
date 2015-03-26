@@ -127,7 +127,11 @@ public class CMDTempBan extends BungeeEssentialsCommand {
                             instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
                         }
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdTempBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason, gsonBan.getRemainingTimeFormatted()));
+                        player.sendMessage();
+
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdTempBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason, gsonBan.getRemainingTimeFormatted()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));

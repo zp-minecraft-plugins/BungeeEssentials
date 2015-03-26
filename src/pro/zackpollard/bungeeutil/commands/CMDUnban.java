@@ -41,7 +41,10 @@ public class CMDUnban extends BungeeEssentialsCommand {
                     if (gsonPlayer.getCurrentBan() != null) {
 
                         gsonPlayer.setCurrentBan(null);
-                        sender.sendMessage(instance.getConfigs().getMessages().getCmdUnbanPlayerSuccess(gsonPlayer.getLastKnownName()));
+
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdUnbanPlayerSuccess(gsonPlayer.getLastKnownName()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveUnBanAlerts());
                     } else {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A ban was not in place for that player!"));

@@ -84,7 +84,9 @@ public class CMDBanIP extends BungeeEssentialsCommand {
                             }
                         }
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdBanIPSuccess(gsonIP.getIP(), reason));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdBanIPSuccess(gsonIP.getIP(), reason),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveIPBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "This IP was not found in the save system!"));

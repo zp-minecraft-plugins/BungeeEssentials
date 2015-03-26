@@ -129,7 +129,9 @@ public class CMDTempBanIP extends BungeeEssentialsCommand {
                             }
                         }
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdTempBanIPSuccess(gsonIP.getIP(), reason, gsonBan.getRemainingTimeFormatted()));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdTempBanIPSuccess(gsonIP.getIP(), reason, gsonBan.getRemainingTimeFormatted()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveIPTempBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "This IP was not found in the save system!"));

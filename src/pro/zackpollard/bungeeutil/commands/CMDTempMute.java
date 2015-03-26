@@ -117,7 +117,9 @@ public class CMDTempMute extends BungeeEssentialsCommand {
 
                         gsonPlayer.setCurrentMute(gsonMute);
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdTempMuteSuccess(gsonPlayer.getLastKnownName(), reason, gsonMute.getRemainingTimeFormatted()));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdTempMuteSuccess(gsonPlayer.getLastKnownName(), reason, gsonMute.getRemainingTimeFormatted()),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempMuteAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));

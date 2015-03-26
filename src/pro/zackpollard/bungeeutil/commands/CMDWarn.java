@@ -62,7 +62,9 @@ public class CMDWarn extends BungeeEssentialsCommand {
                     proxiedPlayer.sendMessage(ChatMessageType.ACTION_BAR, instance.getConfigs().getMessages().getWarningMessage(sender.getName(), reason));
                     proxiedPlayer.sendMessage(ChatMessageType.CHAT, instance.getConfigs().getMessages().getWarningMessage(sender.getName(), reason));
 
-                    sender.sendMessage(instance.getConfigs().getMessages().getCmdWarnSuccess(proxiedPlayer.getName(), reason));
+                    instance.getConfigs().getRoles().sendMessageToRole(
+                            instance.getConfigs().getMessages().getCmdWarnSuccess(proxiedPlayer.getName(), reason),
+                            instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveWarnAlerts());
                 } else {
 
                     sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found online!"));

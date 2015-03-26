@@ -12,6 +12,8 @@ public class GSONPlayer {
     private transient boolean locked = false;
     private transient long playerJoinTime = 0;
 
+    //TODO: Implement a better unloading system, use lastAccessed rather than a locked variable.
+
     /**
      * The uuid of the player in question.
      */

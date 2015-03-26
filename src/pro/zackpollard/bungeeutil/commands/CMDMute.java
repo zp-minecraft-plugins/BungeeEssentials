@@ -79,7 +79,9 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
                         gsonPlayer.setCurrentMute(gsonMute);
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdMuteSuccess(gsonPlayer.getLastKnownName(), reason));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdMuteSuccess(gsonPlayer.getLastKnownName(), reason),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveMuteAlerts());
 
                         gsonPlayer.setLocked(false);
                     } else {

@@ -79,7 +79,9 @@ public class CMDBan extends BungeeEssentialsCommand {
                             instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
                         }
 
-                        player.sendMessage(instance.getConfigs().getMessages().getCmdBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason));
+                        instance.getConfigs().getRoles().sendMessageToRole(
+                                instance.getConfigs().getMessages().getCmdBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason),
+                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with that name was not found in the save system!"));
