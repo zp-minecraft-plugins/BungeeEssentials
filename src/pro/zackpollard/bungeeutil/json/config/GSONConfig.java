@@ -72,7 +72,7 @@ public class GSONConfig {
                 blockedCommandsWhenMuted.add(string.toLowerCase());
             }
 
-            blockedCommandsConverted = true;
+            blockedCommandsMutedConverted = true;
         }
 
         return blockedCommandsWhenMuted;
