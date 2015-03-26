@@ -94,6 +94,10 @@ public class CommandManager implements Listener {
             commands.add(new CMDCRestart(instance, "crestart"));
         }
 
+        if(instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getDebugInfo() != -1) {
+            commands.add(new CMDDebugInfo(instance, "debuginfo"));
+        }
+
         if(instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getKick() != -1) {
             commands.add(new CMDKick(instance, "kick"));
         }

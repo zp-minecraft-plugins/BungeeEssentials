@@ -34,6 +34,7 @@ public class GSONCommandPermissions {
     private final int unbanIP;
     private final int unmute;
     private final int warn;
+    private int debugInfo;
 
 
     public GSONCommandPermissions() {
@@ -47,6 +48,7 @@ public class GSONCommandPermissions {
         chatClear = 2;
         creload = 4;
         crestart = 4;
+        debugInfo = 4;
         kick = 1;
         mute = 1;
         onlineStaff = 0;
@@ -210,5 +212,9 @@ public class GSONCommandPermissions {
 
     public int getMessageToggle() {
         return messageToggle;
+    }
+
+    public int getDebugInfo() {
+        return debugInfo;
     }
 }
