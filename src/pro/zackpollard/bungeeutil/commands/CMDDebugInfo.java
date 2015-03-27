@@ -32,6 +32,7 @@ public class CMDDebugInfo extends BungeeEssentialsCommand {
         if (hasAccess(sender)) {
 
             sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.RED + "PlayerManager Entries: " + instance.getPlayerManager().getGsonPlayerCache(false).size()));
+            sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.RED + "IPManager Entries: " + instance.getIPManager().getIPCache(false).size()));
         } else {
 
             sender.sendMessage(instance.getConfigs().getMessages().getCommandPermissionDenied());
