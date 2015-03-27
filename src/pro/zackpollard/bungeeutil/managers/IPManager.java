@@ -36,6 +36,11 @@ public class IPManager implements Listener {
 
         instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 30, 30, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
+
+        for(ProxiedPlayer player : instance.getProxy().getPlayers()) {
+
+            onPlayerLogin(player);
+        }
     }
 
     /**
@@ -74,8 +79,12 @@ public class IPManager implements Listener {
     @EventHandler
     public void onPlayerLogin(PostLoginEvent event) {
 
-        ProxiedPlayer player = event.getPlayer();
-        GSONIPAddress gsonIP = this.loadIPCreateIfNotExist(event.getPlayer().getAddress().getAddress().getHostAddress());
+        onPlayerLogin(event.getPlayer());
+    }
+
+    public void onPlayerLogin(ProxiedPlayer player) {
+
+        GSONIPAddress gsonIP = this.loadIPCreateIfNotExist(player.getAddress().getAddress().getHostAddress());
         gsonIP.setLocked(true);
 
         gsonIP.setLastUUIDJoined(player.getUniqueId());
