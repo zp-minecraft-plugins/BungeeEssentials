@@ -48,7 +48,7 @@ public class PlayerManager implements Listener {
         this.dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
         this.dataFolder.mkdirs();
         instance.getProxy().getPluginManager().registerListener(instance, this);
-        instance.getProxy().getScheduler().schedule(instance, new PlayerManagerCleanup(instance, this), 5, 5, TimeUnit.MINUTES);
+        instance.getProxy().getScheduler().schedule(instance, new PlayerManagerCleanup(instance, this), 30, 30, TimeUnit.SECONDS);
 
         this.populatePlayerNameCache();
 
@@ -369,18 +369,19 @@ public class PlayerManager implements Listener {
                     outputStream = new FileOutputStream(playerFile);
                     outputStream.write(json.getBytes());
                     outputStream.close();
-
-                    return true;
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     instance.getLogger().severe("GSONPlayer could not be saved for " + gsonPlayer.getUUID() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
+                    return false;
                 } catch (IOException e) {
                     e.printStackTrace();
                     instance.getLogger().severe("GSONPlayer could not be written to for " + gsonPlayer.getUUID() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
+                    return false;
                 }
             }
 
             this.gsonPlayerCache.remove(gsonPlayer.getUUID());
+            return true;
         }
 
         return false;

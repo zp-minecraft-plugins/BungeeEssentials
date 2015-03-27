@@ -34,7 +34,7 @@ public class IPManager implements Listener {
         this.dataFolder.mkdirs();
         this.playerManager = instance.getPlayerManager();
 
-        instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 5, 5, TimeUnit.MINUTES);
+        instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 30, 30, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
     }
 
@@ -223,15 +223,15 @@ public class IPManager implements Listener {
         return this.loadIPAddress(ipAddress);
     }
 
-    public boolean unloadPlayer(String ipAddress) {
+    public boolean unloadIP(String ipAddress) {
 
         GSONIPAddress gsonIP = this.ipCache.get(ipAddress);
 
-        return gsonIP != null && this.unloadPlayer(gsonIP);
+        return gsonIP != null && this.unloadIP(gsonIP);
 
     }
 
-    public boolean unloadPlayer(GSONIPAddress gsonIP) {
+    public boolean unloadIP(GSONIPAddress gsonIP) {
 
         if(!gsonIP.isLocked()) {
 
@@ -250,18 +250,19 @@ public class IPManager implements Listener {
                     outputStream = new FileOutputStream(playerFile);
                     outputStream.write(json.getBytes());
                     outputStream.close();
-
-                    return true;
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     instance.getLogger().severe("GSONIPAddress could not be saved for " + gsonIP.getIP() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
+                    return false;
                 } catch (IOException e) {
                     e.printStackTrace();
                     instance.getLogger().severe("GSONIPAddress could not be written to for " + gsonIP.getIP() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
+                    return false;
                 }
             }
 
             this.ipCache.remove(gsonIP.getIP());
+            return true;
         }
 
         return false;

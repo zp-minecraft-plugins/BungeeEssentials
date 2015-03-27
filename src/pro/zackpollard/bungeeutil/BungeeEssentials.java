@@ -91,7 +91,7 @@ public class BungeeEssentials extends Plugin {
 
         for (GSONIPAddress gsonIP : this.ipManager.getIPCache(true).values()) {
 
-            this.ipManager.unloadPlayer(gsonIP.getIP());
+            this.ipManager.unloadIP(gsonIP.getIP());
         }
 
         instance = null;
@@ -116,7 +116,6 @@ public class BungeeEssentials extends Plugin {
 
         this.onDisable(false);
         this.reloadNewInstance();
-        System.gc();
     }
 
     public void reloadNewInstance() {

@@ -34,7 +34,7 @@ public class IPManagerCleanup implements Runnable {
 
             if(!ips.contains(ipAddress)) {
 
-                ipManager.unloadPlayer(ipAddress);
+                ipManager.unloadIP(ipAddress);
             }
         }
     }
