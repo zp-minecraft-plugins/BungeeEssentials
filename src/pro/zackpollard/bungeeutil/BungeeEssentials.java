@@ -74,16 +74,12 @@ public class BungeeEssentials extends Plugin {
 
             GSONPlayer gsonPlayer = this.playerManager.getPlayer(uuid);
 
-            gsonPlayer.setLocked(true);
-
             long joinTime = gsonPlayer.getPlayerJoinTime();
             long playTime = System.currentTimeMillis() - joinTime;
             long totalPlayTime = gsonPlayer.getTotalOnlineTime() + playTime;
 
             gsonPlayer.setTotalOnlineTime(totalPlayTime);
             gsonPlayer.setLastOnlineTime(System.currentTimeMillis());
-
-            gsonPlayer.setLocked(false);
 
             this.playerManager.unloadPlayer(uuid);
 

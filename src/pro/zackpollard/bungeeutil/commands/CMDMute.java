@@ -49,8 +49,6 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
                     if(gsonPlayer != null) {
 
-                        gsonPlayer.setLocked(true);
-
                         GSONMute gsonMute = new GSONMute();
                         gsonMute.setTimestampNow();
                         gsonMute.setMuterUUID(player.getUniqueId());
@@ -82,8 +80,6 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
                         instance.getConfigs().getRoles().sendMessageToRole(
                                 instance.getConfigs().getMessages().getCmdMuteSuccess(gsonPlayer.getLastKnownName(), reason),
                                 instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveMuteAlerts());
-
-                        gsonPlayer.setLocked(false);
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));
@@ -109,7 +105,6 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
             GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayer(player.getUniqueId());
-            gsonPlayer.setLocked(true);
             GSONMute gsonMute = gsonPlayer.getCurrentMute();
 
             if (gsonMute != null) {
@@ -170,8 +165,6 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
                     }
                 }
             }
-
-            gsonPlayer.setLocked(false);
         }
     }
 }

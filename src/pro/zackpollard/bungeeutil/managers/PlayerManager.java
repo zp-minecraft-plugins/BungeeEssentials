@@ -110,7 +110,6 @@ public class PlayerManager implements Listener {
     public void onPlayerLogin(ProxiedPlayer player) {
 
         GSONPlayer gsonPlayer = this.loadPlayerCreateIfNotExist(player);
-        gsonPlayer.setLocked(true);
 
         if(gsonPlayer.getLastKnownName() != null && playerNameCache.containsKey(gsonPlayer.getLastKnownName().toLowerCase())) {
 
@@ -122,7 +121,6 @@ public class PlayerManager implements Listener {
         gsonPlayer.setLastKnownName(player.getName());
         gsonPlayer.setPlayerJoinTime(System.currentTimeMillis());
         gsonPlayer.setLastKnownIP(player.getPendingConnection().getAddress().getAddress().getHostAddress());
-        gsonPlayer.setLocked(false);
     }
 
     @EventHandler
@@ -130,7 +128,6 @@ public class PlayerManager implements Listener {
 
         UUID uuid = event.getPlayer().getUniqueId();
         GSONPlayer gsonPlayer = this.getPlayer(uuid);
-        gsonPlayer.setLocked(true);
 
         long joinTime = gsonPlayer.getPlayerJoinTime();
         long playTime = System.currentTimeMillis() - joinTime;
@@ -138,8 +135,6 @@ public class PlayerManager implements Listener {
 
         gsonPlayer.setTotalOnlineTime(totalPlayTime);
         gsonPlayer.setLastOnlineTime(System.currentTimeMillis());
-
-        gsonPlayer.setLocked(false);
     }
 
     @EventHandler
@@ -147,16 +142,11 @@ public class PlayerManager implements Listener {
 
         UUID uuid = event.getPlayer().getUniqueId();
         GSONPlayer gsonPlayer = this.getPlayer(uuid);
-        gsonPlayer.setLocked(true);
 
         gsonPlayer.setLastConnectedServer(event.getServer().getInfo().getName());
-
-        gsonPlayer.setLocked(false);
     }
 
     public BaseComponent[] checkPlayerBannedGetMessage(GSONPlayer gsonPlayer) {
-
-        gsonPlayer.setLocked(true);
 
         GSONBan gsonBan = gsonPlayer.getCurrentBan();
 
@@ -166,15 +156,11 @@ public class PlayerManager implements Listener {
 
             if(gsonBan.getDuration() == 0) {
 
-                gsonPlayer.setLocked(false);
-
                 return this.messages.getPlayerPermBanMessage(
                         getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
                         gsonBan.getTimestampFormatted(),
                         gsonBan.getReason());
             } else if(banExpiration > System.currentTimeMillis()) {
-
-                gsonPlayer.setLocked(false);
 
                 return this.messages.getPlayerTempBanMessage(
                         getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
@@ -184,12 +170,8 @@ public class PlayerManager implements Listener {
             } else {
 
                 gsonPlayer.setCurrentBan(null);
-
-                gsonPlayer.setLocked(false);
             }
         }
-
-        gsonPlayer.setLocked(false);
 
         return null;
     }
@@ -210,27 +192,27 @@ public class PlayerManager implements Listener {
 
         if(gsonPlayer != null) {
 
-            return gsonPlayer;
+            File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
+
+            if (playerFile.exists()) {
+
+                try (Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
+
+                    Gson gson = new GsonBuilder().create();
+                    gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                }
+
+                this.cachePlayer(gsonPlayer);
+            }
         }
 
-        File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
+        if(gsonPlayer != null) {
 
-        if(playerFile.exists()) {
-
-            try (Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
-
-                Gson gson = new GsonBuilder().create();
-                gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            }
-
-            this.cachePlayer(gsonPlayer);
-        } else {
-
-            return null;
+            gsonPlayer.accessed();
         }
 
         return gsonPlayer;
@@ -241,19 +223,22 @@ public class PlayerManager implements Listener {
         UUID uuid = player.getUniqueId();
         GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
 
-        if(gsonPlayer != null) {
+        if(gsonPlayer == null) {
 
-            return gsonPlayer;
+            File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
+
+            if (playerFile.exists()) {
+
+                gsonPlayer = this.getPlayer(uuid);
+            } else {
+
+                gsonPlayer = this.createPlayer(player);
+            }
         }
 
-        File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
+        if(gsonPlayer != null) {
 
-        if(playerFile.exists()) {
-
-            gsonPlayer = this.getPlayer(uuid);
-        } else {
-
-            gsonPlayer = this.createPlayer(player);
+            gsonPlayer.accessed();
         }
 
         return gsonPlayer;
@@ -347,12 +332,11 @@ public class PlayerManager implements Listener {
         GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
 
         return gsonPlayer != null && this.unloadPlayer(gsonPlayer);
-
     }
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
-        if(!gsonPlayer.isLocked()) {
+        if(gsonPlayer.compareLastAccessedWithNow()) {
 
             if(gsonPlayer.isFileChanged()) {
 
