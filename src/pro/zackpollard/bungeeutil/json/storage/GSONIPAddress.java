@@ -2,9 +2,10 @@ package pro.zackpollard.bungeeutil.json.storage;
 
 import java.util.*;
 
-public class GSONIPAddress extends Lockable {
+public class GSONIPAddress {
 
     private transient boolean fileChanged = false;
+    private transient boolean locked = false;
 
     private String ip;
     private final Set<UUID> uuids = new HashSet<>();
@@ -48,6 +49,14 @@ public class GSONIPAddress extends Lockable {
 
     public boolean isFileChanged() {
         return this.fileChanged;
+    }
+
+    public boolean isLocked() {
+        return this.locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public List<GSONBan> getBans() {

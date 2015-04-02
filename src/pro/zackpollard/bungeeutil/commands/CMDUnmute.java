@@ -38,6 +38,8 @@ public class CMDUnmute extends BungeeEssentialsCommand {
 
                 if(gsonPlayer != null) {
 
+                    gsonPlayer.setLocked(true);
+
                     if(gsonPlayer.getCurrentMute() != null) {
 
                         ProxiedPlayer mutee = instance.getProxy().getPlayer(gsonPlayer.getUUID());
@@ -54,6 +56,8 @@ public class CMDUnmute extends BungeeEssentialsCommand {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "There was no mute in place for that player."));
                     }
+
+                    gsonPlayer.setLocked(false);
                 } else {
 
                     sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));

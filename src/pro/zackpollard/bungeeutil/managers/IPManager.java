@@ -85,13 +85,18 @@ public class IPManager implements Listener {
     public void onPlayerLogin(ProxiedPlayer player) {
 
         GSONIPAddress gsonIP = this.loadIPCreateIfNotExist(player.getAddress().getAddress().getHostAddress());
+        gsonIP.setLocked(true);
 
         gsonIP.setLastUUIDJoined(player.getUniqueId());
+
+        gsonIP.setLocked(false);
     }
 
     public BaseComponent[] checkIPBannedGetMessage(GSONIPAddress gsonIP) {
 
         GSONBan gsonBan = gsonIP.getCurrentBan();
+
+        gsonIP.setLocked(true);
 
         if(gsonBan != null) {
 
@@ -99,11 +104,15 @@ public class IPManager implements Listener {
 
             if (gsonBan.getDuration() == 0) {
 
+                gsonIP.setLocked(false);
+
                 return this.messages.getIPPermBanMessage(
                         playerManager.getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
                         gsonBan.getTimestampFormatted(),
                         gsonBan.getReason());
             } else if (banExpiration > System.currentTimeMillis()) {
+
+                gsonIP.setLocked(false);
 
                 return this.messages.getIPTempBanMessage(
                         playerManager.getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
@@ -113,8 +122,12 @@ public class IPManager implements Listener {
             } else {
 
                 gsonIP.setCurrentBan(null);
+
+                gsonIP.setLocked(false);
             }
         }
+
+        gsonIP.setLocked(false);
 
         return null;
     }
@@ -229,7 +242,7 @@ public class IPManager implements Listener {
 
     public boolean unloadIP(GSONIPAddress gsonIP) {
 
-        if(gsonIP.compareLastAccessedWithNow()) {
+        if(!gsonIP.isLocked()) {
 
             if(gsonIP.isFileChanged()) {
 
