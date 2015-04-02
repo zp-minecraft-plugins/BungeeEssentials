@@ -62,13 +62,16 @@ public class ServerChatManager implements Listener {
 
                         if(gsonReplaceWords.getBypassRole() > role) {
 
-                            if(gsonReplaceWords.isBlockMessage()) {
+                            if(event.getMessage().toLowerCase().contains(gsonReplaceWords.getBlocked())) {
 
-                                event.setCancelled(true);
-                                player.sendMessage(instance.getConfigs().getMessages().getMessageBlockedFromBannedWord(gsonReplaceWords.getBlocked()));
-                            } else {
+                                if(gsonReplaceWords.isBlockMessage()) {
 
-                                event.setMessage(event.getMessage().replace(gsonReplaceWords.getBlocked(), gsonReplaceWords.getReplacement()));
+                                    event.setCancelled(true);
+                                    player.sendMessage(instance.getConfigs().getMessages().getMessageBlockedFromBannedWord(gsonReplaceWords.getBlocked()));
+                                } else {
+
+                                    event.setMessage(gsonReplaceWords.doReplacement(event.getMessage()));
+                                }
                             }
                         }
                     }

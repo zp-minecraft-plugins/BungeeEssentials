@@ -9,6 +9,8 @@ public class GSONChat {
     private final Set<GSONReplaceWords> replaceWords;
     private final GSONAdvertisementBlock advertisingBlocking;
 
+    private transient boolean replaceWordsConverted;
+
     public GSONChat() {
 
         slowChat = new GSONSlowChat();
@@ -21,6 +23,8 @@ public class GSONChat {
         replaceWords.add(new GSONReplaceWords("shit", "****", 4));
         replaceWords.add(new GSONReplaceWords("dick", "****", 4));
         replaceWords.add(new GSONReplaceWords("asshole", "*******", 4));
+
+        replaceWordsConverted = false;
     }
 
     public Set<GSONReplaceWords> getReplaceWords() {
