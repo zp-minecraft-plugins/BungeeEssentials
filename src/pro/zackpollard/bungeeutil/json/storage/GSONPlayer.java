@@ -6,13 +6,10 @@ import pro.zackpollard.bungeeutil.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GSONPlayer {
+public class GSONPlayer extends Lockable {
 
     private transient boolean fileChanged = false;
-    private transient boolean locked = false;
     private transient long playerJoinTime = 0;
-
-    //TODO: Implement a better unloading system, use lastAccessed rather than a locked variable.
 
     /**
      * The uuid of the player in question.
@@ -31,7 +28,6 @@ public class GSONPlayer {
      * supposed to be banned.
      */
     private GSONBan currentBan;
-
     private GSONMute currentMute;
 
     /**
@@ -40,15 +36,10 @@ public class GSONPlayer {
      * this IP address.
      */
     private String lastKnownIP;
-
     private final List<String> knownIPs = new ArrayList<>();
-
     private long totalOnlineTime;
-
     private long lastOnlineTime;
-
     private String lastKnownName;
-
     private String lastConnectedServer;
 
     public UUID getUUID() {
@@ -68,6 +59,7 @@ public class GSONPlayer {
     }
 
     public void setUUID(UUID uuid) {
+
         this.uuid = uuid;
         this.fileChanged = true;
     }
@@ -85,12 +77,14 @@ public class GSONPlayer {
     }
 
     public void setCurrentMute(GSONMute currentMute) {
+
         this.currentMute = currentMute;
         this.fileChanged = true;
     }
 
     public void setLastKnownIP(String lastKnownIP) {
-        if(! Objects.equals(this.lastKnownIP, lastKnownIP)) {
+
+        if(this.lastKnownIP.equals(lastKnownIP)) {
 
             this.lastKnownIP = lastKnownIP;
         }
@@ -111,23 +105,12 @@ public class GSONPlayer {
 
     }
 
-    public boolean isLocked() {
-        return this.locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public void setFileChanged(boolean fileChanged) {
-        this.fileChanged = fileChanged;
-    }
-
     public long getPlayerJoinTime() {
         return this.playerJoinTime;
     }
 
     public void setPlayerJoinTime(long playerJoinTime) {
+
         this.playerJoinTime = playerJoinTime;
     }
 
@@ -140,11 +123,6 @@ public class GSONPlayer {
 
     public long getTotalOnlineTime() {
         return this.totalOnlineTime;
-    }
-
-    public long getLastOnlineTime() {
-
-        return this.lastOnlineTime;
     }
 
     public String getLastOnlineString() {
