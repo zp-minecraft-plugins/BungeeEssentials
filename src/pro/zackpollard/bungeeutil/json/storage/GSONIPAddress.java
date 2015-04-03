@@ -2,9 +2,10 @@ package pro.zackpollard.bungeeutil.json.storage;
 
 import java.util.*;
 
-public class GSONIPAddress extends Lockable {
+public class GSONIPAddress {
 
     private transient boolean fileChanged = false;
+    private transient long lastAccessed = 0;
 
     private String ip;
     private final Set<UUID> uuids = new HashSet<>();
@@ -76,5 +77,31 @@ public class GSONIPAddress extends Lockable {
     public UUID getLastOnlineUser() {
 
         return this.lastOnlineUser;
+    }
+
+    public void accessed() {
+
+        lastAccessed = System.currentTimeMillis();
+    }
+
+    public long getLastAccessed() {
+
+        return lastAccessed;
+    }
+
+    public boolean compareLastAccessedWithNow() {
+
+        return compareLastAccessedWithNow(true);
+    }
+
+    public boolean compareLastAccessedWithNow(boolean isBeforeNow) {
+
+        if(lastAccessed == System.currentTimeMillis()) {
+
+            return isBeforeNow;
+        } else {
+
+            return !isBeforeNow;
+        }
     }
 }
