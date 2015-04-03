@@ -6,11 +6,10 @@ import pro.zackpollard.bungeeutil.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GSONPlayer {
+public class GSONPlayer extends Lockable {
 
     private transient boolean fileChanged = false;
     private transient long playerJoinTime = 0;
-    private transient long lastAccessed = 0;
 
     /**
      * The uuid of the player in question.
@@ -189,31 +188,5 @@ public class GSONPlayer {
 
     public GSONMute getCurrentMute() {
         return currentMute;
-    }
-
-    public void accessed() {
-
-        lastAccessed = System.currentTimeMillis();
-    }
-
-    public long getLastAccessed() {
-
-        return lastAccessed;
-    }
-
-    public boolean compareLastAccessedWithNow() {
-
-        return compareLastAccessedWithNow(true);
-    }
-
-    public boolean compareLastAccessedWithNow(boolean isBeforeNow) {
-
-        if(lastAccessed == System.currentTimeMillis()) {
-
-            return isBeforeNow;
-        } else {
-
-            return !isBeforeNow;
-        }
     }
 }

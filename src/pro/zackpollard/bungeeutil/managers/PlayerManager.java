@@ -190,7 +190,7 @@ public class PlayerManager implements Listener {
 
         GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
 
-        if(gsonPlayer == null) {
+        if(gsonPlayer != null) {
 
             File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
 
