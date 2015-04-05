@@ -6,10 +6,11 @@ import pro.zackpollard.bungeeutil.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GSONPlayer extends Lockable {
+public class GSONPlayer {
 
     private transient boolean fileChanged = false;
     private transient long playerJoinTime = 0;
+    private transient long lastAccessed = 0;
 
     /**
      * The uuid of the player in question.
@@ -84,7 +85,7 @@ public class GSONPlayer extends Lockable {
 
     public void setLastKnownIP(String lastKnownIP) {
 
-        if(Objects.equals(this.lastKnownIP, lastKnownIP)) {
+        if(this.lastKnownIP.equals(lastKnownIP)) {
 
             this.lastKnownIP = lastKnownIP;
         }
@@ -102,6 +103,7 @@ public class GSONPlayer extends Lockable {
         return this.fileChanged ||
                 this.currentBan != null && this.currentBan.isFileChanged() ||
                 this.currentMute != null && this.currentMute.isFileChanged();
+
     }
 
     public long getPlayerJoinTime() {
@@ -187,5 +189,31 @@ public class GSONPlayer extends Lockable {
 
     public GSONMute getCurrentMute() {
         return currentMute;
+    }
+
+    public void accessed() {
+
+        lastAccessed = System.currentTimeMillis();
+    }
+
+    public long getLastAccessed() {
+
+        return lastAccessed;
+    }
+
+    public boolean compareLastAccessedWithNow() {
+
+        return compareLastAccessedWithNow(true);
+    }
+
+    public boolean compareLastAccessedWithNow(boolean isBeforeNow) {
+
+        if(lastAccessed == System.currentTimeMillis()) {
+
+            return isBeforeNow;
+        } else {
+
+            return !isBeforeNow;
+        }
     }
 }

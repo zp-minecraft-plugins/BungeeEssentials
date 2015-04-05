@@ -229,9 +229,9 @@ public class IPManager implements Listener {
 
     public boolean unloadIP(GSONIPAddress gsonIP) {
 
-        if(gsonIP.isFileChanged()) {
+        if(gsonIP.compareLastAccessedWithNow()) {
 
-            if(gsonIP.compareLastAccessedWithNow()) {
+            if(gsonIP.isFileChanged()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
