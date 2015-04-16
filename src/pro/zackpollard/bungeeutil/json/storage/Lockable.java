@@ -10,7 +10,7 @@ public abstract class Lockable {
 
     public void accessed() {
 
-        lastAccessed = System.currentTimeMillis();
+        lastAccessed = System.currentTimeMillis() + 60000;
     }
 
     public long getLastAccessed() {
