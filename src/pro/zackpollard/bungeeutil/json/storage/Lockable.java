@@ -25,11 +25,7 @@ public abstract class Lockable {
 
     public boolean compareLastAccessedWithNow(boolean isBeforeNow) {
 
-<<<<<<< HEAD
         if(lastAccessed < System.currentTimeMillis()) {
-=======
-        if(lastAccessed == System.currentTimeMillis()) {
->>>>>>> parent of d1b7b9e... Hopefully fixed the locking issues.
 
             return isBeforeNow;
         } else {
