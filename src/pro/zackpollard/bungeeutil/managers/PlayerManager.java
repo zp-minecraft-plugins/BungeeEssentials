@@ -198,25 +198,17 @@ public class PlayerManager implements Listener {
 
             if (playerFile.exists()) {
 
-                if(playerFile.length() == 0) {
+                try (Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
 
-                    playerFile.delete();
-                    System.out.println("Had to delete a file as the player file was empty which is wrong.");
+                    Gson gson = new GsonBuilder().create();
+                    gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
 
-                } else {
+                } catch (IOException e) {
 
-                    try (Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
-
-                        Gson gson = new GsonBuilder().create();
-                        gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
-
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-                    }
-
-                    this.cachePlayer(gsonPlayer);
+                    e.printStackTrace();
                 }
+
+                this.cachePlayer(gsonPlayer);
             }
         }
 
@@ -257,6 +249,9 @@ public class PlayerManager implements Listener {
         if(gsonPlayer != null) {
 
             gsonPlayer.accessed();
+        } else {
+
+            System.out.println("Player file was still null after it should have been loaded or created!");
         }
 
         return gsonPlayer;
@@ -270,17 +265,50 @@ public class PlayerManager implements Listener {
 
             playerFile.createNewFile();
         } catch (IOException e) {
+
             e.printStackTrace();
             instance.getLogger().severe("Plugin was unable to create a new file! Check the directories read/write permissions and then report to the developer!");
+            return null;
         }
 
         GSONPlayer gsonPlayer = new GSONPlayer();
         gsonPlayer.setUUID(player.getUniqueId());
         gsonPlayer.setLastKnownIP(player.getAddress().getAddress().getHostAddress());
 
+        if(!this.savePlayer(gsonPlayer, playerFile)) {
+
+            return null;
+        }
+
         this.cachePlayer(gsonPlayer);
 
         return gsonPlayer;
+    }
+
+    private boolean savePlayer(GSONPlayer gsonPlayer, File playerFile) {
+
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        String json = gson.toJson(gsonPlayer);
+
+        FileOutputStream outputStream;
+
+        try {
+
+            outputStream = new FileOutputStream(playerFile);
+            outputStream.write(json.getBytes());
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            instance.getLogger().severe("GSONPlayer could not be saved for " + gsonPlayer.getUUID() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            instance.getLogger().severe("GSONPlayer could not be written to for " + gsonPlayer.getUUID() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
+            return false;
+        }
+
+        return true;
     }
 
     private void cachePlayer(GSONPlayer gsonPlayer) {
@@ -361,30 +389,9 @@ public class PlayerManager implements Listener {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonPlayer.getUUID().toString() + ".json");
 
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                String json = gson.toJson(gsonPlayer);
+                if(!this.savePlayer(gsonPlayer, playerFile)) {
 
-                FileOutputStream outputStream;
-
-                try {
-
-                    outputStream = new FileOutputStream(playerFile);
-                    outputStream.write(json.getBytes());
-                    outputStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    instance.getLogger().severe("GSONPlayer could not be saved for " + gsonPlayer.getUUID() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
                     return false;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    instance.getLogger().severe("GSONPlayer could not be written to for " + gsonPlayer.getUUID() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
-                    return false;
-                }
-
-                if(playerFile.length() == 0) {
-
-                    playerFile.delete();
                 }
             }
 

@@ -182,6 +182,8 @@ public class IPManager implements Listener {
 
             if(playerFile.length() == 0) {
 
+                playerFile.delete();
+                System.out.println("Had to delete a file as the ip file was empty which is wrong.");
                 gsonIP = this.createIP(ipAddress);
             } else {
 
@@ -209,6 +211,8 @@ public class IPManager implements Listener {
         GSONIPAddress gsonIP = new GSONIPAddress();
         gsonIP.setIP(ipAddress);
 
+        this.saveIP(gsonIP, playerFile);
+
         this.cacheIP(gsonIP);
 
         return gsonIP;
@@ -235,7 +239,32 @@ public class IPManager implements Listener {
         GSONIPAddress gsonIP = this.ipCache.get(ipAddress);
 
         return gsonIP != null && this.unloadIP(gsonIP);
+    }
 
+    private boolean saveIP(GSONIPAddress gsonIP, File playerFile) {
+
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        String json = gson.toJson(gsonIP);
+
+        FileOutputStream outputStream;
+
+        try {
+
+            outputStream = new FileOutputStream(playerFile);
+            outputStream.write(json.getBytes());
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            instance.getLogger().severe("GSONIPAddress could not be saved for " + gsonIP.getIP() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            instance.getLogger().severe("GSONIPAddress could not be written to for " + gsonIP.getIP() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean unloadIP(GSONIPAddress gsonIP) {
@@ -246,31 +275,7 @@ public class IPManager implements Listener {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                String json = gson.toJson(gsonIP);
-
-                FileOutputStream outputStream;
-
-                try {
-
-                    outputStream = new FileOutputStream(playerFile);
-                    outputStream.write(json.getBytes());
-                    outputStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    instance.getLogger().severe("GSONIPAddress could not be saved for " + gsonIP.getIP() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
-                    return false;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    instance.getLogger().severe("GSONIPAddress could not be written to for " + gsonIP.getIP() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
-                    return false;
-                }
-
-                if(playerFile.length() == 0) {
-
-                    playerFile.delete();
-                }
+                this.saveIP(gsonIP, playerFile);
             }
 
             this.ipCache.remove(gsonIP.getIP());
