@@ -336,9 +336,9 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
-        if(gsonPlayer.compareLastAccessedWithNow()) {
+        if(gsonPlayer.isFileChanged()) {
 
-            if(gsonPlayer.isFileChanged()) {
+            if(gsonPlayer.compareLastAccessedWithNow()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonPlayer.getUUID().toString() + ".json");
 
