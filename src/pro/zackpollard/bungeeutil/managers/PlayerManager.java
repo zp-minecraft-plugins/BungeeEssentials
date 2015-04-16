@@ -221,7 +221,6 @@ public class PlayerManager implements Listener {
 
                 Gson gson = new GsonBuilder().create();
                 gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
-
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -352,6 +351,12 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
+        if(gsonPlayer == null) {
+
+            System.out.println(instance.getConfigs().getMessages().getPrefix() + "GSONPlayer was null when trying to be unloaded");
+            return false;
+        }
+
         if(!gsonPlayer.isLocked()) {
 
             if(gsonPlayer.isFileChanged()) {
@@ -371,11 +376,11 @@ public class PlayerManager implements Listener {
                     outputStream.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    instance.getLogger().severe("GSONPlayer could not be saved for " + gsonPlayer.getUUID() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
+                    System.out.println(instance.getConfigs().getMessages().getPrefix() + "GSONPlayer could not be saved for " + gsonPlayer.getUUID() + " as the file couldn't be found on the storage device. Please check the directories read/write permissions and contact the developer!");
                     return false;
                 } catch (IOException e) {
                     e.printStackTrace();
-                    instance.getLogger().severe("GSONPlayer could not be written to for " + gsonPlayer.getUUID() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
+                    System.out.println(instance.getConfigs().getMessages().getPrefix() + "GSONPlayer could not be written to for " + gsonPlayer.getUUID() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
                     return false;
                 }
             }
