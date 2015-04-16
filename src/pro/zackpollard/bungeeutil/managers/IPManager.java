@@ -34,7 +34,7 @@ public class IPManager implements Listener {
         this.dataFolder.mkdirs();
         this.playerManager = instance.getPlayerManager();
 
-        instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 30, 30, TimeUnit.SECONDS);
+        instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 15, 15, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
 
         for(ProxiedPlayer player : instance.getProxy().getPlayers()) {
@@ -55,8 +55,8 @@ public class IPManager implements Listener {
 
     /**
      *
-     *
      * @param event
+     *
      */
 
     @EventHandler
@@ -143,6 +143,11 @@ public class IPManager implements Listener {
 
         if(ipFile.exists()) {
 
+            if(ipFile.length() == 0) {
+
+                gsonIP = this.createIP(ipAddress);
+            }
+
             try (Reader reader = new InputStreamReader(new FileInputStream(ipFile), "UTF-8")) {
 
                 Gson gson = new GsonBuilder().create();
@@ -175,7 +180,13 @@ public class IPManager implements Listener {
 
         if(playerFile.exists()) {
 
-            gsonIP = this.getIP(ipAddress);
+            if(playerFile.length() == 0) {
+
+                gsonIP = this.createIP(ipAddress);
+            } else {
+
+                gsonIP = this.getIP(ipAddress);
+            }
         } else {
 
             gsonIP = this.createIP(ipAddress);
@@ -254,6 +265,11 @@ public class IPManager implements Listener {
                     e.printStackTrace();
                     instance.getLogger().severe("GSONIPAddress could not be written to for " + gsonIP.getIP() + " as an error occurred. Please check the directories read/write permissions and contact the developer!");
                     return false;
+                }
+
+                if(playerFile.length() == 0) {
+
+                    playerFile.delete();
                 }
             }
 
