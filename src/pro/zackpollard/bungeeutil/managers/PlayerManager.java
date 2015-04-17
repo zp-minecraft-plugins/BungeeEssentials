@@ -75,7 +75,14 @@ public class PlayerManager implements Listener {
 
                 if(gsonPlayer != null) {
 
-                    playerNameCache.put(gsonPlayer.getLastKnownName().toLowerCase(), gsonPlayer.getUUID());
+                    if(gsonPlayer.getLastKnownName() != null) {
+
+                        playerNameCache.put(gsonPlayer.getLastKnownName().toLowerCase(), gsonPlayer.getUUID());
+                    } else {
+
+                        System.out.println("Last known name was null for player with UUID: " + gsonPlayer.getUUID());
+                        playerFile.delete();
+                    }
                 }
             } catch (IOException e) {
 
@@ -123,6 +130,8 @@ public class PlayerManager implements Listener {
         gsonPlayer.setLastKnownName(player.getName());
         gsonPlayer.setPlayerJoinTime(System.currentTimeMillis());
         gsonPlayer.setLastKnownIP(player.getPendingConnection().getAddress().getAddress().getHostAddress());
+
+        this.savePlayer(gsonPlayer);
     }
 
     @EventHandler
@@ -309,6 +318,11 @@ public class PlayerManager implements Listener {
         }
 
         return true;
+    }
+
+    private boolean savePlayer(GSONPlayer gsonPlayer) {
+
+        return this.savePlayer(gsonPlayer, new File(dataFolder.getAbsolutePath() + File.separator + gsonPlayer.getUUID().toString() + ".json"));
     }
 
     private void cachePlayer(GSONPlayer gsonPlayer) {
