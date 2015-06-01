@@ -275,14 +275,15 @@ public class IPManager implements Listener {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
-                this.saveIP(gsonIP, playerFile);
-            }
+                if(!this.saveIP(gsonIP, playerFile)) {
 
-            this.ipCache.remove(gsonIP.getIP());
-            return true;
+                    return false;
+                }
+            }
         }
 
-        return false;
+        this.ipCache.remove(gsonIP.getIP());
+        return true;
     }
 
     public Map<String, GSONIPAddress> getIPCache(boolean copy) {

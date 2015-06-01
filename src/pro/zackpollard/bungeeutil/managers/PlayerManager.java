@@ -408,12 +408,10 @@ public class PlayerManager implements Listener {
                     return false;
                 }
             }
-
-            this.gsonPlayerCache.remove(gsonPlayer.getUUID());
-            return true;
         }
 
-        return false;
+        this.gsonPlayerCache.remove(gsonPlayer.getUUID());
+        return true;
     }
 
     public Map<UUID, GSONPlayer> getGsonPlayerCache(boolean copy) {

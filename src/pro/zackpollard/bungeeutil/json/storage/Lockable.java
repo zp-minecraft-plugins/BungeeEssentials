@@ -25,7 +25,7 @@ public abstract class Lockable {
 
     public boolean compareLastAccessedWithNow(boolean isBeforeNow) {
 
-        if(lastAccessed < System.currentTimeMillis()) {
+        if(lastAccessed + 120000L < System.currentTimeMillis()) {
 
             return isBeforeNow;
         } else {
