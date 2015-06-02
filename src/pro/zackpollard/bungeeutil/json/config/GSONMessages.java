@@ -491,7 +491,6 @@ public class GSONMessages {
                 .replace("%servername%", serverName));
     }
 
-
     public BaseComponent[] getMessageBlockedFromBannedWord(String blockedWord) {
 
         return generateMessage(true, messageBlockedFromBannedWord
