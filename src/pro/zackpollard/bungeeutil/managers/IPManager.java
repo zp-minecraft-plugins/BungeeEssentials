@@ -269,9 +269,9 @@ public class IPManager implements Listener {
 
     public boolean unloadIP(GSONIPAddress gsonIP) {
 
-        if(gsonIP.isFileChanged()) {
+        if(gsonIP.compareLastAccessedWithNow()) {
 
-            if(gsonIP.compareLastAccessedWithNow()) {
+            if(gsonIP.isFileChanged()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
@@ -280,10 +280,12 @@ public class IPManager implements Listener {
                     return false;
                 }
             }
+
+            this.ipCache.remove(gsonIP.getIP());
+            return true;
         }
 
-        this.ipCache.remove(gsonIP.getIP());
-        return true;
+        return false;
     }
 
     public Map<String, GSONIPAddress> getIPCache(boolean copy) {

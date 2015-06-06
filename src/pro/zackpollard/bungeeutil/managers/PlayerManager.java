@@ -397,9 +397,10 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
-        if(gsonPlayer.isFileChanged()) {
 
-            if(gsonPlayer.compareLastAccessedWithNow()) {
+        if(gsonPlayer.compareLastAccessedWithNow()) {
+
+            if(gsonPlayer.isFileChanged()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonPlayer.getUUID().toString() + ".json");
 
@@ -408,10 +409,12 @@ public class PlayerManager implements Listener {
                     return false;
                 }
             }
+
+            this.gsonPlayerCache.remove(gsonPlayer.getUUID());
+            return true;
         }
 
-        this.gsonPlayerCache.remove(gsonPlayer.getUUID());
-        return true;
+        return false;
     }
 
     public Map<UUID, GSONPlayer> getGsonPlayerCache(boolean copy) {
