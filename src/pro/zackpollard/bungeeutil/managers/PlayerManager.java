@@ -397,7 +397,6 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
-
         if(gsonPlayer.compareLastAccessedWithNow()) {
 
             if(gsonPlayer.isFileChanged()) {

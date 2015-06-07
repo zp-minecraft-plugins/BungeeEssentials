@@ -53,12 +53,6 @@ public class IPManager implements Listener {
 
     private final Map<String, GSONIPAddress> ipCache = new HashMap<>();
 
-    /**
-     *
-     * @param event
-     *
-     */
-
     @EventHandler
     public void onPlayerLogin(LoginEvent event) {
 
