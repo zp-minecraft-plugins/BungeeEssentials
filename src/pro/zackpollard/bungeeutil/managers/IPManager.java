@@ -37,7 +37,7 @@ public class IPManager implements Listener {
         instance.getProxy().getScheduler().schedule(instance, new IPManagerCleanup(instance, this), 15, 15, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
 
-        for(ProxiedPlayer player : instance.getProxy().getPlayers()) {
+        for (ProxiedPlayer player : instance.getProxy().getPlayers()) {
 
             onPlayerLogin(player);
         }
@@ -58,11 +58,11 @@ public class IPManager implements Listener {
 
         GSONIPAddress gsonIP = this.getIP(event.getConnection().getAddress().getAddress().getHostAddress());
 
-        if(gsonIP != null) {
+        if (gsonIP != null) {
 
             BaseComponent[] banned = this.checkIPBannedGetMessage(gsonIP);
 
-            if(banned != null) {
+            if (banned != null) {
 
                 event.setCancelled(true);
                 event.setCancelReason(BaseComponent.toLegacyText(banned));
@@ -87,7 +87,7 @@ public class IPManager implements Listener {
 
         GSONBan gsonBan = gsonIP.getCurrentBan();
 
-        if(gsonBan != null) {
+        if (gsonBan != null) {
 
             long banExpiration = gsonBan.getDuration() + gsonBan.getTimestamp();
 
@@ -118,7 +118,7 @@ public class IPManager implements Listener {
 
         BaseComponent[] message = checkIPBannedGetMessage(gsonIP);
 
-        if(message != null) {
+        if (message != null) {
 
             player.disconnect(message);
         }
@@ -128,16 +128,16 @@ public class IPManager implements Listener {
 
         GSONIPAddress gsonIP = this.ipCache.get(ipAddress);
 
-        if(gsonIP != null) {
+        if (gsonIP != null) {
 
             return gsonIP;
         }
 
         File ipFile = new File(dataFolder.getAbsolutePath() + File.separator + ipAddress + ".json");
 
-        if(ipFile.exists()) {
+        if (ipFile.exists()) {
 
-            if(ipFile.length() == 0) {
+            if (ipFile.length() == 0) {
 
                 gsonIP = this.createIP(ipAddress);
             }
@@ -165,16 +165,16 @@ public class IPManager implements Listener {
 
         GSONIPAddress gsonIP = this.ipCache.get(ipAddress);
 
-        if(gsonIP != null) {
+        if (gsonIP != null) {
 
             return gsonIP;
         }
 
         File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + ipAddress + ".json");
 
-        if(playerFile.exists()) {
+        if (playerFile.exists()) {
 
-            if(playerFile.length() == 0) {
+            if (playerFile.length() == 0) {
 
                 playerFile.delete();
                 System.out.println("Had to delete a file as the ip file was empty which is wrong.");
@@ -214,7 +214,7 @@ public class IPManager implements Listener {
 
     private void cacheIP(GSONIPAddress gsonIP) {
 
-        if(gsonIP != null) {
+        if (gsonIP != null) {
 
             this.ipCache.put(gsonIP.getIP(), gsonIP);
         } else {
@@ -263,13 +263,13 @@ public class IPManager implements Listener {
 
     public boolean unloadIP(GSONIPAddress gsonIP) {
 
-        if(gsonIP.compareLastAccessedWithNow()) {
+        if (gsonIP.compareLastAccessedWithNow()) {
 
-            if(gsonIP.isFileChanged()) {
+            if (gsonIP.isFileChanged()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
-                if(!this.saveIP(gsonIP, playerFile)) {
+                if (!this.saveIP(gsonIP, playerFile)) {
 
                     return false;
                 }
@@ -284,7 +284,7 @@ public class IPManager implements Listener {
 
     public Map<String, GSONIPAddress> getIPCache(boolean copy) {
 
-        if(copy) {
+        if (copy) {
 
             Map<String, GSONIPAddress> mapCopy = new HashMap<>();
             mapCopy.putAll(this.ipCache);

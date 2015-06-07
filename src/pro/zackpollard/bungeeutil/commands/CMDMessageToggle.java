@@ -22,21 +22,19 @@ public class CMDMessageToggle extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /messagetoggle
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(instance.getPrivateChatManager().togglePrivateChat(player)) {
+                if (instance.getPrivateChatManager().togglePrivateChat(player)) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getCmdMessageToggleEnabled());
                 } else {

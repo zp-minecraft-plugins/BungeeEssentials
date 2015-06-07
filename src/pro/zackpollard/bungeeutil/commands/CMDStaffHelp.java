@@ -21,19 +21,17 @@ public class CMDStaffHelp extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /staffhelp
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 int role = instance.getConfigs().getRoles().getRole(player.getUniqueId());
 

@@ -21,9 +21,7 @@ public class CMDUnban extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /unban (player) (reason (optional))
-     *
      */
 
     @Override

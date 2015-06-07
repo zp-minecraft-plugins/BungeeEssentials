@@ -22,7 +22,6 @@ public class CMDMessage extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /msg
      * /message
      * /pm
@@ -30,27 +29,26 @@ public class CMDMessage extends BungeeEssentialsCommand {
      * /m
      * /t
      * /whisper
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 2) {
+                if (args.length >= 2) {
 
                     ProxiedPlayer receiver = null;
 
-                    for(ProxiedPlayer playerCheck : instance.getProxy().getPlayers()) {
+                    for (ProxiedPlayer playerCheck : instance.getProxy().getPlayers()) {
 
-                        if(playerCheck.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
+                        if (playerCheck.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
 
-                            if(!instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
+                            if (!instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
 
                                 receiver = playerCheck;
                             }
@@ -59,7 +57,7 @@ public class CMDMessage extends BungeeEssentialsCommand {
                         }
                     }
 
-                    if(receiver != null) {
+                    if (receiver != null) {
 
                         String message = "";
 

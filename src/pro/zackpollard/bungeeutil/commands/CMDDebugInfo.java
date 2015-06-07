@@ -3,7 +3,6 @@ package pro.zackpollard.bungeeutil.commands;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
-import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
 
 /**
  * @Author zack
@@ -21,9 +20,7 @@ public class CMDDebugInfo extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /debuginfo
-     *
      */
 
     @Override

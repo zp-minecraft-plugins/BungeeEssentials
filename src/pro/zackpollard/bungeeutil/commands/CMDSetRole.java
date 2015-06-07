@@ -18,25 +18,23 @@ public class CMDSetRole extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /setrole (player)
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
-            if(args.length == 2) {
+            if (args.length == 2) {
 
                 GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                if(gsonPlayer != null) {
+                if (gsonPlayer != null) {
 
                     String role = args[1];
 
-                    if(instance.getConfigs().getRoles().setRole(gsonPlayer.getUUID(), role)) {
+                    if (instance.getConfigs().getRoles().setRole(gsonPlayer.getUUID(), role)) {
 
                         sender.sendMessage(instance.getConfigs().getMessages().getCmdSetRoleSuccess(gsonPlayer.getLastKnownName(), instance.getConfigs().getRoles().getRoleColoredName(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()))));
                     } else {

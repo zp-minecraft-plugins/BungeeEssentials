@@ -43,14 +43,14 @@ public class ServerChatManager implements Listener {
     @EventHandler
     public void onPlayerChat(ChatEvent event) {
 
-        if(!event.isCommand()) {
+        if (!event.isCommand()) {
 
-            if(event.getSender() instanceof ProxiedPlayer) {
+            if (event.getSender() instanceof ProxiedPlayer) {
 
                 ProxiedPlayer player = (ProxiedPlayer) event.getSender();
                 ServerInfo server = player.getServer().getInfo();
 
-                if(chatLockedServers.contains(player.getServer().getInfo().getName())) {
+                if (chatLockedServers.contains(player.getServer().getInfo().getName())) {
 
                     event.setCancelled(true);
                     player.sendMessage(instance.getConfigs().getMessages().getChatLockedMessage(player.getServer().getInfo().getName()));
@@ -58,13 +58,13 @@ public class ServerChatManager implements Listener {
 
                     int role = instance.getConfigs().getRoles().getRole(player.getUniqueId());
 
-                    for(GSONReplaceWords gsonReplaceWords : instance.getConfigs().getMainConfig().getChat().getReplaceWords()) {
+                    for (GSONReplaceWords gsonReplaceWords : instance.getConfigs().getMainConfig().getChat().getReplaceWords()) {
 
-                        if(gsonReplaceWords.getBypassRole() > role) {
+                        if (gsonReplaceWords.getBypassRole() > role) {
 
-                            if(event.getMessage().toLowerCase().contains(gsonReplaceWords.getBlocked())) {
+                            if (event.getMessage().toLowerCase().contains(gsonReplaceWords.getBlocked())) {
 
-                                if(gsonReplaceWords.isBlockMessage()) {
+                                if (gsonReplaceWords.isBlockMessage()) {
 
                                     event.setCancelled(true);
                                     player.sendMessage(instance.getConfigs().getMessages().getMessageBlockedFromBannedWord(gsonReplaceWords.getBlocked()));
@@ -77,13 +77,13 @@ public class ServerChatManager implements Listener {
                     }
                 }
 
-                if(event.isCancelled()) return;
+                if (event.isCancelled()) return;
 
-                if(slowChatServers.contains(server.getName())) {
+                if (slowChatServers.contains(server.getName())) {
 
                     String lastMessage = lastMessages.get(player.getName());
 
-                    if(lastMessage != null) {
+                    if (lastMessage != null) {
 
                         int maxMessageSimilarity = instance.getConfigs().getMainConfig().getChat().getSlowChat().getMaxMessageSimilarity();
 
@@ -94,11 +94,11 @@ public class ServerChatManager implements Listener {
                         }
                     }
 
-                    if(event.isCancelled()) return;
+                    if (event.isCancelled()) return;
 
                     Integer remainingTime = slowChatCooldowns.get(server.getName()).get(player.getName());
 
-                    if(remainingTime != null) {
+                    if (remainingTime != null) {
 
                         event.setCancelled(true);
                         player.sendMessage(instance.getConfigs().getMessages().getSlowChatMessage(server.getName(), remainingTime.toString()));
@@ -108,15 +108,15 @@ public class ServerChatManager implements Listener {
                     }
                 }
 
-                if(event.isCancelled()) return;
+                if (event.isCancelled()) return;
 
-                if(instance.getConfigs().getMainConfig().getChat().getAdvertisingBlocking().matchesBlocks(event.getMessage())) {
+                if (instance.getConfigs().getMainConfig().getChat().getAdvertisingBlocking().matchesBlocks(event.getMessage())) {
 
                     event.setCancelled(true);
                     player.sendMessage(instance.getConfigs().getMessages().getAdvertisingBlocked());
                 }
 
-                if(event.isCancelled()) return;
+                if (event.isCancelled()) return;
 
                 lastMessages.put(player.getName(), event.getMessage());
             }
@@ -125,7 +125,7 @@ public class ServerChatManager implements Listener {
 
     public boolean toggleChatLock(String serverName) {
 
-        if(chatLockedServers.contains(serverName)) {
+        if (chatLockedServers.contains(serverName)) {
 
             chatLockedServers.remove(serverName);
             return false;
@@ -138,7 +138,7 @@ public class ServerChatManager implements Listener {
 
     public boolean toggleSlowChat(String serverName) {
 
-        if(slowChatServers.contains(serverName)) {
+        if (slowChatServers.contains(serverName)) {
 
             slowChatServers.remove(serverName);
             slowChatCooldowns.remove(serverName);

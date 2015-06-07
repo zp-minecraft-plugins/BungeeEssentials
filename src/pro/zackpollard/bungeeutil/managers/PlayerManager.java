@@ -52,7 +52,7 @@ public class PlayerManager implements Listener {
 
         this.populatePlayerNameCache();
 
-        for(ProxiedPlayer player : instance.getProxy().getPlayers()) {
+        for (ProxiedPlayer player : instance.getProxy().getPlayers()) {
 
             onPlayerLogin(player);
         }
@@ -64,18 +64,20 @@ public class PlayerManager implements Listener {
 
         System.out.println(instance.getConfigs().getMessages().getPrefix() + "Loading playername -> uuid cache!");
 
-        for(File playerFile : dataFolder.listFiles(new FilenameFilter() {
+        for (File playerFile : dataFolder.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name) {return name.endsWith(".json");}
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".json");
+            }
         })) {
 
-            try(Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
+            try (Reader reader = new InputStreamReader(new FileInputStream(playerFile), "UTF-8")) {
 
                 GSONPlayer gsonPlayer = gson.fromJson(reader, GSONPlayer.class);
 
-                if(gsonPlayer != null) {
+                if (gsonPlayer != null) {
 
-                    if(gsonPlayer.getLastKnownName() != null) {
+                    if (gsonPlayer.getLastKnownName() != null) {
 
                         playerNameCache.put(gsonPlayer.getLastKnownName().toLowerCase(), gsonPlayer.getUUID());
                     } else {
@@ -98,11 +100,11 @@ public class PlayerManager implements Listener {
 
         GSONPlayer gsonPlayer = this.getPlayer(event.getConnection().getUniqueId());
 
-        if(gsonPlayer != null) {
+        if (gsonPlayer != null) {
 
             BaseComponent[] banned = this.checkPlayerBannedGetMessage(gsonPlayer);
 
-            if(banned != null) {
+            if (banned != null) {
 
                 event.setCancelled(true);
                 event.setCancelReason(BaseComponent.toLegacyText(banned));
@@ -120,7 +122,7 @@ public class PlayerManager implements Listener {
 
         GSONPlayer gsonPlayer = this.loadPlayerCreateIfNotExist(player);
 
-        if(gsonPlayer.getLastKnownName() != null && playerNameCache.containsKey(gsonPlayer.getLastKnownName().toLowerCase())) {
+        if (gsonPlayer.getLastKnownName() != null && playerNameCache.containsKey(gsonPlayer.getLastKnownName().toLowerCase())) {
 
             playerNameCache.remove(gsonPlayer.getLastKnownName().toLowerCase());
         }
@@ -161,17 +163,17 @@ public class PlayerManager implements Listener {
 
         GSONBan gsonBan = gsonPlayer.getCurrentBan();
 
-        if(gsonBan != null) {
+        if (gsonBan != null) {
 
             long banExpiration = gsonBan.getDuration() + gsonBan.getTimestamp();
 
-            if(gsonBan.getDuration() == 0) {
+            if (gsonBan.getDuration() == 0) {
 
                 return this.messages.getPlayerPermBanMessage(
                         getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
                         gsonBan.getTimestampFormatted(),
                         gsonBan.getReason());
-            } else if(banExpiration > System.currentTimeMillis()) {
+            } else if (banExpiration > System.currentTimeMillis()) {
 
                 return this.messages.getPlayerTempBanMessage(
                         getPlayer(gsonBan.getBannerUUID()).getLastKnownName(),
@@ -191,7 +193,7 @@ public class PlayerManager implements Listener {
 
         BaseComponent[] message = checkPlayerBannedGetMessage(gsonPlayer);
 
-        if(message != null) {
+        if (message != null) {
 
             player.disconnect(message);
         }
@@ -201,7 +203,7 @@ public class PlayerManager implements Listener {
 
         GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
 
-        if(gsonPlayer == null) {
+        if (gsonPlayer == null) {
 
             File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
 
@@ -221,7 +223,7 @@ public class PlayerManager implements Listener {
             }
         }
 
-        if(gsonPlayer != null) {
+        if (gsonPlayer != null) {
 
             gsonPlayer.accessed();
         }
@@ -234,13 +236,13 @@ public class PlayerManager implements Listener {
         UUID uuid = player.getUniqueId();
         GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
 
-        if(gsonPlayer == null) {
+        if (gsonPlayer == null) {
 
             File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + uuid.toString() + ".json");
 
             if (playerFile.exists()) {
 
-                if(playerFile.length() == 0) {
+                if (playerFile.length() == 0) {
 
                     playerFile.delete();
                     System.out.println("Had to delete a file as the player file was empty which is wrong.");
@@ -255,7 +257,7 @@ public class PlayerManager implements Listener {
             }
         }
 
-        if(gsonPlayer != null) {
+        if (gsonPlayer != null) {
 
             gsonPlayer.accessed();
         } else {
@@ -284,7 +286,7 @@ public class PlayerManager implements Listener {
         gsonPlayer.setUUID(player.getUniqueId());
         gsonPlayer.setLastKnownIP(player.getAddress().getAddress().getHostAddress());
 
-        if(!this.savePlayer(gsonPlayer, playerFile)) {
+        if (!this.savePlayer(gsonPlayer, playerFile)) {
 
             return null;
         }
@@ -327,7 +329,7 @@ public class PlayerManager implements Listener {
 
     private void cachePlayer(GSONPlayer gsonPlayer) {
 
-        if(gsonPlayer != null) {
+        if (gsonPlayer != null) {
 
             this.gsonPlayerCache.put(gsonPlayer.getUUID(), gsonPlayer);
         } else {
@@ -340,7 +342,7 @@ public class PlayerManager implements Listener {
 
         UUID uuid = this.playerNameCache.get(name.toLowerCase());
 
-        if(uuid != null) {
+        if (uuid != null) {
 
             return this.getPlayer(uuid);
         }
@@ -356,7 +358,7 @@ public class PlayerManager implements Listener {
 
         gsonPlayer = this.getPlayer(partName);
 
-        if(gsonPlayer == null) {
+        if (gsonPlayer == null) {
 
             for (GSONPlayer player : this.gsonPlayerCache.values()) {
 
@@ -368,11 +370,11 @@ public class PlayerManager implements Listener {
             }
         }
 
-        if(gsonPlayer == null) {
+        if (gsonPlayer == null) {
 
-            for(String playerName : this.playerNameCache.keySet()) {
+            for (String playerName : this.playerNameCache.keySet()) {
 
-                if(playerName.toLowerCase().startsWith(partName)) {
+                if (playerName.toLowerCase().startsWith(partName)) {
 
                     UUID uuid = this.playerNameCache.get(playerName);
                     gsonPlayer = this.getPlayer(uuid);
@@ -397,13 +399,13 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(GSONPlayer gsonPlayer) {
 
-        if(gsonPlayer.compareLastAccessedWithNow()) {
+        if (gsonPlayer.compareLastAccessedWithNow()) {
 
-            if(gsonPlayer.isFileChanged()) {
+            if (gsonPlayer.isFileChanged()) {
 
                 File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonPlayer.getUUID().toString() + ".json");
 
-                if(!this.savePlayer(gsonPlayer, playerFile)) {
+                if (!this.savePlayer(gsonPlayer, playerFile)) {
 
                     return false;
                 }
@@ -418,7 +420,7 @@ public class PlayerManager implements Listener {
 
     public Map<UUID, GSONPlayer> getGsonPlayerCache(boolean copy) {
 
-        if(copy) {
+        if (copy) {
 
             Map<UUID, GSONPlayer> mapCopy = new HashMap<>();
             mapCopy.putAll(this.gsonPlayerCache);

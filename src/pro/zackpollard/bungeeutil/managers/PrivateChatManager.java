@@ -34,7 +34,7 @@ public class PrivateChatManager implements Listener {
 
         replier.remove(uuid);
 
-        if(spies.containsKey(uuid)) {
+        if (spies.containsKey(uuid)) {
 
             spies.put(uuid, null);
         }
@@ -45,7 +45,7 @@ public class PrivateChatManager implements Listener {
 
         UUID uuid = event.getPlayer().getUniqueId();
 
-        if(spies.containsKey(uuid)) {
+        if (spies.containsKey(uuid)) {
 
             spies.put(uuid, event.getPlayer());
         }
@@ -56,7 +56,7 @@ public class PrivateChatManager implements Listener {
         replier.put(from.getUniqueId(), to.getUniqueId());
         replier.put(to.getUniqueId(), from.getUniqueId());
 
-        if(instance.getConfigs().getRoles().getRole(from.getUniqueId()) >=
+        if (instance.getConfigs().getRoles().getRole(from.getUniqueId()) >=
                 instance.getConfigs().getMainConfig().getPermissions().getOverridePermissions().getOverrideDisabledPrivateMessaging() ||
                 !disabledMessaging.contains(to.getUniqueId())) {
 
@@ -86,7 +86,7 @@ public class PrivateChatManager implements Listener {
 
     public boolean toggleSpying(ProxiedPlayer spy) {
 
-        if(spies.containsKey(spy.getUniqueId())) {
+        if (spies.containsKey(spy.getUniqueId())) {
 
             spies.remove(spy.getUniqueId());
             return false;
@@ -109,7 +109,7 @@ public class PrivateChatManager implements Listener {
 
     public boolean togglePrivateChat(ProxiedPlayer player) {
 
-        if(disabledMessaging.contains(player.getUniqueId())) {
+        if (disabledMessaging.contains(player.getUniqueId())) {
 
             disabledMessaging.remove(player.getUniqueId());
             return false;

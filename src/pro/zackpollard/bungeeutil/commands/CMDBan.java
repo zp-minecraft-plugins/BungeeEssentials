@@ -25,25 +25,23 @@ public class CMDBan extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /ban (player) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length != 0) {
+                if (args.length != 0) {
 
                     GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                    if(gsonPlayer != null) {
+                    if (gsonPlayer != null) {
 
                         GSONBan gsonBan = new GSONBan();
                         gsonBan.setTimestampNow();

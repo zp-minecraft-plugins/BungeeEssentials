@@ -27,14 +27,14 @@ public abstract class BungeeEssentialsCommand extends Command {
 
         boolean access = false;
 
-        if(sender instanceof ConsoleCommandSender) {
+        if (sender instanceof ConsoleCommandSender) {
 
             access = true;
-        } else if(sender instanceof ProxiedPlayer) {
+        } else if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 access = true;
             }

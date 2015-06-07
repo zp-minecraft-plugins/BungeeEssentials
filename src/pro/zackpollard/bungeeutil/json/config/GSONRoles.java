@@ -2,7 +2,9 @@ package pro.zackpollard.bungeeutil.json.config;
 
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author zack
@@ -31,9 +33,9 @@ public class GSONRoles {
 
     public boolean setRole(UUID player, String role) {
 
-        if(!convertedAliases) {
+        if (!convertedAliases) {
 
-            for(String string : new HashMap<>(roleAliases).keySet()) {
+            for (String string : new HashMap<>(roleAliases).keySet()) {
 
                 Role convertRole = roleAliases.get(string);
                 roleAliases.remove(string);
@@ -49,7 +51,7 @@ public class GSONRoles {
 
         int roleID;
 
-        if(roleAlias != null) {
+        if (roleAlias != null) {
 
             roleID = roleAlias.getRoleID();
         } else {
@@ -69,11 +71,11 @@ public class GSONRoles {
     private boolean setRole(UUID player, int role) {
 
         Integer oldRole = userRoles.get(player);
-        if(role == 0) {
+        if (role == 0) {
 
             userRoles.remove(player);
             return true;
-        } else if(oldRole != null && oldRole != role || oldRole == null) {
+        } else if (oldRole != null && oldRole != role || oldRole == null) {
 
             userRoles.put(player, role);
             return true;
@@ -92,7 +94,7 @@ public class GSONRoles {
 
         Integer role = userRoles.get(player);
 
-        if(role == null) {
+        if (role == null) {
 
             return 0;
         }
@@ -102,9 +104,9 @@ public class GSONRoles {
 
     public String getRoleColoredName(int roleID) {
 
-        for(Role role : roleAliases.values()) {
+        for (Role role : roleAliases.values()) {
 
-            if(role.getRoleID() == roleID) {
+            if (role.getRoleID() == roleID) {
 
                 return role.getRoleColoredName();
             }
@@ -117,9 +119,9 @@ public class GSONRoles {
 
         Map<UUID, Integer> onlineStaff = new HashMap<>();
         BungeeEssentials instance = BungeeEssentials.getInstance();
-        for(UUID uuid : userRoles.keySet()) {
+        for (UUID uuid : userRoles.keySet()) {
 
-            if(instance.getProxy().getPlayer(uuid) != null) {
+            if (instance.getProxy().getPlayer(uuid) != null) {
 
                 onlineStaff.put(uuid, userRoles.get(uuid));
             }

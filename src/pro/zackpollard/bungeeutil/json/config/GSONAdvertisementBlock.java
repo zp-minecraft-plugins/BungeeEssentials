@@ -35,7 +35,7 @@ public class GSONAdvertisementBlock {
 
     public Pattern getIPBlockRegex() {
 
-        if(ipBlockPattern == null) {
+        if (ipBlockPattern == null) {
 
             ipBlockPattern = Pattern.compile(ipBlockRegex);
         }
@@ -45,7 +45,7 @@ public class GSONAdvertisementBlock {
 
     public Pattern getDomainBlockRegex() {
 
-        if(domainBlockPattern == null) {
+        if (domainBlockPattern == null) {
 
             domainBlockPattern = Pattern.compile(domainBlockRegex);
         }
@@ -65,26 +65,26 @@ public class GSONAdvertisementBlock {
 
     public boolean matchesBlocks(String message) {
 
-        if(getDomainBlockRegex().matcher(message).matches() || getIPBlockRegex().matcher(message).matches()) {
+        if (getDomainBlockRegex().matcher(message).matches() || getIPBlockRegex().matcher(message).matches()) {
 
-            for(String string : new HashSet<>(domainBlockExceptions)) {
+            for (String string : new HashSet<>(domainBlockExceptions)) {
 
-                if(!domainConvertedToLower) {
+                if (!domainConvertedToLower) {
 
                     domainBlockExceptions.remove(string);
                     string = string.toLowerCase();
                     domainBlockExceptions.add(string);
                 }
 
-                if(message.toLowerCase().contains(string)) {
+                if (message.toLowerCase().contains(string)) {
 
                     return false;
                 }
             }
 
-            for(String string : ipBlockExceptions) {
+            for (String string : ipBlockExceptions) {
 
-                if(message.contains(string)) {
+                if (message.contains(string)) {
 
                     return false;
                 }

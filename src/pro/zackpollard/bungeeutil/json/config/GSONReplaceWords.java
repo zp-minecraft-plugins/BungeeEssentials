@@ -53,9 +53,9 @@ public class GSONReplaceWords {
 
         List<String> words = Arrays.asList(string.split(" "));
 
-        for(int i = 0; i < words.size(); i++) {
+        for (int i = 0; i < words.size(); i++) {
 
-            if(words.get(i).toLowerCase().equals(blocked)) {
+            if (words.get(i).toLowerCase().equals(blocked)) {
 
                 words.set(i, replacement);
             }
@@ -63,7 +63,7 @@ public class GSONReplaceWords {
 
         String replacementString = "";
 
-        for(String word : words) {
+        for (String word : words) {
 
             replacementString += word + " ";
         }

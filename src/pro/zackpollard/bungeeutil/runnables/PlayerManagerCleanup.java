@@ -23,14 +23,14 @@ public class PlayerManagerCleanup implements Runnable {
     public void run() {
         Set<UUID> onlinePlayers = new HashSet<>();
 
-        for(ProxiedPlayer player : instance.getProxy().getPlayers()) {
+        for (ProxiedPlayer player : instance.getProxy().getPlayers()) {
 
             onlinePlayers.add(player.getUniqueId());
         }
 
-        for(UUID uuid : playerManager.getGsonPlayerCache(true).keySet()) {
+        for (UUID uuid : playerManager.getGsonPlayerCache(true).keySet()) {
 
-            if(!onlinePlayers.contains(uuid)) {
+            if (!onlinePlayers.contains(uuid)) {
 
                 playerManager.unloadPlayer(uuid);
             }

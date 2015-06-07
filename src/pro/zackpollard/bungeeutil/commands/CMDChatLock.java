@@ -22,24 +22,22 @@ public class CMDChatLock extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /chatlock
      * /lockchat
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 String serverName = player.getServer().getInfo().getName();
 
-                if(instance.getServerChatManager().toggleChatLock(serverName)) {
+                if (instance.getServerChatManager().toggleChatLock(serverName)) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getCmdServerChatLocked(serverName));
                 } else {

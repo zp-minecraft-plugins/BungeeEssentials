@@ -68,7 +68,7 @@ public class GSONPlayer extends Lockable {
 
         this.currentBan = currentBan;
 
-        if(currentBan != null) {
+        if (currentBan != null) {
 
             this.bans.add(currentBan);
         }
@@ -84,12 +84,12 @@ public class GSONPlayer extends Lockable {
 
     public void setLastKnownIP(String lastKnownIP) {
 
-        if(Objects.equals(this.lastKnownIP, lastKnownIP)) {
+        if (Objects.equals(this.lastKnownIP, lastKnownIP)) {
 
             this.lastKnownIP = lastKnownIP;
         }
 
-        if(!this.knownIPs.contains(lastKnownIP)) {
+        if (!this.knownIPs.contains(lastKnownIP)) {
 
             this.knownIPs.add(lastKnownIP);
         }
@@ -126,7 +126,7 @@ public class GSONPlayer extends Lockable {
 
     public String getLastOnlineString() {
 
-        if(BungeeEssentials.getInstance().getProxy().getPlayer(this.uuid) != null) {
+        if (BungeeEssentials.getInstance().getProxy().getPlayer(this.uuid) != null) {
 
             return "Online now!";
         } else {
@@ -143,9 +143,9 @@ public class GSONPlayer extends Lockable {
 
         long playTime = 0;
 
-        if(playerJoinTime != 0) {
+        if (playerJoinTime != 0) {
 
-             playTime = System.currentTimeMillis() - playerJoinTime;
+            playTime = System.currentTimeMillis() - playerJoinTime;
         }
 
         String message = BungeeEssentials.getInstance().getConfigs().getMessages().getTotalOnlineTimeFormat();

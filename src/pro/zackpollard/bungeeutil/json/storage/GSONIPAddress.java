@@ -61,7 +61,7 @@ public class GSONIPAddress extends Lockable {
 
         this.currentBan = currentBan;
 
-        if(currentBan != null) {
+        if (currentBan != null) {
 
             this.bans.add(currentBan);
         }

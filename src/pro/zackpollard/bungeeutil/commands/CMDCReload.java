@@ -20,15 +20,13 @@ public class CMDCReload extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /creload
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
             sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.GREEN + "Reload complete!"));
             instance.reload();

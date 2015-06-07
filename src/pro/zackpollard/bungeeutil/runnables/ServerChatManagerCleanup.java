@@ -20,15 +20,15 @@ public class ServerChatManagerCleanup implements Runnable {
 
         Map<String, Map<String, Integer>> cooldowns = serverChatManager.getSlowChatCooldowns();
 
-        for(String server : cooldowns.keySet()) {
+        for (String server : cooldowns.keySet()) {
 
             Map<String, Integer> playerCooldowns = cooldowns.get(server);
 
-            for(String player : playerCooldowns.keySet()) {
+            for (String player : playerCooldowns.keySet()) {
 
                 int time = playerCooldowns.get(player) - 1;
 
-                if(time <= 0) {
+                if (time <= 0) {
 
                     playerCooldowns.remove(player);
                 } else {

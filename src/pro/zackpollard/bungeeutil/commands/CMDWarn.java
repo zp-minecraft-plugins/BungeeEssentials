@@ -23,21 +23,19 @@ public class CMDWarn extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /warn (player) (reason)
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
-            if(args.length != 0) {
+            if (args.length != 0) {
 
                 ProxiedPlayer proxiedPlayer = Utils.getOnlinePlayerByPartName(args[0]);
 
-                if(proxiedPlayer != null) {
+                if (proxiedPlayer != null) {
 
                     String reason = "";
 

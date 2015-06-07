@@ -24,37 +24,35 @@ public class CMDReply extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /reply
      * /r
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 1) {
+                if (args.length >= 1) {
 
                     ProxiedPlayer receiver = null;
                     UUID receiverUUID = instance.getPrivateChatManager().getLastRecipient(player.getUniqueId());
 
-                    if(receiverUUID == null) {
+                    if (receiverUUID == null) {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You have not messaged or been messaged by anyone on the server!"));
                         return;
                     }
 
-                    for(ProxiedPlayer playerCheck : instance.getProxy().getPlayers()) {
+                    for (ProxiedPlayer playerCheck : instance.getProxy().getPlayers()) {
 
-                        if(playerCheck.getUniqueId().equals(receiverUUID)) {
+                        if (playerCheck.getUniqueId().equals(receiverUUID)) {
 
-                            if(!instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
+                            if (!instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
 
                                 receiver = playerCheck;
                             }
@@ -63,7 +61,7 @@ public class CMDReply extends BungeeEssentialsCommand {
                         }
                     }
 
-                    if(receiver != null) {
+                    if (receiver != null) {
 
                         String message = "";
 

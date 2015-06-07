@@ -48,9 +48,9 @@ public class GSONConfig {
 
     public Map<String, Integer> getBlockedCommands() {
 
-        if(blockedCommandsConverted) {
+        if (blockedCommandsConverted) {
 
-            for(Map.Entry<String, Integer> entry : new HashMap<>(blockedCommands).entrySet()) {
+            for (Map.Entry<String, Integer> entry : new HashMap<>(blockedCommands).entrySet()) {
 
                 blockedCommands.remove(entry.getKey());
                 blockedCommands.put(entry.getKey().toLowerCase(), entry.getValue());
@@ -64,9 +64,9 @@ public class GSONConfig {
 
     public Set<String> getBlockedCommandsWhenMuted() {
 
-        if(blockedCommandsMutedConverted) {
+        if (blockedCommandsMutedConverted) {
 
-            for(String string : new HashSet<>(blockedCommandsWhenMuted)) {
+            for (String string : new HashSet<>(blockedCommandsWhenMuted)) {
 
                 blockedCommandsWhenMuted.remove(string);
                 blockedCommandsWhenMuted.add(string.toLowerCase());

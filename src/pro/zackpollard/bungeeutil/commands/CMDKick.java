@@ -24,25 +24,23 @@ public class CMDKick extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /kick (player) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length != 0) {
+                if (args.length != 0) {
 
                     ProxiedPlayer proxiedPlayer = Utils.getOnlinePlayerByPartName(args[0]);
 
-                    if(proxiedPlayer != null) {
+                    if (proxiedPlayer != null) {
 
                         String reason = "";
 

@@ -21,9 +21,7 @@ public class CMDRemoveRole extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /removerole (player)
-     *
      */
 
     @Override

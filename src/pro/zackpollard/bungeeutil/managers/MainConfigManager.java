@@ -28,7 +28,7 @@ public class MainConfigManager {
 
         configFile = new File(configFileFolder.getAbsolutePath() + File.separator + fileName);
 
-        if(configFile.exists()) {
+        if (configFile.exists()) {
 
             config = this.loadConfig();
         } else {
@@ -44,7 +44,7 @@ public class MainConfigManager {
             this.saveConfig();
         }
 
-        if(config == null) {
+        if (config == null) {
 
             instance.getLogger().severe("The config could not be loaded. This will cause many issues. Fix the config and restart bungee!");
         }
@@ -54,7 +54,7 @@ public class MainConfigManager {
 
         GSONConfig loadedConfig;
 
-        try(Reader reader = new InputStreamReader(new FileInputStream(configFile), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(configFile), "UTF-8")) {
 
             Gson gson = new GsonBuilder().create();
             loadedConfig = gson.fromJson(reader, GSONConfig.class);

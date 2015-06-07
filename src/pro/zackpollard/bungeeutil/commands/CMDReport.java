@@ -22,23 +22,21 @@ public class CMDReport extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /report (playername) (reason)
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 2) {
+                if (args.length >= 2) {
 
-                    if(instance.getConfigs().getRoles().getUsersOnlineWithRoles().size() != 0) {
+                    if (instance.getConfigs().getRoles().getUsersOnlineWithRoles().size() != 0) {
 
                         ProxiedPlayer receiver = null;
 
@@ -46,7 +44,7 @@ public class CMDReport extends BungeeEssentialsCommand {
 
                             if (playerCheck.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
 
-                                if (! instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
+                                if (!instance.getConfigs().getRoles().getVanishedUsers().contains(playerCheck.getUniqueId())) {
 
                                     receiver = playerCheck;
                                 }
@@ -59,7 +57,7 @@ public class CMDReport extends BungeeEssentialsCommand {
 
                             String message = "";
 
-                            for (int i = 1; i < args.length; ++ i) {
+                            for (int i = 1; i < args.length; ++i) {
 
                                 message += args[i] + " ";
                             }

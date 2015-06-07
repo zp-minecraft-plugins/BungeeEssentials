@@ -25,23 +25,21 @@ public class CMDOnlineStaff extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /onlinestaff
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 Map<UUID, Integer> roles = instance.getConfigs().getRoles().getUsersOnlineWithRoles();
 
-                if(!roles.isEmpty()) {
+                if (!roles.isEmpty()) {
 
                     player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "-----=====(" + ChatColor.AQUA + ChatColor.BOLD + "All Users With Roles Online!" + ChatColor.RESET + ChatColor.DARK_AQUA + ")=====-----"));
 

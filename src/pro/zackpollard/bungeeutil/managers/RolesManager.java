@@ -41,7 +41,7 @@ public class RolesManager {
 
         configFile = new File(configFileFolder.getAbsolutePath() + File.separator + fileName);
 
-        if(configFile.exists()) {
+        if (configFile.exists()) {
 
             config = this.loadConfig();
         } else {
@@ -57,7 +57,7 @@ public class RolesManager {
             this.saveConfig();
         }
 
-        if(config == null) {
+        if (config == null) {
 
             instance.getLogger().severe("The config could not be loaded. This will cause many issues. Fix the config and restart bungee!");
         }
@@ -67,7 +67,7 @@ public class RolesManager {
 
         GSONRoles loadedConfig;
 
-        try(Reader reader = new InputStreamReader(new FileInputStream(configFile), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(configFile), "UTF-8")) {
 
             Gson gson = new GsonBuilder().create();
             loadedConfig = gson.fromJson(reader, GSONRoles.class);
@@ -142,7 +142,7 @@ public class RolesManager {
 
         Map<UUID, Integer> map = new HashMap<>(this.config.getUsersOnlineWithRoles());
 
-        for(UUID uuid : vanishedUsers) {
+        for (UUID uuid : vanishedUsers) {
 
             map.remove(uuid);
         }
@@ -150,7 +150,7 @@ public class RolesManager {
         return map;
     }
 
-    public Map<UUID,Integer> getUsersWithRoles() {
+    public Map<UUID, Integer> getUsersWithRoles() {
 
         return this.config.getUsersWithRoles();
     }
@@ -162,7 +162,7 @@ public class RolesManager {
 
     public boolean toggleVanished(UUID uuid) {
 
-        if(vanishedUsers.contains(uuid)) {
+        if (vanishedUsers.contains(uuid)) {
 
             vanishedUsers.remove(uuid);
             return false;
@@ -176,9 +176,9 @@ public class RolesManager {
 
     public void sendMessageToRole(BaseComponent[] message, int role) {
 
-        for(ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
+        for (ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
 
-            if(getRole(proxiedPlayer.getUniqueId()) >= role) {
+            if (getRole(proxiedPlayer.getUniqueId()) >= role) {
 
                 proxiedPlayer.sendMessage(message);
             }

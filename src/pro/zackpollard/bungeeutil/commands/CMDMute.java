@@ -29,25 +29,23 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
     }
 
     /**
-     *
      * /mute (player) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length != 0) {
+                if (args.length != 0) {
 
                     GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                    if(gsonPlayer != null) {
+                    if (gsonPlayer != null) {
 
                         GSONMute gsonMute = new GSONMute();
                         gsonMute.setTimestampNow();
@@ -109,7 +107,7 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
             if (gsonMute != null) {
 
-                if(!event.isCommand()) {
+                if (!event.isCommand()) {
 
                     if (gsonMute.getDuration() == (long) 0) {
 
@@ -136,9 +134,9 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
                     String command = event.getMessage().substring(1);
 
-                    for(String string : instance.getConfigs().getMainConfig().getBlockedCommandsWhenMuted()) {
+                    for (String string : instance.getConfigs().getMainConfig().getBlockedCommandsWhenMuted()) {
 
-                        if(command.toLowerCase().startsWith(string)) {
+                        if (command.toLowerCase().startsWith(string)) {
 
                             if (gsonMute.getDuration() == (long) 0) {
 

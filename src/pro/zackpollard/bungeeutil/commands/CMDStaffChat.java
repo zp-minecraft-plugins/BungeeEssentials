@@ -21,22 +21,20 @@ public class CMDStaffChat extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /staffchat
      * /sc
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 1) {
+                if (args.length >= 1) {
 
                     String message = "";
 
@@ -50,7 +48,7 @@ public class CMDStaffChat extends BungeeEssentialsCommand {
 
                     boolean status = instance.getStaffChatManager().toggleChat(player.getUniqueId());
 
-                    if(status) {
+                    if (status) {
 
                         player.sendMessage(instance.getConfigs().getMessages().getCmdStaffChatEnabled());
                     } else {

@@ -25,14 +25,14 @@ public class IPManagerCleanup implements Runnable {
         Collection<ProxiedPlayer> onlinePlayers = instance.getProxy().getPlayers();
         List<String> ips = new ArrayList<>();
 
-        for(ProxiedPlayer player : onlinePlayers) {
+        for (ProxiedPlayer player : onlinePlayers) {
 
             ips.add(player.getAddress().getAddress().getHostAddress());
         }
 
-        for(String ipAddress : ipManager.getIPCache(true).keySet()) {
+        for (String ipAddress : ipManager.getIPCache(true).keySet()) {
 
-            if(!ips.contains(ipAddress)) {
+            if (!ips.contains(ipAddress)) {
 
                 ipManager.unloadIP(ipAddress);
             }

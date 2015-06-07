@@ -25,22 +25,20 @@ public class CMDStaff extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /clearchat
      * /chatclear
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
             Map<UUID, Integer> roles = instance.getConfigs().getRoles().getUsersWithRoles();
 
             sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "-----=====(" + ChatColor.AQUA + ChatColor.BOLD + "All Users With Roles" + ChatColor.RESET + ChatColor.DARK_AQUA + ")=====-----"));
 
-            for(UUID uuid : roles.keySet()) {
+            for (UUID uuid : roles.keySet()) {
 
                 GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayer(uuid);
 

@@ -22,21 +22,19 @@ public class CMDStaffVanish extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /staffvanish
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(instance.getConfigs().getRoles().toggleVanished(player.getUniqueId())) {
+                if (instance.getConfigs().getRoles().toggleVanished(player.getUniqueId())) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getCmdStaffVanishEnabled());
                 } else {

@@ -24,42 +24,45 @@ public class CMDSlowChat extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /slowchat [server]
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
             ServerInfo server;
 
-            switch(args.length) {
-                case 0: server = player.getServer().getInfo(); break;
-                case 1: server = instance.getProxy().getServerInfo(args[0]);
-                    if(server == null) {
+            switch (args.length) {
+                case 0:
+                    server = player.getServer().getInfo();
+                    break;
+                case 1:
+                    server = instance.getProxy().getServerInfo(args[0]);
+                    if (server == null) {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The server specified does not exist on this network!"));
                         return;
                     }
 
                     break;
-                default: player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The correct syntax for this command is /slowchat [servername]")); return;
+                default:
+                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The correct syntax for this command is /slowchat [servername]"));
+                    return;
             }
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(instance.getServerChatManager().toggleSlowChat(server.getName())) {
+                if (instance.getServerChatManager().toggleSlowChat(server.getName())) {
 
                     BaseComponent[] message = instance.getConfigs().getMessages().getCmdSlowChatEnabled(server.getName());
 
-                    for(ProxiedPlayer serverPlayer : server.getPlayers()) {
+                    for (ProxiedPlayer serverPlayer : server.getPlayers()) {
 
-                        if(!serverPlayer.equals(player)) {
+                        if (!serverPlayer.equals(player)) {
 
                             serverPlayer.sendMessage(message);
                         }
@@ -70,9 +73,9 @@ public class CMDSlowChat extends BungeeEssentialsCommand {
 
                     BaseComponent[] message = instance.getConfigs().getMessages().getCmdSlowChatDisabled(server.getName());
 
-                    for(ProxiedPlayer serverPlayer : server.getPlayers()) {
+                    for (ProxiedPlayer serverPlayer : server.getPlayers()) {
 
-                        if(!serverPlayer.equals(player)) {
+                        if (!serverPlayer.equals(player)) {
 
                             serverPlayer.sendMessage(message);
                         }

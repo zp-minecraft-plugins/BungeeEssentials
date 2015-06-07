@@ -26,30 +26,28 @@ public class CMDAccounts extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /accounts (ipaddress) [page number]
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
-            if(args.length == 1 || args.length == 2) {
+            if (args.length == 1 || args.length == 2) {
 
                 int page = 1;
 
-                if(args.length == 2) {
+                if (args.length == 2) {
                     try {
                         page = Integer.parseInt(args[1]);
-                    } catch(NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The page number (second argument) you entered was not an integer!"));
                         return;
                     }
                 }
 
-                if(page <= 0) {
+                if (page <= 0) {
 
                     sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The page number (second argument) you entered was less than or equal to zero!"));
                     return;
@@ -65,21 +63,20 @@ public class CMDAccounts extends BungeeEssentialsCommand {
                     int start = finish - 10;
 
 
-
-                    for(UUID uuid : gsonipAddress.getUUIDs()) {
+                    for (UUID uuid : gsonipAddress.getUUIDs()) {
 
                         alts.add(uuid);
                     }
 
                     int maxPage = (int) Math.ceil((double) alts.size() / 10);
 
-                    if(maxPage == 0) {
+                    if (maxPage == 0) {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "There were no accounts linked to this ip address!"));
                         return;
                     }
 
-                    if(page > maxPage) {
+                    if (page > maxPage) {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "The page number (second argument) you entered does not exist for this ip address!"));
                         return;
@@ -89,7 +86,7 @@ public class CMDAccounts extends BungeeEssentialsCommand {
 
                     int i = start;
 
-                    while(i < finish && i < alts.size()) {
+                    while (i < finish && i < alts.size()) {
 
                         GSONPlayer gsonAlt = instance.getPlayerManager().getPlayer(alts.get(i));
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - " + ChatColor.RESET + ChatColor.AQUA + gsonAlt.getLastKnownName()));
@@ -101,7 +98,7 @@ public class CMDAccounts extends BungeeEssentialsCommand {
                 }
             } else {
 
-                sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true,  ChatColor.RED + "Incorrect command syntax. Should be /accounts (ipaddress) [pagenumber]"));
+                sender.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect command syntax. Should be /accounts (ipaddress) [pagenumber]"));
             }
         } else {
 

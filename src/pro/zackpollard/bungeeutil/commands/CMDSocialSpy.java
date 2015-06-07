@@ -22,21 +22,19 @@ public class CMDSocialSpy extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /socialspy
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(instance.getPrivateChatManager().toggleSpying(player)) {
+                if (instance.getPrivateChatManager().toggleSpying(player)) {
 
                     player.sendMessage(instance.getConfigs().getMessages().getCmdSocialSpyEnabled());
                 } else {

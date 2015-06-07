@@ -27,25 +27,23 @@ public class CMDTempBanIP extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /tempbanip (ip) (time length) (time unit) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 3) {
+                if (args.length >= 3) {
 
                     GSONIPAddress gsonIP = instance.getIPManager().getIP(args[0]);
 
-                    if(gsonIP != null) {
+                    if (gsonIP != null) {
 
                         GSONBan oldBan = gsonIP.getCurrentBan();
 
@@ -107,7 +105,7 @@ public class CMDTempBanIP extends BungeeEssentialsCommand {
                         while (i < args.length) {
 
                             reason += args[i] + " ";
-                            ++ i;
+                            ++i;
                         }
 
                         if (Objects.equals(reason, "")) {
@@ -121,9 +119,9 @@ public class CMDTempBanIP extends BungeeEssentialsCommand {
 
                         List<UUID> uuids = gsonIP.getUUIDs();
 
-                        for(ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
+                        for (ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
 
-                            if(uuids.contains(proxiedPlayer.getUniqueId())) {
+                            if (uuids.contains(proxiedPlayer.getUniqueId())) {
 
                                 instance.getIPManager().checkIPBanned(proxiedPlayer, gsonIP);
                             }

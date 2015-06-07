@@ -24,26 +24,24 @@ public class CMDClearChat extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /clearchat
      * /chatclear
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 BaseComponent[] message = TextComponent.fromLegacyText("");
 
-                for(ProxiedPlayer allPlayers : instance.getProxy().getPlayers()) {
+                for (ProxiedPlayer allPlayers : instance.getProxy().getPlayers()) {
 
-                    for (int i = 0; i < 100; ++ i) {
+                    for (int i = 0; i < 100; ++i) {
 
                         allPlayers.sendMessage(message);
                     }

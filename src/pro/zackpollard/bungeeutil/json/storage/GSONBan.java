@@ -23,7 +23,7 @@ public class GSONBan {
 
     public String getTimestampFormatted() {
 
-        if(this.timestampFormatted == null) {
+        if (this.timestampFormatted == null) {
 
             SimpleDateFormat format = new SimpleDateFormat(BungeeEssentials.getInstance().getConfigs().getMessages().getTimeStampFormat());
             Date date = new Date(this.timestamp);

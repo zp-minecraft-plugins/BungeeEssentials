@@ -25,25 +25,23 @@ public class CMDTempMute extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /tempmute (player) (time length) (time unit) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
-                if(args.length >= 3) {
+                if (args.length >= 3) {
 
                     GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                    if(gsonPlayer != null) {
+                    if (gsonPlayer != null) {
 
                         GSONMute oldMute = gsonPlayer.getCurrentMute();
 

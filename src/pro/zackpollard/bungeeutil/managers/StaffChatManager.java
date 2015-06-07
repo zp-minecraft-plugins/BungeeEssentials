@@ -33,7 +33,7 @@ public class StaffChatManager implements Listener {
     @EventHandler
     public void onPlayerChat(ChatEvent event) {
 
-        if(!event.isCommand()) {
+        if (!event.isCommand()) {
 
             if (event.getSender() instanceof ProxiedPlayer) {
 
@@ -53,9 +53,9 @@ public class StaffChatManager implements Listener {
 
         message = ChatColor.translateAlternateColorCodes('&', message);
 
-        for(ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
+        for (ProxiedPlayer proxiedPlayer : instance.getProxy().getPlayers()) {
 
-            if(instance.getConfigs().getRoles().getRole(proxiedPlayer.getUniqueId()) >= instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getStaffChat()) {
+            if (instance.getConfigs().getRoles().getRole(proxiedPlayer.getUniqueId()) >= instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getStaffChat()) {
 
                 proxiedPlayer.sendMessage(instance.getConfigs().getMessages().getStaffChatFormat(from.getName(), message));
             }
@@ -74,7 +74,7 @@ public class StaffChatManager implements Listener {
 
     public boolean toggleChat(UUID uuid) {
 
-        if(chatEnabled.contains(uuid)) {
+        if (chatEnabled.contains(uuid)) {
 
             disableChat(uuid);
             return false;

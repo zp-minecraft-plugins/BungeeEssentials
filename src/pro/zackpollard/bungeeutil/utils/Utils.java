@@ -13,9 +13,9 @@ public class Utils {
 
         partName = partName.toLowerCase();
 
-        for(ProxiedPlayer player : BungeeEssentials.getInstance().getProxy().getPlayers()) {
+        for (ProxiedPlayer player : BungeeEssentials.getInstance().getProxy().getPlayers()) {
 
-            if(player.getName().toLowerCase().startsWith(partName)) {
+            if (player.getName().toLowerCase().startsWith(partName)) {
 
                 return player;
             }
@@ -74,7 +74,8 @@ public class Utils {
 
         if (s1.length() < s2.length()) { // longer should always have greater length
 
-            longer = s2; shorter = s1;
+            longer = s2;
+            shorter = s1;
         }
 
         int longerLength = longer.length();

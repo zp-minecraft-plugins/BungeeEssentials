@@ -26,19 +26,17 @@ public class CMDBans extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /bans (playername)
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(sender instanceof ProxiedPlayer) {
+        if (sender instanceof ProxiedPlayer) {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if(instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
 
                 if (args.length == 1 || args.length == 2) {
 
@@ -62,10 +60,10 @@ public class CMDBans extends BungeeEssentialsCommand {
                     String identityString = null;
                     List<GSONBan> bans = null;
 
-                    if(args[0].contains(".")) {
+                    if (args[0].contains(".")) {
 
                         GSONIPAddress gsonipAddress = instance.getIPManager().getIP(args[0]);
-                        if(gsonipAddress != null) {
+                        if (gsonipAddress != null) {
                             identityString = gsonipAddress.getIP();
                             bans = gsonipAddress.getBans();
                         } else {
@@ -76,7 +74,7 @@ public class CMDBans extends BungeeEssentialsCommand {
 
                         GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                        if(gsonPlayer != null) {
+                        if (gsonPlayer != null) {
                             identityString = gsonPlayer.getLastKnownName();
                             bans = gsonPlayer.getBans();
                         } else {

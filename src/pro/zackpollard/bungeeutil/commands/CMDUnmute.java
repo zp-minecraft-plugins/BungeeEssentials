@@ -22,26 +22,24 @@ public class CMDUnmute extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /unmute (player) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
-            if(args.length != 0) {
+            if (args.length != 0) {
 
                 GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayerBestGuess(args[0]);
 
-                if(gsonPlayer != null) {
+                if (gsonPlayer != null) {
 
-                    if(gsonPlayer.getCurrentMute() != null) {
+                    if (gsonPlayer.getCurrentMute() != null) {
 
                         ProxiedPlayer mutee = instance.getProxy().getPlayer(gsonPlayer.getUUID());
-                        if(mutee != null) {
+                        if (mutee != null) {
 
                             mutee.sendMessage(instance.getConfigs().getMessages().getCmdPlayerUnmuted());
                         }

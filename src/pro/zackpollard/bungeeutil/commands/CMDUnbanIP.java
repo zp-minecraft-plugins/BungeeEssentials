@@ -21,23 +21,21 @@ public class CMDUnbanIP extends BungeeEssentialsCommand {
     }
 
     /**
-     *
      * /unbanip (player) (reason (optional))
-     *
      */
 
     @Override
     public void execute(CommandSender sender, String[] args) {
 
-        if(hasAccess(sender)) {
+        if (hasAccess(sender)) {
 
-            if(args.length != 0) {
+            if (args.length != 0) {
 
                 GSONIPAddress gsonIP = instance.getIPManager().getIP(args[0]);
 
-                if(gsonIP != null) {
+                if (gsonIP != null) {
 
-                    if(gsonIP.getCurrentBan() != null) {
+                    if (gsonIP.getCurrentBan() != null) {
 
                         gsonIP.setCurrentBan(null);
 
