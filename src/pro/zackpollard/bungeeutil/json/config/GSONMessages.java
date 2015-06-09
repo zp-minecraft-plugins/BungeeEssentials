@@ -4,7 +4,28 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import java.util.regex.Pattern;
+
 public class GSONMessages {
+
+    private static final Pattern PATTERN_BANNER = Pattern.compile("%banner%", Pattern.LITERAL);
+    private static final Pattern PATTERN_TIMESTAMP = Pattern.compile("%timestamp%", Pattern.LITERAL);
+    private static final Pattern PATTERN_TIMEREMAINING = Pattern.compile("%timeremaining%", Pattern.LITERAL);
+    private static final Pattern PATTERN_KICKER = Pattern.compile("%kicker%", Pattern.LITERAL);
+    private static final Pattern PATTERN_MUTER = Pattern.compile("%muter%", Pattern.LITERAL);
+    private static final Pattern PATTERN_PLAYERNAME = Pattern.compile("%playername%", Pattern.LITERAL);
+    private static final Pattern PATTERN_ROLENAME = Pattern.compile("%rolename%", Pattern.LITERAL);
+    private static final Pattern PATTERN_REASON = Pattern.compile("%reason%", Pattern.LITERAL);
+    private static final Pattern PATTERN_DURATION = Pattern.compile("%duration%", Pattern.LITERAL);
+    private static final Pattern PATTERN_IPADDRESS = Pattern.compile("%ipaddress%", Pattern.LITERAL);
+    private static final Pattern PATTERN_SENDER = Pattern.compile("%sender%", Pattern.LITERAL);
+    private static final Pattern PATTERN_MESSAGE = Pattern.compile("%message%", Pattern.LITERAL);
+    private static final Pattern PATTERN_RECEIVER = Pattern.compile("%receiver%", Pattern.LITERAL);
+    private static final Pattern PATTERN_SERVERNAME = Pattern.compile("%servername%", Pattern.LITERAL);
+    private static final Pattern PATTERN_BLOCKEDWORD = Pattern.compile("%blockedword%", Pattern.LITERAL);
+    private static final Pattern PATTERN_SIMILARITY = Pattern.compile("%similarity%", Pattern.LITERAL);
+    private static final Pattern PATTERN_REPORTER = Pattern.compile("%reporter%", Pattern.LITERAL);
+    private static final Pattern PATTERN_REPORTEE = Pattern.compile("%reportee%", Pattern.LITERAL);
 
     private final String prefix;
     private final String timeStampFormat;
@@ -84,19 +105,19 @@ public class GSONMessages {
 
         defaultMuteReason = "%cReason not specified";
 
-        playerPermBanMessage = "%cYou have been permbanned by %banner%!\nDate of ban: %bantimestamp%\nBan reason: %banreason%";
+        playerPermBanMessage = "%cYou have been permbanned by %banner%!\nDate of ban: %timestamp%\nBan reason: %reason%";
 
-        playerTempBanMessage = "%cYou have been tempbanned by %banner%!\nDate of ban: %bantimestamp%\nBan time remaining: %bantimeremaining%\nBan reason: %banreason%";
+        playerTempBanMessage = "%cYou have been tempbanned by %banner%!\nDate of ban: %timestamp%\nBan time remaining: %timeremaining%\nBan reason: %reason%";
 
-        playerPermMuteMessage = "%cYou have been permmuted by %muter%!\n" + "Date of mute: %mutetimestamp%\n" + "Mute reason: %mutereason%";
+        playerPermMuteMessage = "%cYou have been permmuted by %muter%!\n" + "Date of mute: %timestamp%\n" + "Mute reason: %reason%";
 
-        playerTempMuteMessage = "%cYou have been tempmuted by %muter%\nDate of mute: %mutetimestamp%\nMute time remaining: %mutetimeremaining%\nMute reason: %mutereason%";
+        playerTempMuteMessage = "%cYou have been tempmuted by %muter%\nDate of mute: %timestamp%\nMute time remaining: %timeremaining%\nMute reason: %reason%";
 
-        playerKickMessage = "%cYou have been kicked by %kicker%!\nKick reason: %kickreason%";
+        playerKickMessage = "%cYou have been kicked by %kicker%!\nKick reason: %reason%";
 
-        IPPermBanMessage = "%cYour IP has been permbanned by %banner%!\nDate of ban: %bantimestamp%\nBan reason: %banreason%";
+        IPPermBanMessage = "%cYour IP has been permbanned by %banner%!\nDate of ban: %timestamp%\nBan reason: %reason%";
 
-        IPTempBanMessage = "%cYour IP has been tempbanned by %banner%!Date of ban: %bantimestamp%\nBan time remaining: %bantimeremaining%\nBan reason: %banreason%";
+        IPTempBanMessage = "%cYour IP has been tempbanned by %banner%!Date of ban: %timestamp%\nBan time remaining: %timeremaining%\nBan reason: %reason%";
 
         staffTempBanWhilePermBanned = "%cYou are not permitted to tempban this player as there is already a ban in place!";
 
@@ -225,33 +246,51 @@ public class GSONMessages {
     }
 
     public BaseComponent[] getPlayerPermBanMessage(String bannerName, String timestamp, String reason) {
-        return generateMessage(false, playerPermBanMessage
-                .replace("%banner%", bannerName)
-                .replace("%bantimestamp%", timestamp)
-                .replace("%banreason%", reason));
+
+        return generateMessage(false,
+                PATTERN_BANNER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(playerPermBanMessage).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(bannerName)
+        );
     }
 
     public BaseComponent[] getPlayerTempBanMessage(String bannerName, String timestamp, String reason, String timeRemaining) {
-        return generateMessage(false, playerTempBanMessage
-                .replace("%banner%", bannerName)
-                .replace("%bantimestamp%", timestamp)
-                .replace("%banreason%", reason)
-                .replace("%bantimeremaining%", timeRemaining));
+
+        return generateMessage(false,
+                PATTERN_BANNER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(
+                                        PATTERN_TIMEREMAINING.matcher(playerTempBanMessage).replaceAll(timeRemaining)
+                                ).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(bannerName)
+        );
     }
 
-    public BaseComponent[] getIPPermBanMessage(String ipAddress, String timestamp, String reason) {
-        return generateMessage(false, IPPermBanMessage
-                .replace("%banner%", ipAddress)
-                .replace("%bantimestamp%", timestamp)
-                .replace("%banreason%", reason));
+    public BaseComponent[] getIPPermBanMessage(String bannerName, String timestamp, String reason) {
+
+        return generateMessage(false,
+                PATTERN_BANNER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(IPPermBanMessage).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(bannerName)
+        );
     }
 
-    public BaseComponent[] getIPTempBanMessage(String ipAddress, String timestamp, String reason, String timeRemaining) {
-        return generateMessage(false, IPTempBanMessage
-                .replace("%banner%", ipAddress)
-                .replace("%bantimestamp%", timestamp)
-                .replace("%banreason%", reason)
-                .replace("%bantimeremaining%", timeRemaining));
+    public BaseComponent[] getIPTempBanMessage(String bannerName, String timestamp, String reason, String timeRemaining) {
+
+        return generateMessage(false,
+                PATTERN_BANNER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(
+                                        PATTERN_TIMEREMAINING.matcher(IPTempBanMessage).replaceAll(timeRemaining)
+                                ).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(bannerName)
+        );
     }
 
     public BaseComponent[] getStaffTempBanWhilePermBanned() {
@@ -269,11 +308,13 @@ public class GSONMessages {
         return generateMessage(true, commandPermissionDenied);
     }
 
-    public BaseComponent[] getPlayerKickMessage(String kicker, String reason) {
+    public BaseComponent[] getPlayerKickMessage(String kickerName, String reason) {
 
-        return generateMessage(false, playerKickMessage
-                .replace("%kicker%", kicker)
-                .replace("%kickreason%", reason));
+        return generateMessage(false,
+                PATTERN_KICKER.matcher(
+                        PATTERN_REASON.matcher(playerKickMessage).replaceAll(reason)
+                ).replaceAll(kickerName)
+        );
     }
 
     public BaseComponent[] getStaffTempMuteWhilePermMuted() {
@@ -286,103 +327,136 @@ public class GSONMessages {
         return generateMessage(true, staffTempMuteWhileLongerTempMuteExists);
     }
 
-    public BaseComponent[] getPlayerTempMuteMessage(String muter, String timestamp, String reason, String timeRemaining) {
+    public BaseComponent[] getPlayerTempMuteMessage(String muterName, String timestamp, String reason, String timeRemaining) {
 
-        return generateMessage(false, playerTempMuteMessage
-                .replace("%muter%", muter)
-                .replace("%mutetimestamp%", timestamp)
-                .replace("%mutereason%", reason)
-                .replace("%mutetimeremaining%", timeRemaining));
+        return generateMessage(false,
+                PATTERN_MUTER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(
+                                        PATTERN_TIMEREMAINING.matcher(playerTempMuteMessage).replaceAll(timeRemaining)
+                                ).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(muterName)
+        );
     }
 
-    public BaseComponent[] getPlayerPermMuteMessage(String muter, String timestamp, String reason) {
-        return generateMessage(false, playerPermMuteMessage
-                .replace("%muter%", muter)
-                .replace("%mutetimestamp%", timestamp)
-                .replace("%mutereason%", reason));
+    public BaseComponent[] getPlayerPermMuteMessage(String muterName, String timestamp, String reason) {
+
+        return generateMessage(false,
+                PATTERN_MUTER.matcher(
+                        PATTERN_TIMESTAMP.matcher(
+                                PATTERN_REASON.matcher(playerPermMuteMessage).replaceAll(reason)
+                        ).replaceAll(timestamp)
+                ).replaceAll(muterName)
+        );
     }
 
     public BaseComponent[] getCmdSetRoleSuccess(String playerName, String roleName) {
 
-        return generateMessage(true, cmdSetRoleSuccess
-                .replace("%playername%", playerName)
-                .replace("%rolename%", roleName));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_ROLENAME.matcher(cmdSetRoleSuccess).replaceAll(roleName)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdRemoveRoleSuccess(String playerName) {
 
-        return generateMessage(true, cmdRemoveRoleSuccess
-                .replace("%playername%", playerName));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(cmdRemoveRoleSuccess).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdBanPlayerSuccess(String playerName, String reason) {
 
-        return generateMessage(true, cmdBanPlayerSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(cmdBanPlayerSuccess).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdBanIPSuccess(String ipAddress, String reason) {
 
-        return generateMessage(true, cmdBanIPSuccess
-                .replace("%ipaddress%", ipAddress)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_IPADDRESS.matcher(
+                        PATTERN_REASON.matcher(cmdBanIPSuccess).replaceAll(reason)
+                ).replaceAll(ipAddress)
+        );
     }
 
     public BaseComponent[] getCmdKickSuccess(String playerName, String reason) {
 
-        return generateMessage(true, cmdKickSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(cmdKickSuccess).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdMuteSuccess(String playerName, String reason) {
 
-        return generateMessage(true, cmdMuteSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(cmdMuteSuccess).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdTempBanPlayerSuccess(String playerName, String reason, String duration) {
 
-        return generateMessage(true, cmdTempBanPlayerSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason)
-                .replace("%duration%", duration));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(
+                                PATTERN_DURATION.matcher(cmdTempBanPlayerSuccess).replaceAll(duration)
+                        ).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdTempBanIPSuccess(String ipAddress, String reason, String duration) {
 
-        return generateMessage(true, cmdTempBanIPSuccess
-                .replace("%ipaddress%", ipAddress)
-                .replace("%reason%", reason)
-                .replace("%duration%", duration));
+        return generateMessage(true,
+                PATTERN_IPADDRESS.matcher(
+                        PATTERN_REASON.matcher(
+                                PATTERN_DURATION.matcher(cmdTempBanIPSuccess)
+                                        .replaceAll(duration)
+                        ).replaceAll(reason)
+                ).replaceAll(ipAddress)
+        );
     }
 
     public BaseComponent[] getCmdTempMuteSuccess(String playerName, String reason, String duration) {
 
-        return generateMessage(true, cmdTempMuteSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason)
-                .replace("%duration%", duration));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(
+                                PATTERN_DURATION.matcher(cmdTempMuteSuccess).replaceAll(duration)
+                        ).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdUnbanPlayerSuccess(String playerName) {
 
-        return generateMessage(true, cmdUnbanPlayerSuccess
-                .replace("%playername%", playerName));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(cmdUnbanPlayerSuccess).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdUnbanIPSuccess(String ipAddress) {
 
-        return generateMessage(true, cmdUnbanIPSuccess
-                .replace("%ipaddress%", ipAddress));
+        return generateMessage(true,
+                PATTERN_IPADDRESS.matcher(cmdUnbanIPSuccess).replaceAll(ipAddress)
+        );
+
     }
 
     public BaseComponent[] getCmdUnmuteSuccess(String playerName) {
 
-        return generateMessage(true, cmdUnmuteSuccess
-                .replace("%playername%", playerName));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(cmdUnmuteSuccess).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdPlayerUnmuted() {
@@ -392,9 +466,11 @@ public class GSONMessages {
 
     public BaseComponent[] getStaffChatFormat(String sender, String message) {
 
-        return generateMessage(false, staffChatFormat
-                .replace("%sender%", sender)
-                .replace("%message%", message));
+        return generateMessage(false,
+                PATTERN_SENDER.matcher(
+                        PATTERN_MESSAGE.matcher(staffChatFormat).replaceAll(message)
+                ).replaceAll(sender)
+        );
     }
 
     public BaseComponent[] getCmdStaffChatEnabled() {
@@ -409,24 +485,31 @@ public class GSONMessages {
 
     public BaseComponent[] getPrivateChatMessageReceivedFormat(String sender, String message) {
 
-        return generateMessage(false, privateChatMessageReceivedFormat
-                .replace("%sender%", sender)
-                .replace("%message%", message));
+        return generateMessage(false,
+                PATTERN_SENDER.matcher(
+                        PATTERN_MESSAGE.matcher(privateChatMessageReceivedFormat).replaceAll(message)
+                ).replaceAll(sender)
+        );
     }
 
     public BaseComponent[] getPrivateChatMessageSentFormat(String receiver, String message) {
 
-        return generateMessage(false, privateChatMessageSentFormat
-                .replace("%receiver%", receiver)
-                .replace("%message%", message));
+        return generateMessage(false,
+                PATTERN_RECEIVER.matcher(
+                        PATTERN_MESSAGE.matcher(privateChatMessageSentFormat).replaceAll(message)
+                ).replaceAll(receiver)
+        );
     }
 
     public BaseComponent[] getSocialSpyMessageFormat(String sender, String receiver, String message) {
 
-        return generateMessage(false, socialSpyMessageFormat
-                .replace("%sender%", sender)
-                .replace("%receiver%", receiver)
-                .replace("%message%", message));
+        return generateMessage(false,
+                PATTERN_SENDER.matcher(
+                        PATTERN_RECEIVER.matcher(
+                                PATTERN_MESSAGE.matcher(socialSpyMessageFormat).replaceAll(message)
+                        ).replaceAll(receiver)
+                ).replaceAll(sender)
+        );
     }
 
     public BaseComponent[] getCmdSocialSpyEnabled() {
@@ -441,20 +524,23 @@ public class GSONMessages {
 
     public BaseComponent[] getChatLockedMessage(String serverName) {
 
-        return generateMessage(true, chatLockedMessage
-                .replace("%servername%", serverName));
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(chatLockedMessage).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getCmdServerChatLocked(String serverName) {
 
-        return generateMessage(true, cmdServerChatLocked
-                .replace("%servername%", serverName));
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(cmdServerChatLocked).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getCmdServerChatUnlocked(String serverName) {
 
-        return generateMessage(true, cmdServerChatUnlocked
-                .replace("%servername%", serverName));
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(cmdServerChatUnlocked).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getCmdStaffVanishEnabled() {
@@ -469,55 +555,57 @@ public class GSONMessages {
 
     public BaseComponent[] getWarningMessage(String sender, String reason) {
 
-        return generateMessage(true, warningMessageFormat
-                .replace("%sender%", sender)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_SENDER.matcher(
+                        PATTERN_REASON.matcher(warningMessageFormat).replaceAll(reason)
+                ).replaceAll(sender)
+        );
     }
 
     public BaseComponent[] getCmdWarnSuccess(String playerName, String reason) {
 
-        return generateMessage(true, cmdWarnSuccess
-                .replace("%playername%", playerName)
-                .replace("%reason%", reason));
+        return generateMessage(true,
+                PATTERN_PLAYERNAME.matcher(
+                        PATTERN_REASON.matcher(cmdWarnSuccess).replaceAll(reason)
+                ).replaceAll(playerName)
+        );
     }
 
     public BaseComponent[] getCmdSlowChatEnabled(String serverName) {
-        return generateMessage(true, cmdSlowChatEnabled
-                .replace("%servername%", serverName));
+
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(cmdSlowChatEnabled).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getCmdSlowChatDisabled(String serverName) {
-        return generateMessage(true, cmdSlowChatDisabled
-                .replace("%servername%", serverName));
+
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(cmdSlowChatDisabled).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getMessageBlockedFromBannedWord(String blockedWord) {
 
-        return generateMessage(true, messageBlockedFromBannedWord
-                .replace("%blockedword%", blockedWord));
+        return generateMessage(true,
+                PATTERN_BLOCKEDWORD.matcher(messageBlockedFromBannedWord).replaceAll(blockedWord)
+        );
     }
 
     public BaseComponent[] getSlowChatMessage(String serverName, String timeRemaining) {
-        return generateMessage(true, slowChatMessage
-                .replace("%servername%", serverName)
-                .replace("%timeremaining%", timeRemaining));
-    }
 
-    public BaseComponent[] generateMessage(boolean prefix, String message) {
-
-        if (prefix) {
-
-            return TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('%', this.getPrefix() + message));
-        } else {
-
-            return TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('%', message));
-        }
+        return generateMessage(true,
+                PATTERN_SERVERNAME.matcher(
+                        PATTERN_TIMEREMAINING.matcher(slowChatMessage).replaceAll(timeRemaining)
+                ).replaceAll(serverName)
+        );
     }
 
     public BaseComponent[] getChatSimilarityBlocked(int maxMessageSimilarity) {
 
-        return generateMessage(true, chatSimilarityBlocked
-                .replace("%similarity%", String.valueOf(maxMessageSimilarity)));
+        return generateMessage(true,
+                PATTERN_SIMILARITY.matcher(chatSimilarityBlocked).replaceAll(String.valueOf(maxMessageSimilarity))
+        );
     }
 
     public BaseComponent[] getAdvertisingBlocked() {
@@ -532,10 +620,13 @@ public class GSONMessages {
 
     public BaseComponent[] getReportMessage(String reporter, String reportee, String message) {
 
-        return generateMessage(false, reportMessage
-                .replace("%reporter%", reporter)
-                .replace("%reportee%", reportee)
-                .replace("%message%", message));
+        return generateMessage(false,
+                PATTERN_REPORTER.matcher(
+                        PATTERN_REPORTEE.matcher(
+                                PATTERN_MESSAGE.matcher(reportMessage).replaceAll(message)
+                        ).replaceAll(reportee)
+                ).replaceAll(reporter)
+        );
     }
 
     public BaseComponent[] getCmdMessageToggleDisabled() {
@@ -550,7 +641,19 @@ public class GSONMessages {
 
     public BaseComponent[] getPrivateChatMessagingDisabled(String receiver) {
 
-        return generateMessage(true, privateChatMessagingDisabled
-                .replace("%receiver%", receiver));
+        return generateMessage(true,
+                PATTERN_RECEIVER.matcher(privateChatMessagingDisabled).replaceAll(receiver)
+        );
+    }
+
+    public BaseComponent[] generateMessage(boolean prefix, String message) {
+
+        if (prefix) {
+
+            return TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('%', this.getPrefix() + message));
+        } else {
+
+            return TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('%', message));
+        }
     }
 }
