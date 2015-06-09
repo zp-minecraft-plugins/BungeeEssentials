@@ -17,9 +17,11 @@ public class GSONConfig {
     private final Map<String, Integer> blockedCommands;
     private final Set<String> blockedCommandsWhenMuted;
 
+    private final int configVersionDoNotChange;
+    private final transient int currentConfigVersion = 1;
+
     private transient boolean blockedCommandsConverted;
     private transient boolean blockedCommandsMutedConverted;
-
 
     public GSONConfig() {
 
@@ -39,6 +41,8 @@ public class GSONConfig {
         blockedCommandsWhenMuted = new HashSet<>();
         blockedCommandsWhenMuted.add("me");
         blockedCommandsWhenMuted.add("you can block subcommands here too");
+
+        configVersionDoNotChange = 1;
     }
 
     public GSONPermissions getPermissions() {
@@ -86,5 +90,13 @@ public class GSONConfig {
     public GSONChat getChat() {
 
         return chat;
+    }
+
+    public int getConfigVersionDoNotChange() {
+        return configVersionDoNotChange;
+    }
+
+    public int getCurrentConfigVersion() {
+        return currentConfigVersion;
     }
 }
