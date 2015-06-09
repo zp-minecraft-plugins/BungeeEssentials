@@ -3,11 +3,19 @@ package pro.zackpollard.bungeeutil.utils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 
+import java.util.regex.Pattern;
+
 /**
  * @Author zack
  * @Date 06/02/15.
  */
 public class Utils {
+
+    private static final Pattern PATTERN_WEEK = Pattern.compile("%ww%", Pattern.LITERAL);
+    private static final Pattern PATTERN_DAY = Pattern.compile("%dd%", Pattern.LITERAL);
+    private static final Pattern PATTERN_HOUR = Pattern.compile("%hh%", Pattern.LITERAL);
+    private static final Pattern PATTERN_MIN = Pattern.compile("%mm%", Pattern.LITERAL);
+    private static final Pattern PATTERN_SEC = Pattern.compile("%ss%", Pattern.LITERAL);
 
     public static ProxiedPlayer getOnlinePlayerByPartName(String partName) {
 
@@ -58,12 +66,12 @@ public class Utils {
 
             seconds = amountTimeSeconds;
         }
-        message = message.replace("%ww%", String.valueOf(weeks))
-                .replace("%dd%", String.valueOf(days))
-                .replace("%hh%", String.valueOf(hours))
-                .replace("%mm%", String.valueOf(minutes))
-                .replace("%ss%", String.valueOf(seconds));
-
+        message = PATTERN_WEEK.matcher(PATTERN_DAY.matcher(PATTERN_HOUR.matcher(PATTERN_MIN.matcher(PATTERN_SEC.matcher(message)
+                        .replaceAll(String.valueOf(seconds)))
+                        .replaceAll(String.valueOf(minutes)))
+                        .replaceAll(String.valueOf(hours)))
+                        .replaceAll(String.valueOf(days)))
+                        .replaceAll(String.valueOf(weeks));
         return message;
     }
 
