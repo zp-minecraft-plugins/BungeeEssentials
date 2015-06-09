@@ -85,9 +85,6 @@ public class Utils {
             return 1.0;
         }
 
-        System.out.println((((longerLength - editDistance(longer, shorter)) / (double) longerLength)) * 100);
-        System.out.println(((longerLength - editDistance(longer, shorter)) / (double) longerLength) * 100);
-
         return (((longerLength - editDistance(longer, shorter)) / (double) longerLength)) * 100;
     }
 
