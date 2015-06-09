@@ -50,6 +50,8 @@ public class ServerChatManager implements Listener {
                 ProxiedPlayer player = (ProxiedPlayer) event.getSender();
                 ServerInfo server = player.getServer().getInfo();
 
+                String lastMessage = lastMessages.get(player.getName());
+
                 if (chatLockedServers.contains(player.getServer().getInfo().getName())) {
 
                     event.setCancelled(true);
@@ -81,8 +83,6 @@ public class ServerChatManager implements Listener {
 
                 if (slowChatServers.contains(server.getName())) {
 
-                    String lastMessage = lastMessages.get(player.getName());
-
                     if (lastMessage != null) {
 
                         int maxMessageSimilarity = instance.getConfigs().getMainConfig().getChat().getSlowChat().getMaxMessageSimilarity();
@@ -105,6 +105,18 @@ public class ServerChatManager implements Listener {
                     } else {
 
                         slowChatCooldowns.get(server.getName()).put(player.getName(), instance.getConfigs().getMainConfig().getChat().getSlowChat().getSecondsBetweenMessage());
+                    }
+                } else {
+
+                    if (lastMessage != null) {
+
+                        int maxMessageSimilarity = instance.getConfigs().getMainConfig().getChat().getMaxMessageSimilarity();
+
+                        if (Utils.getStringSimilarity(event.getMessage(), lastMessage) > maxMessageSimilarity) {
+
+                            event.setCancelled(true);
+                            player.sendMessage(instance.getConfigs().getMessages().getChatSimilarityBlocked(maxMessageSimilarity));
+                        }
                     }
                 }
 

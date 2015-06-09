@@ -9,10 +9,12 @@ import java.util.List;
  */
 public class GSONReplaceWords {
 
-    private final String blocked;
+    private String blocked;
     private final String replacement;
     private final int bypassRole;
     private boolean blockMessage;
+
+    private transient boolean converted;
 
     public GSONReplaceWords() {
 
@@ -27,11 +29,19 @@ public class GSONReplaceWords {
         this.blocked = original;
         this.replacement = replacement;
         this.bypassRole = bypassRole;
+        this.blockMessage = false;
+        this.converted = false;
     }
 
     public String getBlocked() {
 
-        return blocked.toLowerCase();
+        if(!converted) {
+
+            blocked = blocked.toLowerCase();
+            converted = true;
+        }
+
+        return blocked;
     }
 
     public String getReplacement() {
@@ -55,9 +65,9 @@ public class GSONReplaceWords {
 
         for (int i = 0; i < words.size(); i++) {
 
-            if (words.get(i).toLowerCase().equals(blocked)) {
+            if (words.get(i).toLowerCase().equals(this.getBlocked())) {
 
-                words.set(i, replacement);
+                words.set(i, this.getReplacement());
             }
         }
 

@@ -8,13 +8,13 @@ public class GSONChat {
     private final GSONSlowChat slowChat;
     private final Set<GSONReplaceWords> replaceWords;
     private final GSONAdvertisementBlock advertisingBlocking;
+    private final int maxMessageSimilarity;
 
     private transient boolean replaceWordsConverted;
 
     public GSONChat() {
 
         slowChat = new GSONSlowChat();
-
         advertisingBlocking = new GSONAdvertisementBlock();
 
         replaceWords = new HashSet<>();
@@ -25,6 +25,7 @@ public class GSONChat {
         replaceWords.add(new GSONReplaceWords("asshole", "*******", 4));
 
         replaceWordsConverted = false;
+        maxMessageSimilarity = 80;
     }
 
     public Set<GSONReplaceWords> getReplaceWords() {
@@ -40,5 +41,10 @@ public class GSONChat {
     public GSONAdvertisementBlock getAdvertisingBlocking() {
 
         return advertisingBlocking;
+    }
+
+    public int getMaxMessageSimilarity() {
+
+        return maxMessageSimilarity;
     }
 }
