@@ -84,7 +84,7 @@ public class GSONPlayer extends Lockable {
 
     public void setLastKnownIP(String lastKnownIP) {
 
-        if (Objects.equals(this.lastKnownIP, lastKnownIP)) {
+        if (!Objects.equals(this.lastKnownIP, lastKnownIP)) {
 
             this.lastKnownIP = lastKnownIP;
         }
