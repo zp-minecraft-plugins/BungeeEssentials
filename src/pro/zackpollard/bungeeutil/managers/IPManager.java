@@ -267,9 +267,9 @@ public class IPManager implements Listener {
 
             if (gsonIP.isFileChanged()) {
 
-                File playerFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
+                File ipFile = new File(dataFolder.getAbsolutePath() + File.separator + gsonIP.getIP() + ".json");
 
-                if (!this.saveIP(gsonIP, playerFile)) {
+                if (!this.saveIP(gsonIP, ipFile)) {
 
                     return false;
                 }
