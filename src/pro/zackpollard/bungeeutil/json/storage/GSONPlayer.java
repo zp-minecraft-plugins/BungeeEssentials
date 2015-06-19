@@ -41,6 +41,12 @@ public class GSONPlayer extends Lockable {
     private long lastOnlineTime;
     private String lastKnownName;
     private String lastConnectedServer;
+    private long firstSeenTime;
+
+    public GSONPlayer() {
+
+        firstSeenTime = System.currentTimeMillis();
+    }
 
     public UUID getUUID() {
 
@@ -187,5 +193,9 @@ public class GSONPlayer extends Lockable {
 
     public GSONMute getCurrentMute() {
         return currentMute;
+    }
+
+    public long getFirstSeenTime() {
+        return firstSeenTime;
     }
 }
