@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GSONMessages {
@@ -250,9 +251,9 @@ public class GSONMessages {
         return generateMessage(false,
                 PATTERN_BANNER.matcher(
                         PATTERN_TIMESTAMP.matcher(
-                                PATTERN_REASON.matcher(playerPermBanMessage).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(bannerName)
+                                PATTERN_REASON.matcher(playerPermBanMessage).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(bannerName))
         );
     }
 
@@ -262,10 +263,10 @@ public class GSONMessages {
                 PATTERN_BANNER.matcher(
                         PATTERN_TIMESTAMP.matcher(
                                 PATTERN_REASON.matcher(
-                                        PATTERN_TIMEREMAINING.matcher(playerTempBanMessage).replaceAll(timeRemaining)
-                                ).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(bannerName)
+                                        PATTERN_TIMEREMAINING.matcher(playerTempBanMessage).replaceAll(Matcher.quoteReplacement(timeRemaining))
+                                ).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(bannerName))
         );
     }
 
@@ -274,9 +275,9 @@ public class GSONMessages {
         return generateMessage(false,
                 PATTERN_BANNER.matcher(
                         PATTERN_TIMESTAMP.matcher(
-                                PATTERN_REASON.matcher(IPPermBanMessage).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(bannerName)
+                                PATTERN_REASON.matcher(IPPermBanMessage).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(bannerName))
         );
     }
 
@@ -286,10 +287,10 @@ public class GSONMessages {
                 PATTERN_BANNER.matcher(
                         PATTERN_TIMESTAMP.matcher(
                                 PATTERN_REASON.matcher(
-                                        PATTERN_TIMEREMAINING.matcher(IPTempBanMessage).replaceAll(timeRemaining)
-                                ).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(bannerName)
+                                        PATTERN_TIMEREMAINING.matcher(IPTempBanMessage).replaceAll(Matcher.quoteReplacement(timeRemaining))
+                                ).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(bannerName))
         );
     }
 
@@ -312,8 +313,8 @@ public class GSONMessages {
 
         return generateMessage(false,
                 PATTERN_KICKER.matcher(
-                        PATTERN_REASON.matcher(playerKickMessage).replaceAll(reason)
-                ).replaceAll(kickerName)
+                        PATTERN_REASON.matcher(playerKickMessage).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(kickerName))
         );
     }
 
@@ -333,10 +334,10 @@ public class GSONMessages {
                 PATTERN_MUTER.matcher(
                         PATTERN_TIMESTAMP.matcher(
                                 PATTERN_REASON.matcher(
-                                        PATTERN_TIMEREMAINING.matcher(playerTempMuteMessage).replaceAll(timeRemaining)
-                                ).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(muterName)
+                                        PATTERN_TIMEREMAINING.matcher(playerTempMuteMessage).replaceAll(Matcher.quoteReplacement(timeRemaining))
+                                ).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(muterName))
         );
     }
 
@@ -345,9 +346,9 @@ public class GSONMessages {
         return generateMessage(false,
                 PATTERN_MUTER.matcher(
                         PATTERN_TIMESTAMP.matcher(
-                                PATTERN_REASON.matcher(playerPermMuteMessage).replaceAll(reason)
-                        ).replaceAll(timestamp)
-                ).replaceAll(muterName)
+                                PATTERN_REASON.matcher(playerPermMuteMessage).replaceAll(Matcher.quoteReplacement(reason))
+                        ).replaceAll(Matcher.quoteReplacement(timestamp))
+                ).replaceAll(Matcher.quoteReplacement(muterName))
         );
     }
 
@@ -355,15 +356,15 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
-                        PATTERN_ROLENAME.matcher(cmdSetRoleSuccess).replaceAll(roleName)
-                ).replaceAll(playerName)
+                        PATTERN_ROLENAME.matcher(cmdSetRoleSuccess).replaceAll(Matcher.quoteReplacement(roleName))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
     public BaseComponent[] getCmdRemoveRoleSuccess(String playerName) {
 
         return generateMessage(true,
-                PATTERN_PLAYERNAME.matcher(cmdRemoveRoleSuccess).replaceAll(playerName)
+                PATTERN_PLAYERNAME.matcher(cmdRemoveRoleSuccess).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -371,8 +372,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
-                        PATTERN_REASON.matcher(cmdBanPlayerSuccess).replaceAll(reason)
-                ).replaceAll(playerName)
+                        PATTERN_REASON.matcher(cmdBanPlayerSuccess).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -380,8 +381,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_IPADDRESS.matcher(
-                        PATTERN_REASON.matcher(cmdBanIPSuccess).replaceAll(reason)
-                ).replaceAll(ipAddress)
+                        PATTERN_REASON.matcher(cmdBanIPSuccess).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(ipAddress))
         );
     }
 
@@ -389,8 +390,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
-                        PATTERN_REASON.matcher(cmdKickSuccess).replaceAll(reason)
-                ).replaceAll(playerName)
+                        PATTERN_REASON.matcher(cmdKickSuccess).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -398,8 +399,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
-                        PATTERN_REASON.matcher(cmdMuteSuccess).replaceAll(reason)
-                ).replaceAll(playerName)
+                        PATTERN_REASON.matcher(cmdMuteSuccess).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -408,9 +409,9 @@ public class GSONMessages {
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
                         PATTERN_REASON.matcher(
-                                PATTERN_DURATION.matcher(cmdTempBanPlayerSuccess).replaceAll(duration)
-                        ).replaceAll(reason)
-                ).replaceAll(playerName)
+                                PATTERN_DURATION.matcher(cmdTempBanPlayerSuccess).replaceAll(Matcher.quoteReplacement(duration))
+                        ).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -420,9 +421,9 @@ public class GSONMessages {
                 PATTERN_IPADDRESS.matcher(
                         PATTERN_REASON.matcher(
                                 PATTERN_DURATION.matcher(cmdTempBanIPSuccess)
-                                        .replaceAll(duration)
-                        ).replaceAll(reason)
-                ).replaceAll(ipAddress)
+                                        .replaceAll(Matcher.quoteReplacement(duration))
+                        ).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(ipAddress))
         );
     }
 
@@ -431,23 +432,23 @@ public class GSONMessages {
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
                         PATTERN_REASON.matcher(
-                                PATTERN_DURATION.matcher(cmdTempMuteSuccess).replaceAll(duration)
-                        ).replaceAll(reason)
-                ).replaceAll(playerName)
+                                PATTERN_DURATION.matcher(cmdTempMuteSuccess).replaceAll(Matcher.quoteReplacement(duration))
+                        ).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
     public BaseComponent[] getCmdUnbanPlayerSuccess(String playerName) {
 
         return generateMessage(true,
-                PATTERN_PLAYERNAME.matcher(cmdUnbanPlayerSuccess).replaceAll(playerName)
+                PATTERN_PLAYERNAME.matcher(cmdUnbanPlayerSuccess).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
     public BaseComponent[] getCmdUnbanIPSuccess(String ipAddress) {
 
         return generateMessage(true,
-                PATTERN_IPADDRESS.matcher(cmdUnbanIPSuccess).replaceAll(ipAddress)
+                PATTERN_IPADDRESS.matcher(cmdUnbanIPSuccess).replaceAll(Matcher.quoteReplacement(ipAddress))
         );
 
     }
@@ -455,7 +456,7 @@ public class GSONMessages {
     public BaseComponent[] getCmdUnmuteSuccess(String playerName) {
 
         return generateMessage(true,
-                PATTERN_PLAYERNAME.matcher(cmdUnmuteSuccess).replaceAll(playerName)
+                PATTERN_PLAYERNAME.matcher(cmdUnmuteSuccess).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
@@ -468,8 +469,8 @@ public class GSONMessages {
 
         return generateMessage(false,
                 PATTERN_SENDER.matcher(
-                        PATTERN_MESSAGE.matcher(staffChatFormat).replaceAll(message)
-                ).replaceAll(sender)
+                        PATTERN_MESSAGE.matcher(staffChatFormat).replaceAll(Matcher.quoteReplacement(message))
+                ).replaceAll(Matcher.quoteReplacement(sender))
         );
     }
 
@@ -487,8 +488,8 @@ public class GSONMessages {
 
         return generateMessage(false,
                 PATTERN_SENDER.matcher(
-                        PATTERN_MESSAGE.matcher(privateChatMessageReceivedFormat).replaceAll(message)
-                ).replaceAll(sender)
+                        PATTERN_MESSAGE.matcher(privateChatMessageReceivedFormat).replaceAll(Matcher.quoteReplacement(message))
+                ).replaceAll(Matcher.quoteReplacement(sender))
         );
     }
 
@@ -496,8 +497,8 @@ public class GSONMessages {
 
         return generateMessage(false,
                 PATTERN_RECEIVER.matcher(
-                        PATTERN_MESSAGE.matcher(privateChatMessageSentFormat).replaceAll(message)
-                ).replaceAll(receiver)
+                        PATTERN_MESSAGE.matcher(privateChatMessageSentFormat).replaceAll(Matcher.quoteReplacement(message))
+                ).replaceAll(Matcher.quoteReplacement(receiver))
         );
     }
 
@@ -506,9 +507,9 @@ public class GSONMessages {
         return generateMessage(false,
                 PATTERN_SENDER.matcher(
                         PATTERN_RECEIVER.matcher(
-                                PATTERN_MESSAGE.matcher(socialSpyMessageFormat).replaceAll(message)
-                        ).replaceAll(receiver)
-                ).replaceAll(sender)
+                                PATTERN_MESSAGE.matcher(socialSpyMessageFormat).replaceAll(Matcher.quoteReplacement(message))
+                        ).replaceAll(Matcher.quoteReplacement(receiver))
+                ).replaceAll(Matcher.quoteReplacement(sender))
         );
     }
 
@@ -525,21 +526,21 @@ public class GSONMessages {
     public BaseComponent[] getChatLockedMessage(String serverName) {
 
         return generateMessage(true,
-                PATTERN_SERVERNAME.matcher(chatLockedMessage).replaceAll(serverName)
+                PATTERN_SERVERNAME.matcher(chatLockedMessage).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
     public BaseComponent[] getCmdServerChatLocked(String serverName) {
 
         return generateMessage(true,
-                PATTERN_SERVERNAME.matcher(cmdServerChatLocked).replaceAll(serverName)
+                PATTERN_SERVERNAME.matcher(cmdServerChatLocked).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
     public BaseComponent[] getCmdServerChatUnlocked(String serverName) {
 
         return generateMessage(true,
-                PATTERN_SERVERNAME.matcher(cmdServerChatUnlocked).replaceAll(serverName)
+                PATTERN_SERVERNAME.matcher(cmdServerChatUnlocked).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
@@ -557,8 +558,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_SENDER.matcher(
-                        PATTERN_REASON.matcher(warningMessageFormat).replaceAll(reason)
-                ).replaceAll(sender)
+                        PATTERN_REASON.matcher(warningMessageFormat).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(sender))
         );
     }
 
@@ -566,29 +567,29 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_PLAYERNAME.matcher(
-                        PATTERN_REASON.matcher(cmdWarnSuccess).replaceAll(reason)
-                ).replaceAll(playerName)
+                        PATTERN_REASON.matcher(cmdWarnSuccess).replaceAll(Matcher.quoteReplacement(reason))
+                ).replaceAll(Matcher.quoteReplacement(playerName))
         );
     }
 
     public BaseComponent[] getCmdSlowChatEnabled(String serverName) {
 
         return generateMessage(true,
-                PATTERN_SERVERNAME.matcher(cmdSlowChatEnabled).replaceAll(serverName)
+                PATTERN_SERVERNAME.matcher(cmdSlowChatEnabled).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
     public BaseComponent[] getCmdSlowChatDisabled(String serverName) {
 
         return generateMessage(true,
-                PATTERN_SERVERNAME.matcher(cmdSlowChatDisabled).replaceAll(serverName)
+                PATTERN_SERVERNAME.matcher(cmdSlowChatDisabled).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
     public BaseComponent[] getMessageBlockedFromBannedWord(String blockedWord) {
 
         return generateMessage(true,
-                PATTERN_BLOCKEDWORD.matcher(messageBlockedFromBannedWord).replaceAll(blockedWord)
+                PATTERN_BLOCKEDWORD.matcher(messageBlockedFromBannedWord).replaceAll(Matcher.quoteReplacement(blockedWord))
         );
     }
 
@@ -596,8 +597,8 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_SERVERNAME.matcher(
-                        PATTERN_TIMEREMAINING.matcher(slowChatMessage).replaceAll(timeRemaining)
-                ).replaceAll(serverName)
+                        PATTERN_TIMEREMAINING.matcher(slowChatMessage).replaceAll(Matcher.quoteReplacement(timeRemaining))
+                ).replaceAll(Matcher.quoteReplacement(serverName))
         );
     }
 
@@ -623,9 +624,9 @@ public class GSONMessages {
         return generateMessage(false,
                 PATTERN_REPORTER.matcher(
                         PATTERN_REPORTEE.matcher(
-                                PATTERN_MESSAGE.matcher(reportMessage).replaceAll(message)
-                        ).replaceAll(reportee)
-                ).replaceAll(reporter)
+                                PATTERN_MESSAGE.matcher(reportMessage).replaceAll(Matcher.quoteReplacement(message))
+                        ).replaceAll(Matcher.quoteReplacement(reportee))
+                ).replaceAll(Matcher.quoteReplacement(reporter))
         );
     }
 
@@ -642,7 +643,7 @@ public class GSONMessages {
     public BaseComponent[] getPrivateChatMessagingDisabled(String receiver) {
 
         return generateMessage(true,
-                PATTERN_RECEIVER.matcher(privateChatMessagingDisabled).replaceAll(receiver)
+                PATTERN_RECEIVER.matcher(privateChatMessagingDisabled).replaceAll(Matcher.quoteReplacement(receiver))
         );
     }
 
