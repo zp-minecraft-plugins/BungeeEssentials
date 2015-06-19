@@ -34,7 +34,9 @@ public class CMDKick extends BungeeEssentialsCommand {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            int playerRole = instance.getConfigs().getRoles().getRole(player.getUniqueId());
+
+            if (playerRole >= getPermissionLevel()) {
 
                 if (args.length != 0) {
 
@@ -42,30 +44,36 @@ public class CMDKick extends BungeeEssentialsCommand {
 
                     if (proxiedPlayer != null) {
 
-                        String reason = "";
+                        if(instance.getConfigs().getRoles().getRole(proxiedPlayer.getUniqueId()) <= playerRole) {
 
-                        if (args.length != 1) {
+                            String reason = "";
 
-                            int i = 1;
+                            if (args.length != 1) {
 
-                            while (i < args.length) {
+                                int i = 1;
 
-                                String partReason = args[i];
-                                reason += partReason + " ";
-                                ++i;
+                                while (i < args.length) {
+
+                                    String partReason = args[i];
+                                    reason += partReason + " ";
+                                    ++i;
+                                }
                             }
+
+                            if (Objects.equals(reason, "")) {
+
+                                reason = instance.getConfigs().getMessages().getDefaultKickReason();
+                            }
+
+                            proxiedPlayer.disconnect(instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason));
+
+                            instance.getConfigs().getRoles().sendMessageToRole(
+                                    instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason),
+                                    instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveKickAlerts());
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot kick a player of a higher rank than you!"));
                         }
-
-                        if (Objects.equals(reason, "")) {
-
-                            reason = instance.getConfigs().getMessages().getDefaultKickReason();
-                        }
-
-                        proxiedPlayer.disconnect(instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason));
-
-                        instance.getConfigs().getRoles().sendMessageToRole(
-                                instance.getConfigs().getMessages().getPlayerKickMessage(player.getName(), reason),
-                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveKickAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found online!"));

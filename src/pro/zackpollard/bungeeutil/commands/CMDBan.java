@@ -35,7 +35,9 @@ public class CMDBan extends BungeeEssentialsCommand {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            int playerRole = instance.getConfigs().getRoles().getRole(player.getUniqueId());
+
+            if (playerRole >= getPermissionLevel()) {
 
                 if (args.length != 0) {
 
@@ -43,43 +45,49 @@ public class CMDBan extends BungeeEssentialsCommand {
 
                     if (gsonPlayer != null) {
 
-                        GSONBan gsonBan = new GSONBan();
-                        gsonBan.setTimestampNow();
-                        gsonBan.setBannerUUID(player.getUniqueId());
+                        if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) <= playerRole) {
 
-                        String reason = "";
+                            GSONBan gsonBan = new GSONBan();
+                            gsonBan.setTimestampNow();
+                            gsonBan.setBannerUUID(player.getUniqueId());
 
-                        if (args.length != 1) {
+                            String reason = "";
 
-                            int i = 1;
+                            if (args.length != 1) {
 
-                            while (i < args.length) {
+                                int i = 1;
 
-                                String partReason = args[i];
-                                reason += partReason + " ";
-                                ++i;
+                                while (i < args.length) {
+
+                                    String partReason = args[i];
+                                    reason += partReason + " ";
+                                    ++i;
+                                }
                             }
+
+                            if (Objects.equals(reason, "")) {
+
+                                reason = instance.getConfigs().getMessages().getDefaultBanReason();
+                            }
+
+                            gsonBan.setReason(reason);
+
+                            gsonPlayer.setCurrentBan(gsonBan);
+
+                            ProxiedPlayer proxiedPlayer = instance.getProxy().getPlayer(gsonPlayer.getUUID());
+
+                            if (proxiedPlayer != null) {
+
+                                instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
+                            }
+
+                            instance.getConfigs().getRoles().sendMessageToRole(
+                                    instance.getConfigs().getMessages().getCmdBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason),
+                                    instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveBanAlerts());
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot ban a player of a higher rank than you!"));
                         }
-
-                        if (Objects.equals(reason, "")) {
-
-                            reason = instance.getConfigs().getMessages().getDefaultBanReason();
-                        }
-
-                        gsonBan.setReason(reason);
-
-                        gsonPlayer.setCurrentBan(gsonBan);
-
-                        ProxiedPlayer proxiedPlayer = instance.getProxy().getPlayer(gsonPlayer.getUUID());
-
-                        if (proxiedPlayer != null) {
-
-                            instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
-                        }
-
-                        instance.getConfigs().getRoles().sendMessageToRole(
-                                instance.getConfigs().getMessages().getCmdBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason),
-                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with that name was not found in the save system!"));

@@ -35,7 +35,9 @@ public class CMDTempBan extends BungeeEssentialsCommand {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            int playerRole = instance.getConfigs().getRoles().getRole(player.getUniqueId());
+
+            if (playerRole >= getPermissionLevel()) {
 
                 if (args.length >= 3) {
 
@@ -43,93 +45,100 @@ public class CMDTempBan extends BungeeEssentialsCommand {
 
                     if (gsonPlayer != null) {
 
-                        GSONBan oldBan = gsonPlayer.getCurrentBan();
+                        if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) <= playerRole) {
 
-                        long banTime = 0;
 
-                        int i;
+                            GSONBan oldBan = gsonPlayer.getCurrentBan();
 
-                        banTimeCalc:
-                        for (i = 1; i + 1 < args.length; i += 2) {
+                            long banTime = 0;
 
-                            long time;
+                            int i;
 
-                            switch (args[i + 1].toLowerCase()) {
+                            banTimeCalc:
+                            for (i = 1; i + 1 < args.length; i += 2) {
 
-                                case "s":
-                                    time = 1000;
-                                    break;
-                                case "m":
-                                    time = 60000;
-                                    break;
-                                case "h":
-                                    time = 3600000;
-                                    break;
-                                case "d":
-                                    time = 86400000;
-                                    break;
-                                case "w":
-                                    time = 604800000;
-                                    break;
-                                default:
-                                    break banTimeCalc;
+                                long time;
+
+                                switch (args[i + 1].toLowerCase()) {
+
+                                    case "s":
+                                        time = 1000;
+                                        break;
+                                    case "m":
+                                        time = 60000;
+                                        break;
+                                    case "h":
+                                        time = 3600000;
+                                        break;
+                                    case "d":
+                                        time = 86400000;
+                                        break;
+                                    case "w":
+                                        time = 604800000;
+                                        break;
+                                    default:
+                                        break banTimeCalc;
+                                }
+
+                                Long timeArg = Long.parseLong(args[i]);
+
+                                banTime += timeArg * time;
                             }
 
-                            Long timeArg = Long.parseLong(args[i]);
+                            if (oldBan != null) {
 
-                            banTime += timeArg * time;
-                        }
+                                if (oldBan.getDuration() == 0) {
 
-                        if (oldBan != null) {
+                                    player.sendMessage(instance.getConfigs().getMessages().getStaffTempBanWhilePermBanned());
+                                    return;
+                                } else if (oldBan.getRemainingTime() > banTime) {
 
-                            if (oldBan.getDuration() == 0) {
-
-                                player.sendMessage(instance.getConfigs().getMessages().getStaffTempBanWhilePermBanned());
-                                return;
-                            } else if (oldBan.getRemainingTime() > banTime) {
-
-                                player.sendMessage(instance.getConfigs().getMessages().getStaffTempBanWhileLongerTempBanExists());
-                                return;
+                                    player.sendMessage(instance.getConfigs().getMessages().getStaffTempBanWhileLongerTempBanExists());
+                                    return;
+                                }
                             }
-                        }
 
-                        GSONBan gsonBan = new GSONBan();
-                        gsonBan.setTimestampNow();
-                        gsonBan.setDuration(banTime);
-                        gsonBan.setBannerUUID(player.getUniqueId());
+                            GSONBan gsonBan = new GSONBan();
+                            gsonBan.setTimestampNow();
+                            gsonBan.setDuration(banTime);
+                            gsonBan.setBannerUUID(player.getUniqueId());
 
-                        String reason = "";
+                            String reason = "";
 
-                        if (i < args.length) {
+                            if (i < args.length) {
 
-                            while (i < args.length) {
+                                while (i < args.length) {
 
-                                reason += args[i] + " ";
-                                ++i;
+                                    reason += args[i] + " ";
+                                    ++i;
+                                }
                             }
+
+                            if (Objects.equals(reason, "")) {
+
+                                reason = instance.getConfigs().getMessages().getDefaultBanReason();
+                            }
+
+                            gsonBan.setReason(reason);
+
+                            gsonPlayer.setCurrentBan(gsonBan);
+
+                            ProxiedPlayer proxiedPlayer = instance.getProxy().getPlayer(gsonPlayer.getUUID());
+
+                            if (proxiedPlayer != null) {
+
+                                instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
+                            }
+
+                            player.sendMessage();
+
+                            instance.getConfigs().getRoles().sendMessageToRole(
+                                    instance.getConfigs().getMessages().getCmdTempBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason, gsonBan.getRemainingTimeFormatted()),
+                                    instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempBanAlerts());
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot tempban a player of a higher rank than you!"));
                         }
-
-                        if (Objects.equals(reason, "")) {
-
-                            reason = instance.getConfigs().getMessages().getDefaultBanReason();
-                        }
-
-                        gsonBan.setReason(reason);
-
-                        gsonPlayer.setCurrentBan(gsonBan);
-
-                        ProxiedPlayer proxiedPlayer = instance.getProxy().getPlayer(gsonPlayer.getUUID());
-
-                        if (proxiedPlayer != null) {
-
-                            instance.getPlayerManager().checkPlayerBanned(proxiedPlayer, gsonPlayer);
-                        }
-
-                        player.sendMessage();
-
-                        instance.getConfigs().getRoles().sendMessageToRole(
-                                instance.getConfigs().getMessages().getCmdTempBanPlayerSuccess(gsonPlayer.getLastKnownName(), reason, gsonBan.getRemainingTimeFormatted()),
-                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempBanAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));

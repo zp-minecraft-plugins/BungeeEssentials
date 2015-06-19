@@ -39,7 +39,9 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            int playerRole = instance.getConfigs().getRoles().getRole(player.getUniqueId());
+
+            if (playerRole >= getPermissionLevel()) {
 
                 if (args.length != 0) {
 
@@ -47,37 +49,43 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
 
                     if (gsonPlayer != null) {
 
-                        GSONMute gsonMute = new GSONMute();
-                        gsonMute.setTimestampNow();
-                        gsonMute.setMuterUUID(player.getUniqueId());
-                        gsonMute.setDuration(0);
+                        if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) <= playerRole) {
 
-                        String reason = "";
+                            GSONMute gsonMute = new GSONMute();
+                            gsonMute.setTimestampNow();
+                            gsonMute.setMuterUUID(player.getUniqueId());
+                            gsonMute.setDuration(0);
 
-                        if (args.length != 1) {
+                            String reason = "";
 
-                            int i = 1;
+                            if (args.length != 1) {
 
-                            while (i < args.length) {
+                                int i = 1;
 
-                                String partReason = args[i];
-                                reason += partReason + " ";
-                                ++i;
+                                while (i < args.length) {
+
+                                    String partReason = args[i];
+                                    reason += partReason + " ";
+                                    ++i;
+                                }
                             }
+
+                            if (Objects.equals(reason, "")) {
+
+                                reason = instance.getConfigs().getMessages().getDefaultMuteReason();
+                            }
+
+                            gsonMute.setReason(reason);
+
+                            gsonPlayer.setCurrentMute(gsonMute);
+
+                            instance.getConfigs().getRoles().sendMessageToRole(
+                                    instance.getConfigs().getMessages().getCmdMuteSuccess(gsonPlayer.getLastKnownName(), reason),
+                                    instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveMuteAlerts());
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot mute a player of a higher rank than you!"));
                         }
-
-                        if (Objects.equals(reason, "")) {
-
-                            reason = instance.getConfigs().getMessages().getDefaultMuteReason();
-                        }
-
-                        gsonMute.setReason(reason);
-
-                        gsonPlayer.setCurrentMute(gsonMute);
-
-                        instance.getConfigs().getRoles().sendMessageToRole(
-                                instance.getConfigs().getMessages().getCmdMuteSuccess(gsonPlayer.getLastKnownName(), reason),
-                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveMuteAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));

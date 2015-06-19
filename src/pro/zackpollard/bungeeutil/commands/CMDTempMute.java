@@ -35,7 +35,9 @@ public class CMDTempMute extends BungeeEssentialsCommand {
 
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            if (instance.getConfigs().getRoles().getRole(player.getUniqueId()) >= getPermissionLevel()) {
+            int playerRole = instance.getConfigs().getRoles().getRole(player.getUniqueId());
+
+            if (playerRole >= getPermissionLevel()) {
 
                 if (args.length >= 3) {
 
@@ -43,81 +45,87 @@ public class CMDTempMute extends BungeeEssentialsCommand {
 
                     if (gsonPlayer != null) {
 
-                        GSONMute oldMute = gsonPlayer.getCurrentMute();
+                        if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) <= playerRole) {
 
-                        long muteTime = 0;
+                            GSONMute oldMute = gsonPlayer.getCurrentMute();
 
-                        int i;
+                            long muteTime = 0;
 
-                        muteTimeCalc:
-                        for (i = 1; i + 1 < args.length; i += 2) {
+                            int i;
 
-                            long time;
+                            muteTimeCalc:
+                            for (i = 1; i + 1 < args.length; i += 2) {
 
-                            switch (args[i + 1].toLowerCase()) {
+                                long time;
 
-                                case "s":
-                                    time = 1000;
-                                    break;
-                                case "m":
-                                    time = 60000;
-                                    break;
-                                case "h":
-                                    time = 3600000;
-                                    break;
-                                case "d":
-                                    time = 86400000;
-                                    break;
-                                case "w":
-                                    time = 604800000;
-                                    break;
-                                default:
-                                    break muteTimeCalc;
+                                switch (args[i + 1].toLowerCase()) {
+
+                                    case "s":
+                                        time = 1000;
+                                        break;
+                                    case "m":
+                                        time = 60000;
+                                        break;
+                                    case "h":
+                                        time = 3600000;
+                                        break;
+                                    case "d":
+                                        time = 86400000;
+                                        break;
+                                    case "w":
+                                        time = 604800000;
+                                        break;
+                                    default:
+                                        break muteTimeCalc;
+                                }
+
+                                Long timeArg = Long.parseLong(args[i]);
+
+                                muteTime += timeArg * time;
                             }
 
-                            Long timeArg = Long.parseLong(args[i]);
+                            if (oldMute != null) {
 
-                            muteTime += timeArg * time;
-                        }
+                                if (oldMute.getDuration() == 0) {
 
-                        if (oldMute != null) {
+                                    player.sendMessage(instance.getConfigs().getMessages().getStaffTempMuteWhilePermMuted());
+                                    return;
+                                } else if (oldMute.getRemainingTime() > muteTime) {
 
-                            if (oldMute.getDuration() == 0) {
-
-                                player.sendMessage(instance.getConfigs().getMessages().getStaffTempMuteWhilePermMuted());
-                                return;
-                            } else if (oldMute.getRemainingTime() > muteTime) {
-
-                                player.sendMessage(instance.getConfigs().getMessages().getStaffTempMuteWhileLongerTempMuteExists());
-                                return;
+                                    player.sendMessage(instance.getConfigs().getMessages().getStaffTempMuteWhileLongerTempMuteExists());
+                                    return;
+                                }
                             }
+
+                            GSONMute gsonMute = new GSONMute();
+                            gsonMute.setTimestampNow();
+                            gsonMute.setDuration(muteTime);
+                            gsonMute.setMuterUUID(player.getUniqueId());
+
+                            String reason = "";
+
+                            while (i < args.length) {
+
+                                reason += args[i] + " ";
+                                ++i;
+                            }
+
+                            if (Objects.equals(reason, "")) {
+
+                                reason = instance.getConfigs().getMessages().getDefaultMuteReason();
+                            }
+
+                            gsonMute.setReason(reason);
+
+                            gsonPlayer.setCurrentMute(gsonMute);
+
+                            instance.getConfigs().getRoles().sendMessageToRole(
+                                    instance.getConfigs().getMessages().getCmdTempMuteSuccess(gsonPlayer.getLastKnownName(), reason, gsonMute.getRemainingTimeFormatted()),
+                                    instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempMuteAlerts());
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot tempmute a player of a higher rank than you!"));
                         }
-
-                        GSONMute gsonMute = new GSONMute();
-                        gsonMute.setTimestampNow();
-                        gsonMute.setDuration(muteTime);
-                        gsonMute.setMuterUUID(player.getUniqueId());
-
-                        String reason = "";
-
-                        while (i < args.length) {
-
-                            reason += args[i] + " ";
-                            ++i;
-                        }
-
-                        if (Objects.equals(reason, "")) {
-
-                            reason = instance.getConfigs().getMessages().getDefaultMuteReason();
-                        }
-
-                        gsonMute.setReason(reason);
-
-                        gsonPlayer.setCurrentMute(gsonMute);
-
-                        instance.getConfigs().getRoles().sendMessageToRole(
-                                instance.getConfigs().getMessages().getCmdTempMuteSuccess(gsonPlayer.getLastKnownName(), reason, gsonMute.getRemainingTimeFormatted()),
-                                instance.getConfigs().getMainConfig().getPermissions().getChatPermissions().getReceiveTempMuteAlerts());
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "A player with this name was not found in the save system!"));
