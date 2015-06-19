@@ -143,6 +143,13 @@ public class GSONPlayer extends Lockable {
         }
     }
 
+    public String getFirstSeenString() {
+
+        SimpleDateFormat format = new SimpleDateFormat(BungeeEssentials.getInstance().getConfigs().getMessages().getTimeStampFormat());
+        Date date = new Date(this.firstSeenTime);
+        return format.format(date);
+    }
+
     public String getTotalOnlineTimeFormatted() {
 
         long amountTimeSeconds = this.getTotalOnlineTime();
@@ -193,9 +200,5 @@ public class GSONPlayer extends Lockable {
 
     public GSONMute getCurrentMute() {
         return currentMute;
-    }
-
-    public long getFirstSeenTime() {
-        return firstSeenTime;
     }
 }

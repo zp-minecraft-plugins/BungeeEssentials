@@ -44,7 +44,7 @@ public class CMDSearch extends BungeeEssentialsCommand {
                     if (gsonPlayer != null) {
 
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "-----=====(" + ChatColor.AQUA + ChatColor.BOLD + gsonPlayer.getLastKnownName() + " Lookup" + ChatColor.RESET + ChatColor.DARK_AQUA + ")=====-----"));
-                        sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "First Seen: " + ChatColor.RESET + ChatColor.AQUA + gsonPlayer.getFirstSeenTime()));
+                        sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "First Seen: " + ChatColor.RESET + ChatColor.AQUA + gsonPlayer.getFirstSeenString()));
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "Last Seen: " + ChatColor.RESET + ChatColor.AQUA + gsonPlayer.getLastOnlineString()));
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "Last Known IP: " + ChatColor.RESET + ChatColor.AQUA + gsonPlayer.getLastKnownIP()));
                         sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "Last Server: " + ChatColor.RESET + ChatColor.AQUA + gsonPlayer.getLastConnectedServer()));
