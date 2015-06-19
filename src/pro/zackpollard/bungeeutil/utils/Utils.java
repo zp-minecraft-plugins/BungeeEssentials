@@ -66,12 +66,19 @@ public class Utils {
 
             seconds = amountTimeSeconds;
         }
+
+        String weeksstr = String.valueOf(weeks);
+        String daysstr = String.valueOf(days);
+        String hoursstr = ((hours < 10) ? "0" : "") + hours;
+        String minutesstr = ((minutes < 10) ? "0" : "") + minutes;
+        String secondsstr = ((seconds < 10) ? "0" : "") + seconds;
+
         message = PATTERN_WEEK.matcher(PATTERN_DAY.matcher(PATTERN_HOUR.matcher(PATTERN_MIN.matcher(PATTERN_SEC.matcher(message)
-                        .replaceAll(String.valueOf(seconds)))
-                        .replaceAll(String.valueOf(minutes)))
-                        .replaceAll(String.valueOf(hours)))
-                        .replaceAll(String.valueOf(days)))
-                        .replaceAll(String.valueOf(weeks));
+                        .replaceAll(secondsstr))
+                        .replaceAll(minutesstr))
+                        .replaceAll(hoursstr))
+                        .replaceAll(daysstr))
+                        .replaceAll(weeksstr);
         return message;
     }
 
