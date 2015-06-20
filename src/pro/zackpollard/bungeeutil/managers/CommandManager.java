@@ -62,6 +62,10 @@ public class CommandManager implements Listener {
             commands.add(new CMDAccounts(instance, "accounts"));
         }
 
+        if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getAddProof() != -1) {
+            commands.add(new CMDAddProof(instance, "addproof"));
+        }
+
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getAlts() != -1) {
             commands.add(new CMDAlts(instance, "alts"));
         }

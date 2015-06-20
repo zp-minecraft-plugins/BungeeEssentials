@@ -3,6 +3,7 @@ package pro.zackpollard.bungeeutil.json.config;
 public class GSONCommandPermissions {
 
     private final int accounts;
+    private final int addProof;
     private final int alts;
     private final int ban;
     private final int banIP;
@@ -13,7 +14,7 @@ public class GSONCommandPermissions {
     private final int crestart;
     private final int kick;
     private final int message;
-    private int messageToggle;
+    private final int messageToggle;
     private final int mute;
     private final int onlineStaff;
     private final int removeRole;
@@ -34,12 +35,13 @@ public class GSONCommandPermissions {
     private final int unbanIP;
     private final int unmute;
     private final int warn;
-    private int debugInfo;
+    private final int debugInfo;
 
 
     public GSONCommandPermissions() {
 
         accounts = 3;
+        addProof = 1;
         alts = 3;
         ban = 2;
         banIP = 3;
@@ -216,5 +218,9 @@ public class GSONCommandPermissions {
 
     public int getDebugInfo() {
         return debugInfo;
+    }
+
+    public int getAddProof() {
+        return addProof;
     }
 }

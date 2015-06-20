@@ -115,6 +115,17 @@ public class CMDBans extends BungeeEssentialsCommand {
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - Ban Timestamp: " + ChatColor.RESET + ChatColor.AQUA + gsonBan.getTimestampFormatted()));
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - Ban Reason: " + ChatColor.RESET + ChatColor.AQUA + gsonBan.getReason()));
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - Banned By: " + ChatColor.RESET + ChatColor.AQUA + instance.getPlayerManager().getPlayer(gsonBan.getBannerUUID()).getLastKnownName()));
+                        player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - Proof:"));
+
+                        if(gsonBan.getProof().size() != 0) {
+                            for (String proof : gsonBan.getProof()) {
+
+                                player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "   - " + proof));
+                            }
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + "   - No proof provided."));
+                        }
                     } else {
 
                         player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Something went wrong with this command!"));

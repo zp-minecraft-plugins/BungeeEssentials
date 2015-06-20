@@ -27,6 +27,7 @@ public class GSONMessages {
     private static final Pattern PATTERN_SIMILARITY = Pattern.compile("%similarity%", Pattern.LITERAL);
     private static final Pattern PATTERN_REPORTER = Pattern.compile("%reporter%", Pattern.LITERAL);
     private static final Pattern PATTERN_REPORTEE = Pattern.compile("%reportee%", Pattern.LITERAL);
+    private static final Pattern PATTERN_URL = Pattern.compile("%url%", Pattern.LITERAL);
 
     private final String prefix;
     private final String timeStampFormat;
@@ -49,6 +50,7 @@ public class GSONMessages {
     private final String staffTempMuteWhilePermMuted;
     private final String staffTempMuteWhileLongerTempMuteExists;
     private final String commandPermissionDenied;
+    private final String cmdAddProofSuccess;
     private final String cmdSetRoleSuccess;
     private final String cmdRemoveRoleSuccess;
     private final String cmdBanPlayerSuccess;
@@ -129,6 +131,8 @@ public class GSONMessages {
         staffTempMuteWhileLongerTempMuteExists = "%cYou cannot tempmute this player while a longer tempmute already exists!";
 
         commandPermissionDenied = "%cYou cannot use this command as you do not have the required permissions!";
+
+        cmdAddProofSuccess = "%aYou have added the following url to %l%playername%'s%r%a ban: %url%";
 
         cmdMessageToggleDisabled = "%cYou have %ldisabled private messaging and now you will not be able to be messaged by other players!";
 
@@ -644,6 +648,13 @@ public class GSONMessages {
 
         return generateMessage(true,
                 PATTERN_RECEIVER.matcher(privateChatMessagingDisabled).replaceAll(Matcher.quoteReplacement(receiver))
+        );
+    }
+
+    public BaseComponent[] getCmdAddProofSuccess(String url) {
+
+        return generateMessage(true,
+                PATTERN_URL.matcher(cmdAddProofSuccess).replaceAll(Matcher.quoteReplacement(url))
         );
     }
 

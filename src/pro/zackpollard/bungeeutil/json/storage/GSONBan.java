@@ -4,7 +4,9 @@ import pro.zackpollard.bungeeutil.BungeeEssentials;
 import pro.zackpollard.bungeeutil.utils.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class GSONBan {
@@ -16,6 +18,12 @@ public class GSONBan {
     private long duration = 0;
     private String reason;
     private UUID bannerUUID;
+    private List<String> proof;
+
+    public GSONBan() {
+
+        proof = new ArrayList<>();
+    }
 
     public long getTimestamp() {
         return this.timestamp;
@@ -87,5 +95,15 @@ public class GSONBan {
 
     public boolean isFileChanged() {
         return this.fileChanged;
+    }
+
+    public List<String> getProof() {
+
+        return this.proof;
+    }
+
+    public void addProof(String url) {
+
+        this.proof.add(url);
     }
 }
