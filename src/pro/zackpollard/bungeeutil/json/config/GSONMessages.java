@@ -651,10 +651,12 @@ public class GSONMessages {
         );
     }
 
-    public BaseComponent[] getCmdAddProofSuccess(String url) {
+    public BaseComponent[] getCmdAddProofSuccess(String bannedPlayerName, String url) {
 
         return generateMessage(true,
-                PATTERN_URL.matcher(cmdAddProofSuccess).replaceAll(Matcher.quoteReplacement(url))
+                PATTERN_PLAYERNAME.matcher(
+                    PATTERN_URL.matcher(cmdAddProofSuccess).replaceAll(Matcher.quoteReplacement(url))
+                ).replaceAll(Matcher.quoteReplacement(bannedPlayerName))
         );
     }
 

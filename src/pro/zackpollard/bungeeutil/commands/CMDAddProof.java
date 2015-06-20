@@ -54,7 +54,7 @@ public class CMDAddProof extends BungeeEssentialsCommand {
                                 gsonBan.addProof(url);
                             }
 
-                            player.sendMessage(instance.getConfigs().getMessages().getCmdAddProofSuccess(url));
+                            player.sendMessage(instance.getConfigs().getMessages().getCmdAddProofSuccess(gsonPlayer.getLastKnownName(), url));
                         } else {
 
                             player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "This player is not currently banned and therefore proof cannot be added to their ban."));
