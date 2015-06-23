@@ -66,6 +66,7 @@ public class GSONMessages {
     private final String cmdTempBanPlayerSuccess;
     private final String cmdTempBanIPSuccess;
     private final String cmdTempMuteSuccess;
+    private final String tempmuteExpired;
     private final String cmdUnbanPlayerSuccess;
     private final String cmdUnbanIPSuccess;
     private final String cmdUnmuteSuccess;
@@ -89,7 +90,6 @@ public class GSONMessages {
     private final String advertisingBlocked;
     private final String cmdMessageToggleDisabled;
     private final String cmdMessageToggleEnabled;
-
     public GSONMessages() {
 
         prefix = "%3[%9BungeeUtils%3]%c - ";
@@ -211,6 +211,8 @@ public class GSONMessages {
         advertisingBlocked = "%cDo not advertise on this server!";
 
         privateChatMessagingDisabled = "%cYou can't send a message to this player as they have private messaging disabled!";
+
+        tempmuteExpired = "%aYour tempmute has expired and you have been unmuted!";
     }
 
     public String getPrefix() {
@@ -467,6 +469,11 @@ public class GSONMessages {
     public BaseComponent[] getCmdPlayerUnmuted() {
 
         return generateMessage(true, cmdPlayerUnmuted);
+    }
+
+    public BaseComponent[] getTempmuteExpired() {
+
+        return generateMessage(true, tempmuteExpired);
     }
 
     public BaseComponent[] getStaffChatFormat(String sender, String message) {
