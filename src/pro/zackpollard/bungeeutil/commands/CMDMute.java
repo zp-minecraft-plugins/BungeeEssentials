@@ -128,6 +128,13 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
                         if (gsonMute.getRemainingTime() <= 0) {
 
                             gsonPlayer.setCurrentMute(null);
+
+                            ProxiedPlayer playerUnbanned = instance.getProxy().getPlayer(gsonPlayer.getUUID());
+
+                            if(playerUnbanned != null) {
+
+                                playerUnbanned.sendMessage(instance.getConfigs().getMessages().getCmdPlayerUnmuted());
+                            }
                             return;
                         }
 
