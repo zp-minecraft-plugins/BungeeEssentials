@@ -1,5 +1,6 @@
 package pro.zackpollard.bungeeutil.managers;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -55,6 +56,8 @@ public class PrivateChatManager implements Listener {
 
         replier.put(from.getUniqueId(), to.getUniqueId());
         replier.put(to.getUniqueId(), from.getUniqueId());
+
+        message = ChatColor.translateAlternateColorCodes('&', message);
 
         if (instance.getConfigs().getRoles().getRole(from.getUniqueId()) >=
                 instance.getConfigs().getMainConfig().getPermissions().getOverridePermissions().getOverrideDisabledPrivateMessaging() ||
