@@ -128,6 +128,7 @@ public class CMDMute extends BungeeEssentialsCommand implements Listener {
                         if (gsonMute.getRemainingTime() <= 0) {
 
                             gsonPlayer.setCurrentMute(null);
+                            return;
                         }
 
                         player.sendMessage(instance.getConfigs().getMessages().getPlayerTempMuteMessage(
