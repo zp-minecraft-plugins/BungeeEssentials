@@ -84,6 +84,12 @@ public class CMDTempMute extends BungeeEssentialsCommand {
                                 muteTime += timeArg * time;
                             }
 
+                            if(muteTime == 0) {
+
+                                player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You didn't add a mute duration or you misplaced the duration in the command."));
+                                player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Correct command syntax: /tempmute (playername) (time) (unit of time (s/m/h/d/w)) [reason]"));
+                            }
+
                             if (oldMute != null) {
 
                                 if (oldMute.getDuration() == 0) {
@@ -132,7 +138,7 @@ public class CMDTempMute extends BungeeEssentialsCommand {
                     }
                 } else {
 
-                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect command syntax. Should be /tempmute (playername) (time) (unit of time (s/m/h/d/w)) (reason - optional)"));
+                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect command syntax. Should be /tempmute (playername) (time) (unit of time (s/m/h/d/w)) [reason]"));
                 }
             } else {
 
