@@ -85,6 +85,12 @@ public class CMDTempBan extends BungeeEssentialsCommand {
                                 banTime += timeArg * time;
                             }
 
+                            if(banTime == 0) {
+
+                                player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You didn't add a ban duration or you misplaced the duration in the command."));
+                                player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Correct command syntax: /tempban (playername) (time) (unit of time (s/m/h/d/w)) [reason]"));
+                            }
+
                             if (oldBan != null) {
 
                                 if (oldBan.getDuration() == 0) {
@@ -145,7 +151,7 @@ public class CMDTempBan extends BungeeEssentialsCommand {
                     }
                 } else {
 
-                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect command syntax. Should be /tempban (playername) (time) (unit of time (s/m/h/d/w)) (reason - optional)"));
+                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect command syntax. Should be /tempban (playername) (time) (unit of time (s/m/h/d/w)) [reason]"));
                 }
             } else {
 
