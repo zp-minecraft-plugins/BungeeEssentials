@@ -88,6 +88,7 @@ public class CMDTempMute extends BungeeEssentialsCommand {
 
                                 player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You didn't add a mute duration or you misplaced the duration in the command."));
                                 player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Correct command syntax: /tempmute (playername) (time) (unit of time (s/m/h/d/w)) [reason]"));
+                                return;
                             }
 
                             if (oldMute != null) {
