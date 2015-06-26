@@ -100,7 +100,10 @@ public class CMDAlts extends BungeeEssentialsCommand {
                     while (i < finish && i < alts.size()) {
 
                         GSONPlayer gsonAlt = instance.getPlayerManager().getPlayer(alts.get(i));
-                        sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - " + ChatColor.RESET + ChatColor.AQUA + gsonAlt.getLastKnownName()));
+                        if(gsonAlt != null) {
+                            sender.sendMessage(instance.getConfigs().getMessages().generateMessage(false, ChatColor.DARK_AQUA + " - " + ChatColor.RESET + ChatColor.AQUA + gsonAlt.getLastKnownName()));
+                        }
+
                         ++i;
                     }
                 } else {
