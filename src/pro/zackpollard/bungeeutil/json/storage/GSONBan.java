@@ -105,5 +105,6 @@ public class GSONBan {
     public void addProof(String url) {
 
         this.proof.add(url);
+        this.fileChanged = true;
     }
 }

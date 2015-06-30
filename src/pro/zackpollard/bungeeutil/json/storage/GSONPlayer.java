@@ -19,7 +19,7 @@ public class GSONPlayer extends Lockable {
     /**
      * The bans that this player has accumulated.
      */
-    private final List<GSONBan> bans = new ArrayList<>();
+    private final List<GSONBan> bans = new LinkedList<>();
 
     /**
      * The last known ban that the player knew was in action for the player.
@@ -27,7 +27,8 @@ public class GSONPlayer extends Lockable {
      * checked if the player is banned and changed if the player is no longer
      * supposed to be banned.
      */
-    private GSONBan currentBan;
+    public GSONBan currentBan;
+    private boolean banned;
     private GSONMute currentMute;
 
     /**
@@ -72,13 +73,8 @@ public class GSONPlayer extends Lockable {
 
     public void setCurrentBan(GSONBan currentBan) {
 
-        this.currentBan = currentBan;
-
-        if (currentBan != null) {
-
-            this.bans.add(currentBan);
-        }
-
+        this.banned = true;
+        this.bans.add(currentBan);
         this.fileChanged = true;
     }
 
@@ -106,8 +102,8 @@ public class GSONPlayer extends Lockable {
     public boolean isFileChanged() {
 
         return this.fileChanged ||
-                this.currentBan != null && this.currentBan.isFileChanged() ||
-                this.currentMute != null && this.currentMute.isFileChanged();
+                (this.banned && this.getCurrentBan().isFileChanged()) ||
+                (this.currentMute != null && this.currentMute.isFileChanged());
     }
 
     public long getPlayerJoinTime() {
@@ -186,7 +182,16 @@ public class GSONPlayer extends Lockable {
     }
 
     public GSONBan getCurrentBan() {
-        return this.currentBan;
+
+        if(this.banned) {
+
+            if (this.bans.size() != 0) {
+
+                return this.bans.get(this.bans.size() - 1);
+            }
+        }
+
+        return null;
     }
 
     public String getLastConnectedServer() {

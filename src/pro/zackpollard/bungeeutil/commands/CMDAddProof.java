@@ -57,8 +57,6 @@ public class CMDAddProof extends BungeeEssentialsCommand {
 
                                 player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You didn't type a proof URL"));
                             }
-
-
                         } else {
 
                             player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "This player is not currently banned and therefore proof cannot be added to their ban."));
