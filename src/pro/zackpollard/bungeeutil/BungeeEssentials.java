@@ -54,6 +54,7 @@ public class BungeeEssentials extends Plugin {
         this.serverChatManager = new ServerChatManager(this);
         this.serverPingManager = new ServerPingManager(this);
         this.commandManager = new CommandManager(this);
+        this.sessionServerManager = new SessionServerManager(this);
 
         //TODO: http://pastebin.com/HZE8uh8C
     }
