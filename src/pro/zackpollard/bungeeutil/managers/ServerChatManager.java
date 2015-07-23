@@ -5,6 +5,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 import pro.zackpollard.bungeeutil.json.config.GSONReplaceWords;
 import pro.zackpollard.bungeeutil.runnables.ServerChatManagerCleanup;
@@ -42,6 +43,8 @@ public class ServerChatManager implements Listener {
 
     @EventHandler
     public void onPlayerChat(ChatEvent event) {
+
+        if(event.isCancelled()) return;
 
         if (!event.isCommand()) {
 

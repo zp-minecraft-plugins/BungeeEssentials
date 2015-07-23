@@ -1,14 +1,17 @@
 package pro.zackpollard.bungeeutil.managers;
 
-import com.google.gson.Gson;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
-import pro.zackpollard.bungeeutil.utils.Utils;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,7 +27,7 @@ public class SessionServerManager implements Listener {
 
         this.instance = instance;
         this.sessionsOnline = true;
-        instance.getProxy().getScheduler().schedule(instance, new SessionServerChecker(this), 10, 10, TimeUnit.SECONDS);
+        instance.getProxy().getScheduler().schedule(instance, new SessionServerChecker(this), 1, 10, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
     }
 
@@ -33,9 +36,28 @@ public class SessionServerManager implements Listener {
 
         GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());
 
-        if(!gsonPlayer.isAuthenticated()) {
+        if(!event.getPlayer().getServer().getInfo().getName().equalsIgnoreCase("Hub")) {
 
-            event.getPlayer().disconnect(instance.getConfigs().getMessages().generateMessage(false, ChatColor.RED + "You cannot switch servers as you are not authenticated with the server. \n Re-connect and type /login (password) to authenticate."));
+            if (!gsonPlayer.isAuthenticated()) {
+
+                event.getPlayer().disconnect(instance.getConfigs().getMessages().generateMessage(false, ChatColor.RED + "You cannot switch servers as you are not authenticated with the server. \n Re-connect and type /login (password) to authenticate."));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerSendCommand(ChatEvent event) {
+
+        if(event.getSender() instanceof ProxiedPlayer) {
+
+            ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+            GSONPlayer gsonPlayer = instance.getPlayerManager().getPlayer(player.getUniqueId());
+
+            if(!gsonPlayer.isAuthenticated() && !event.getMessage().startsWith("/login")) {
+
+                event.setCancelled(true);
+                player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You cannot send commands or chat as you are not authenticated with the server."));
+            }
         }
     }
 
@@ -46,8 +68,17 @@ public class SessionServerManager implements Listener {
 
     private void setSessionsOnline(boolean sessionsOnline) {
 
-        this.sessionsOnline = sessionsOnline;
-        instance.getProxy().broadcast(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Mojang Session servers just went offline. If you haven't setup a password you should do so now with /register (password) so you can login even while they are down!"));
+        if(this.sessionsOnline != sessionsOnline) {
+
+            this.sessionsOnline = sessionsOnline;
+            if (sessionsOnline) {
+
+                instance.getProxy().broadcast(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Mojang Session servers just came back online!"));
+            } else {
+
+                instance.getProxy().broadcast(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Mojang Session servers just went offline. If you haven't setup a password you should do so now with /register (password) so you can login even while they are down!"));
+            }
+        }
     }
 
     private class SessionServerChecker implements Runnable {
@@ -62,26 +93,26 @@ public class SessionServerManager implements Listener {
         @Override
         public void run() {
 
-            ServerStatus serverStatus;
+            try {
 
-            String json = Utils.readUrl("http://xpaw.ru/mcstatus/status.json");
+                Socket socket = new Socket();
 
-            if (json != null) {
+                socket.connect(new InetSocketAddress("sessionserver.mojang.com", 443), 2500);
 
-                Gson gson = new Gson();
-                serverStatus = gson.fromJson(json, ServerStatus.class);
+                socket.close();
 
-                if (serverStatus != null) {
+                setSessionsOnline(true);
 
-                    if (serverStatus.session.status.equals("up")) {
+            } catch (IOException e) {
 
-                        sessionServerManager.setSessionsOnline(true);
-                    } else {
-                        sessionServerManager.setSessionsOnline(false);
-                    }
-                }
+                setSessionsOnline(false);
             }
         }
+    }
+
+    private class ServerReport {
+
+        private ServerStatus report;
     }
 
     private class ServerStatus {

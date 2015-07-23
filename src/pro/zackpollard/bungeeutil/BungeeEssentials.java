@@ -1,6 +1,7 @@
 package pro.zackpollard.bungeeutil;
 
 import com.google.common.base.Preconditions;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginClassloader;
 import net.md_5.bungee.api.plugin.PluginDescription;
@@ -47,6 +48,7 @@ public class BungeeEssentials extends Plugin {
         instance = this;
         instance.getDataFolder().mkdirs();
         this.configManager = new ConfigManager(this);
+        this.sessionServerManager = new SessionServerManager(this);
         this.playerManager = new PlayerManager(this);
         this.ipManager = new IPManager(this);
         this.staffChatManager = new StaffChatManager(this);
@@ -54,7 +56,6 @@ public class BungeeEssentials extends Plugin {
         this.serverChatManager = new ServerChatManager(this);
         this.serverPingManager = new ServerPingManager(this);
         this.commandManager = new CommandManager(this);
-        this.sessionServerManager = new SessionServerManager(this);
 
         //TODO: http://pastebin.com/HZE8uh8C
     }
@@ -79,12 +80,11 @@ public class BungeeEssentials extends Plugin {
 
             GSONPlayer gsonPlayer = this.playerManager.getPlayer(uuid);
 
-            long joinTime = gsonPlayer.getPlayerJoinTime();
-            long playTime = System.currentTimeMillis() - joinTime;
-            long totalPlayTime = gsonPlayer.getTotalOnlineTime() + playTime;
+            ProxiedPlayer player = this.getProxy().getPlayer(uuid);
+            if(player != null) {
 
-            gsonPlayer.setTotalOnlineTime(totalPlayTime);
-            gsonPlayer.setLastOnlineTime(System.currentTimeMillis());
+                this.getPlayerManager().onPlayerLeave(player);
+            }
 
             this.playerManager.unloadPlayer(uuid, true);
         }

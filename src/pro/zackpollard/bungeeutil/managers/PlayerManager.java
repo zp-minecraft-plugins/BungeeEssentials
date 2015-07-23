@@ -15,6 +15,7 @@ import pro.zackpollard.bungeeutil.json.config.GSONMessages;
 import pro.zackpollard.bungeeutil.json.storage.GSONBan;
 import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
 import pro.zackpollard.bungeeutil.runnables.PlayerAuthenticatedCheckRunnable;
+import pro.zackpollard.bungeeutil.runnables.PlayerDelayedMessage;
 import pro.zackpollard.bungeeutil.runnables.PlayerManagerCleanup;
 
 import java.io.*;
@@ -105,7 +106,7 @@ public class PlayerManager implements Listener {
 
             GSONPlayer gsonPlayer = this.getPlayer(event.getConnection().getName());
 
-            if(gsonPlayer != null) {
+            if(gsonPlayer != null && !gsonPlayer.isAuthenticated()) {
 
                 if (gsonPlayer.hasOfflineModePassword()) {
 
@@ -117,8 +118,12 @@ public class PlayerManager implements Listener {
                 } else {
 
                     event.setCancelled(true);
-                    event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when their servers are offline in the future!");
+                    event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
                 }
+            } else {
+
+                event.setCancelled(true);
+                event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
             }
         }
     }
@@ -174,11 +179,29 @@ public class PlayerManager implements Listener {
         gsonPlayer.setPlayerJoinTime(System.currentTimeMillis());
         gsonPlayer.setLastKnownIP(player.getPendingConnection().getAddress().getAddress().getHostAddress());
 
-        if(instance.getSessionServerManager().isSessionsOnline()) gsonPlayer.setAuthenticated(true);
+        if(player.getPendingConnection().isOnlineMode()) {
+
+            gsonPlayer.setAuthenticated(true);
+        } else {
+
+            instance.getProxy().getScheduler().schedule(instance, new PlayerDelayedMessage(player, instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "You have been logged in in offline mode.")), 2, TimeUnit.SECONDS);
+
+            if(gsonPlayer.hasOfflineModePassword()) {
+
+                instance.getProxy().getScheduler().schedule(instance, new PlayerDelayedMessage(player,
+                        instance.getConfigs().getMessages().generateMessage(
+                                true, ChatColor.YELLOW + "" + ChatColor.BOLD +
+                                        "Please authenticate yourself by typing /login (password). You will be disconnected in 30 seconds if you fail to authenticate.")), 2, TimeUnit.SECONDS);
+            } else {
+
+                gsonPlayer.setAuthenticated(true);
+                instance.getProxy().getScheduler().schedule(instance, new PlayerDelayedMessage(player, instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "It is HIGHLY recommended to set a password for your account using " + ChatColor.BOLD + "/register (password)")), 2, TimeUnit.SECONDS);
+                instance.getProxy().getScheduler().schedule(instance, new PlayerDelayedMessage(player, instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "You will only be required to use this password when the minecraft session servers go offline so that you can continue playing regardless!")), 2, TimeUnit.SECONDS);
+            }
+        }
 
         if(!gsonPlayer.isAuthenticated()) {
 
-            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "" + ChatColor.BOLD + "Please authenticate yourself by typing /login (password). You will be disconnected in 30 seconds if you fail to authenticate."));
             instance.getProxy().getScheduler().schedule(instance, new PlayerAuthenticatedCheckRunnable(gsonPlayer, player), 30, TimeUnit.SECONDS);
         }
 
@@ -226,15 +249,25 @@ public class PlayerManager implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerDisconnectEvent event) {
 
-        UUID uuid = event.getPlayer().getUniqueId();
+        this.onPlayerLeave(event.getPlayer());
+    }
+
+    public void onPlayerLeave(ProxiedPlayer player) {
+
+        UUID uuid = player.getUniqueId();
         GSONPlayer gsonPlayer = this.getPlayer(uuid);
 
         long joinTime = gsonPlayer.getPlayerJoinTime();
-        long playTime = System.currentTimeMillis() - joinTime;
-        long totalPlayTime = gsonPlayer.getTotalOnlineTime() + playTime;
+        if(joinTime != 0) {
 
-        gsonPlayer.setTotalOnlineTime(totalPlayTime);
+            long playTime = System.currentTimeMillis() - joinTime;
+            long totalPlayTime = gsonPlayer.getTotalOnlineTime() + playTime;
+            gsonPlayer.setTotalOnlineTime(totalPlayTime);
+        }
+
         gsonPlayer.setLastOnlineTime(System.currentTimeMillis());
+
+        gsonPlayer.setAuthenticated(false);
     }
 
     @EventHandler

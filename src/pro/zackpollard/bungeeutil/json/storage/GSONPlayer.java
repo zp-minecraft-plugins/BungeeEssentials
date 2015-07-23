@@ -246,7 +246,7 @@ public class GSONPlayer extends Lockable {
                 e.printStackTrace();
             }
 
-            if(hash.equals(this.offlineModePasswordHash)) {
+            if(Arrays.equals(hash, this.offlineModePasswordHash)) {
 
                 return true;
             }

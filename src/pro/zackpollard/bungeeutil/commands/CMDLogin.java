@@ -43,12 +43,19 @@ public class CMDLogin extends BungeeEssentialsCommand {
 
                             if(gsonPlayer.compareOfflinePassword(args[0])) {
 
+                                gsonPlayer.setAuthenticated(true);
                                 player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "You have now been authenticated and can play as normal!"));
                             } else {
 
                                 player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "That password was incorrect, please try again."));
                             }
+                        } else {
+
+                            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "You never set a password."));
                         }
+                    } else {
+
+                        player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "You are already authenticated, have fun!"));
                     }
                 } else {
 
