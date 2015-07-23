@@ -18,11 +18,12 @@ public class SessionServerManager implements Listener {
 
     private final BungeeEssentials instance;
 
-    private boolean sessionsOnline = true;
+    private boolean sessionsOnline;
 
     public SessionServerManager(BungeeEssentials instance) {
 
         this.instance = instance;
+        this.sessionsOnline = true;
         instance.getProxy().getScheduler().schedule(instance, new SessionServerChecker(this), 10, 10, TimeUnit.SECONDS);
         instance.getProxy().getPluginManager().registerListener(instance, this);
     }
