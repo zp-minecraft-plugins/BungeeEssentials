@@ -3,6 +3,12 @@ package pro.zackpollard.bungeeutil.json.storage;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 import pro.zackpollard.bungeeutil.utils.Utils;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -10,6 +16,7 @@ public class GSONPlayer extends Lockable {
 
     private transient boolean fileChanged = false;
     private transient long playerJoinTime = 0;
+    private transient boolean authenticated = false;
 
     /**
      * The uuid of the player in question.
@@ -43,6 +50,8 @@ public class GSONPlayer extends Lockable {
     private String lastKnownName;
     private String lastConnectedServer;
     private long firstSeenTime;
+    private byte[] offlineModePasswordHash;
+    private byte[] offlineModePasswordSalt;
 
     public GSONPlayer() {
 
@@ -189,6 +198,71 @@ public class GSONPlayer extends Lockable {
     public void setLastKnownName(String lastKnownName) {
         this.lastKnownName = lastKnownName;
         this.fileChanged = true;
+    }
+
+    public boolean hasOfflineModePassword() {
+
+        return this.offlineModePasswordHash != null;
+    }
+
+    public void setOfflineModePassword(String offlineModePassword) {
+
+        Random random = new Random();
+
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+
+        KeySpec spec = new PBEKeySpec(offlineModePassword.toCharArray(), salt, 65536, 128);
+        SecretKeyFactory f;
+
+        byte[] hash = new byte[0];
+
+        try {
+            f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            hash = f.generateSecret(spec).getEncoded();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+
+        this.offlineModePasswordHash = hash;
+        this.offlineModePasswordSalt = salt;
+
+        this.fileChanged = true;
+    }
+
+    public boolean compareOfflinePassword(String providedPassword) {
+
+        if(hasOfflineModePassword()) {
+
+            KeySpec spec = new PBEKeySpec(providedPassword.toCharArray(), this.offlineModePasswordSalt, 65536, 128);
+            SecretKeyFactory f = null;
+
+            byte[] hash = new byte[0];
+
+            try {
+                f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+                hash = f.generateSecret(spec).getEncoded();
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                e.printStackTrace();
+            }
+
+            if(hash.equals(this.offlineModePasswordHash)) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+
+        this.authenticated = authenticated;
+    }
+
+    public boolean isAuthenticated() {
+
+        return authenticated;
     }
 
     public GSONBan getCurrentBan() {

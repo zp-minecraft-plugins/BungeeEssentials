@@ -35,6 +35,7 @@ public class BungeeEssentials extends Plugin {
     private ServerChatManager serverChatManager;
     private ServerPingManager serverPingManager;
     private CommandManager commandManager;
+    private SessionServerManager sessionServerManager;
 
     public static BungeeEssentials getInstance() {
 
@@ -219,5 +220,10 @@ public class BungeeEssentials extends Plugin {
     public CommandManager getCommandManager() {
 
         return commandManager;
+    }
+
+    public SessionServerManager getSessionServerManager() {
+
+        return sessionServerManager;
     }
 }

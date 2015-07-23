@@ -106,6 +106,10 @@ public class CommandManager implements Listener {
             commands.add(new CMDKick(instance, "kick"));
         }
 
+        if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getLogin() != -1) {
+            commands.add(new CMDLogin(instance, "login"));
+        }
+
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMessage() != -1) {
             commands.add(new CMDMessage(instance, "msg", "message", "pm", "tell", "m", "t", "whisper"));
         }
@@ -120,6 +124,10 @@ public class CommandManager implements Listener {
 
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getOnlineStaff() != -1) {
             commands.add(new CMDOnlineStaff(instance, "onlinestaff"));
+        }
+
+        if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getRegister() != -1) {
+            commands.add(new CMDRegister(instance, "register"));
         }
 
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getRemoveRole() != -1) {

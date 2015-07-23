@@ -13,10 +13,12 @@ public class GSONCommandPermissions {
     private final int creload;
     private final int crestart;
     private final int kick;
+    private final int login;
     private final int message;
     private final int messageToggle;
     private final int mute;
     private final int onlineStaff;
+    private final int register;
     private final int removeRole;
     private final int reply;
     private final int report;
@@ -52,8 +54,10 @@ public class GSONCommandPermissions {
         crestart = 4;
         debugInfo = 4;
         kick = 1;
+        login = 0;
         mute = 1;
         onlineStaff = 0;
+        register = 0;
         removeRole = 4;
         reply = 0;
         report = 0;
@@ -222,5 +226,13 @@ public class GSONCommandPermissions {
 
     public int getAddProof() {
         return addProof;
+    }
+
+    public int getRegister() {
+        return register;
+    }
+
+    public int getLogin() {
+        return login;
     }
 }

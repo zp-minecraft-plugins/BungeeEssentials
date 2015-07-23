@@ -2,21 +2,24 @@ package pro.zackpollard.bungeeutil.managers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.md_5.bungee.UserConnection;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.LoginEvent;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.ServerConnectedEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.connection.InitialHandler;
 import net.md_5.bungee.event.EventHandler;
 import pro.zackpollard.bungeeutil.BungeeEssentials;
 import pro.zackpollard.bungeeutil.json.config.GSONMessages;
 import pro.zackpollard.bungeeutil.json.storage.GSONBan;
 import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
+import pro.zackpollard.bungeeutil.runnables.PlayerAuthenticatedCheckRunnable;
 import pro.zackpollard.bungeeutil.runnables.PlayerManagerCleanup;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -96,9 +99,42 @@ public class PlayerManager implements Listener {
     }
 
     @EventHandler
+    public void onAsyncPreLoginEvent(PreLoginEvent event) {
+
+        if(!instance.getSessionServerManager().isSessionsOnline()) {
+
+            GSONPlayer gsonPlayer = this.getPlayer(event.getConnection().getName());
+
+            if(gsonPlayer != null) {
+
+                if (gsonPlayer.hasOfflineModePassword()) {
+
+                    event.getConnection().setOnlineMode(false);
+                } else if (gsonPlayer.getLastKnownIP().equals(event.getConnection().getAddress().getAddress().getHostAddress())) {
+
+                    event.getConnection().setOnlineMode(false);
+                    gsonPlayer.setAuthenticated(true);
+                } else {
+
+                    event.setCancelled(true);
+                    event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when their servers are offline in the future!");
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerLogin(LoginEvent event) {
 
-        GSONPlayer gsonPlayer = this.getPlayer(event.getConnection().getUniqueId());
+        GSONPlayer gsonPlayer;
+
+        if(instance.getSessionServerManager().isSessionsOnline()) {
+
+            gsonPlayer = this.getPlayer(event.getConnection().getUniqueId());
+        } else {
+
+            gsonPlayer = this.getPlayer(event.getConnection().getName());
+        }
 
         if (gsonPlayer != null) {
 
@@ -114,6 +150,11 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onPlayerLogin(PostLoginEvent event) {
+
+        if(!instance.getSessionServerManager().isSessionsOnline()) {
+
+            setUUIDForPlayer(event.getPlayer());
+        }
 
         onPlayerLogin(event.getPlayer());
     }
@@ -133,7 +174,53 @@ public class PlayerManager implements Listener {
         gsonPlayer.setPlayerJoinTime(System.currentTimeMillis());
         gsonPlayer.setLastKnownIP(player.getPendingConnection().getAddress().getAddress().getHostAddress());
 
+        if(instance.getSessionServerManager().isSessionsOnline()) gsonPlayer.setAuthenticated(true);
+
+        if(!gsonPlayer.isAuthenticated()) {
+
+            player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.YELLOW + "" + ChatColor.BOLD + "Please authenticate yourself by typing /login (password). You will be disconnected in 30 seconds if you fail to authenticate."));
+            instance.getProxy().getScheduler().schedule(instance, new PlayerAuthenticatedCheckRunnable(gsonPlayer, player), 30, TimeUnit.SECONDS);
+        }
+
         this.savePlayer(gsonPlayer);
+    }
+
+    private void setUUIDForPlayer(ProxiedPlayer player) {
+
+        InitialHandler handler = (InitialHandler) player.getPendingConnection();
+
+        GSONPlayer gsonPlayer = this.getPlayer(player.getName());
+
+        if(gsonPlayer != null) {
+
+            UUID uuid = gsonPlayer.getUUID();
+
+            try {
+                Field sf = handler.getClass().getDeclaredField("uniqueId");
+                sf.setAccessible(true);
+                sf.set(handler, uuid);
+
+                sf = handler.getClass().getDeclaredField("offlineId");
+                sf.setAccessible(true);
+                sf.set(handler, uuid);
+
+                Collection<String> g = instance.getProxy().getConfigurationAdapter().getGroups(player.getName());
+                g.addAll(instance.getProxy().getConfigurationAdapter().getGroups(player.getUniqueId().toString()));
+
+                UserConnection userConnection = (UserConnection) player;
+
+                for (String s : g) {
+                    userConnection.addGroups(s);
+                }
+            } catch (Exception e) {
+
+                player.disconnect(instance.getConfigs().getMessages().generateMessage(false, ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system!"));
+
+                instance.getLogger().warning("Internal error for " + player.getName() + ", preventing login.");
+
+                e.printStackTrace();
+            }
+        }
     }
 
     @EventHandler

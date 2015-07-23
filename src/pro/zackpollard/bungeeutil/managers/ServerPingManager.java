@@ -23,13 +23,26 @@ public class ServerPingManager implements Listener {
 
         GSONProxyPing pingConfig = instance.getConfigs().getMainConfig().getProxyPing();
 
-        if (pingConfig.isEditPingResponse()) {
+        if(instance.getSessionServerManager().isSessionsOnline()) {
 
-            ServerPing ping = event.getResponse();
-            ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getMotd()));
-            ServerPing.Players players = ping.getPlayers();
-            players.setMax(pingConfig.getMaxPlayers());
-            event.setResponse(ping);
+            if (pingConfig.isEditPingResponse()) {
+
+                ServerPing ping = event.getResponse();
+                ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getMotd()));
+                ServerPing.Players players = ping.getPlayers();
+                players.setMax(pingConfig.getMaxPlayers());
+                event.setResponse(ping);
+            }
+        } else {
+
+            if (pingConfig.isEditPingResponse()) {
+
+                ServerPing ping = event.getResponse();
+                ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getOfflineSessionsMotd()));
+                ServerPing.Players players = ping.getPlayers();
+                players.setMax(pingConfig.getMaxPlayers());
+                event.setResponse(ping);
+            }
         }
     }
 }
