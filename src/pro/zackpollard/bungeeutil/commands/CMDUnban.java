@@ -37,7 +37,7 @@ public class CMDUnban extends BungeeEssentialsCommand {
 
                     if (gsonPlayer.getCurrentBan() != null) {
 
-                        gsonPlayer.setCurrentBan(null);
+                        gsonPlayer.unban();
 
                         instance.getConfigs().getRoles().sendMessageToRole(
                                 instance.getConfigs().getMessages().getCmdUnbanPlayerSuccess(gsonPlayer.getLastKnownName()),

@@ -39,7 +39,7 @@ public class CMDClearChat extends BungeeEssentialsCommand {
 
                 BaseComponent[] message = TextComponent.fromLegacyText("");
 
-                for (ProxiedPlayer allPlayers : instance.getProxy().getPlayers()) {
+                for (ProxiedPlayer allPlayers : player.getServer().getInfo().getPlayers()) {
 
                     for (int i = 0; i < 100; ++i) {
 

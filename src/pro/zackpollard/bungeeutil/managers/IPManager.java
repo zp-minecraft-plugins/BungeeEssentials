@@ -230,9 +230,14 @@ public class IPManager implements Listener {
 
     public boolean unloadIP(String ipAddress) {
 
+        return this.unloadIP(ipAddress, false);
+    }
+
+    public boolean unloadIP(String ipAddress, boolean force) {
+
         GSONIPAddress gsonIP = this.ipCache.get(ipAddress);
 
-        return gsonIP != null && this.unloadIP(gsonIP);
+        return gsonIP != null && this.unloadIP(gsonIP, force);
     }
 
     private boolean saveIP(GSONIPAddress gsonIP, File playerFile) {
@@ -261,9 +266,9 @@ public class IPManager implements Listener {
         return true;
     }
 
-    public boolean unloadIP(GSONIPAddress gsonIP) {
+    public boolean unloadIP(GSONIPAddress gsonIP, boolean force) {
 
-        if (gsonIP.compareLastAccessedWithNow()) {
+        if (gsonIP.compareLastAccessedWithNow() || force) {
 
             if (gsonIP.isFileChanged()) {
 

@@ -182,7 +182,7 @@ public class PlayerManager implements Listener {
                         gsonBan.getRemainingTimeFormatted());
             } else {
 
-                gsonPlayer.setCurrentBan(null);
+                gsonPlayer.unban();
             }
         }
 
@@ -392,14 +392,19 @@ public class PlayerManager implements Listener {
 
     public boolean unloadPlayer(UUID uuid) {
 
-        GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
-
-        return gsonPlayer != null && this.unloadPlayer(gsonPlayer);
+        return this.unloadPlayer(uuid, false);
     }
 
-    public boolean unloadPlayer(GSONPlayer gsonPlayer) {
+    public boolean unloadPlayer(UUID uuid, boolean force) {
 
-        if (gsonPlayer.compareLastAccessedWithNow()) {
+        GSONPlayer gsonPlayer = this.gsonPlayerCache.get(uuid);
+
+        return gsonPlayer != null && this.unloadPlayer(gsonPlayer, force);
+    }
+
+    public boolean unloadPlayer(GSONPlayer gsonPlayer, boolean force) {
+
+        if (gsonPlayer.compareLastAccessedWithNow() || force) {
 
             if (gsonPlayer.isFileChanged()) {
 

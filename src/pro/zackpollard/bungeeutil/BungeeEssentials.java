@@ -2,6 +2,7 @@ package pro.zackpollard.bungeeutil;
 
 import com.google.common.base.Preconditions;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginClassloader;
 import net.md_5.bungee.api.plugin.PluginDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -9,6 +10,7 @@ import org.yaml.snakeyaml.introspector.PropertyUtils;
 import pro.zackpollard.bungeeutil.json.storage.GSONIPAddress;
 import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
 import pro.zackpollard.bungeeutil.managers.*;
+import sun.plugin.security.PluginClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -81,8 +84,7 @@ public class BungeeEssentials extends Plugin {
             gsonPlayer.setTotalOnlineTime(totalPlayTime);
             gsonPlayer.setLastOnlineTime(System.currentTimeMillis());
 
-            this.playerManager.unloadPlayer(uuid);
-
+            this.playerManager.unloadPlayer(uuid, true);
         }
 
         for (GSONIPAddress gsonIP : this.ipManager.getIPCache(true).values()) {
@@ -105,7 +107,6 @@ public class BungeeEssentials extends Plugin {
 
         this.onDisable(true);
         this.onEnable();
-        System.gc();
     }
 
     public void restart() {
@@ -120,12 +121,15 @@ public class BungeeEssentials extends Plugin {
 
             Map<String, Plugin> type;
             Map<String, PluginDescription> type2;
+            Set<PluginClassloader> type3;
 
             Field plugins = this.getProxy().getPluginManager().getClass().getDeclaredField("plugins");
             Field toLoad = this.getProxy().getPluginManager().getClass().getDeclaredField("toLoad");
+            Field classLoaders = this.getClass().getClassLoader().getClass().getDeclaredField("allLoaders");
 
             plugins.setAccessible(true);
             toLoad.setAccessible(true);
+            classLoaders.setAccessible(true);
 
             toLoad.set(this.getProxy().getPluginManager(), new HashMap<>());
 
@@ -133,6 +137,10 @@ public class BungeeEssentials extends Plugin {
             type2 = (Map<String, PluginDescription>) toLoad.get(this.getProxy().getPluginManager());
 
             type.remove("BungeeUtils");
+
+            BungeeEssentials.class.getClassLoader();
+
+            //TODO: Remove classloader instance from the static field in the classloader.
 
             File file = new File(this.getFile().getAbsolutePath());
 

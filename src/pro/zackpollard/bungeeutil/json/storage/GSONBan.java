@@ -15,7 +15,7 @@ public class GSONBan {
     private transient String timestampFormatted = null;
 
     private long timestamp;
-    private long duration = 0;
+    private long duration;
     private String reason;
     private UUID bannerUUID;
     private List<String> proof;
@@ -23,6 +23,7 @@ public class GSONBan {
     public GSONBan() {
 
         proof = new ArrayList<>();
+        duration = 0;
     }
 
     public long getTimestamp() {

@@ -58,7 +58,7 @@ public class GSONPlayer extends Lockable {
 
         List<GSONBan> listCopy = new ArrayList<>();
         listCopy.addAll(this.bans);
-        return listCopy;
+        return this.bans;
     }
 
     public String getLastKnownIP() {
@@ -74,8 +74,18 @@ public class GSONPlayer extends Lockable {
     public void setCurrentBan(GSONBan currentBan) {
 
         this.banned = true;
-        this.bans.add(currentBan);
+
+        if(currentBan != null) {
+            this.bans.add(currentBan);
+        }
+
         this.fileChanged = true;
+    }
+
+    public void unban() {
+
+        this.banned = false;
+        this.fileChanged = false;
     }
 
     public void setCurrentMute(GSONMute currentMute) {
@@ -190,7 +200,6 @@ public class GSONPlayer extends Lockable {
                 return this.bans.get(this.bans.size() - 1);
             }
         }
-
         return null;
     }
 
