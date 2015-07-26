@@ -108,22 +108,32 @@ public class PlayerManager implements Listener {
 
             if(gsonPlayer != null && !gsonPlayer.isAuthenticated()) {
 
-                if (gsonPlayer.hasOfflineModePassword()) {
+                if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) == 0) {
+
+                    if (gsonPlayer.hasOfflineModePassword()) {
+
+                        event.getConnection().setOnlineMode(false);
+                    } else if (gsonPlayer.getLastKnownIP().equals(event.getConnection().getAddress().getAddress().getHostAddress())) {
+
+                        event.getConnection().setOnlineMode(false);
+                        gsonPlayer.setAuthenticated(true);
+                    } else {
+
+                        event.setCancelled(true);
+                        event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline, your IP doesn't match, and you have not setup a password! \nIf you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
+                    }
+                } else if(gsonPlayer.hasOfflineModePassword() && gsonPlayer.getKnownIPs().contains(event.getConnection().getAddress().getAddress().getHostAddress())) {
 
                     event.getConnection().setOnlineMode(false);
-                } else if (gsonPlayer.getLastKnownIP().equals(event.getConnection().getAddress().getAddress().getHostAddress())) {
-
-                    event.getConnection().setOnlineMode(false);
-                    gsonPlayer.setAuthenticated(true);
                 } else {
 
                     event.setCancelled(true);
-                    event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
+                    event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline, your IP doesn't match, and you have not setup a password! \nIf you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
                 }
             } else {
 
                 event.setCancelled(true);
-                event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline and we can't authenticate you with our own system! \n If you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
+                event.setCancelReason(ChatColor.RED + "Sorry, the mojang servers are offline, your IP doesn't match, and you have not setup a password! \nIf you setup a password in-game with /register (password) you will be able to login when the session servers are offline in the future!");
             }
         }
     }
