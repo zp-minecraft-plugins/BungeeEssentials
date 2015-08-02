@@ -34,7 +34,6 @@ public class GSONPlayer extends Lockable {
      * checked if the player is banned and changed if the player is no longer
      * supposed to be banned.
      */
-    public GSONBan currentBan;
     private boolean banned;
     private GSONMute currentMute;
 
@@ -94,7 +93,7 @@ public class GSONPlayer extends Lockable {
     public void unban() {
 
         this.banned = false;
-        this.fileChanged = false;
+        this.fileChanged = true;
     }
 
     public void setCurrentMute(GSONMute currentMute) {
