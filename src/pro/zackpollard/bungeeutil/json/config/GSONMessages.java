@@ -90,6 +90,8 @@ public class GSONMessages {
     private final String advertisingBlocked;
     private final String cmdMessageToggleDisabled;
     private final String cmdMessageToggleEnabled;
+    private final String maintenanceModeEnabled;
+
     public GSONMessages() {
 
         prefix = "%3[%9BungeeUtils%3]%c - ";
@@ -213,6 +215,8 @@ public class GSONMessages {
         privateChatMessagingDisabled = "%cYou can't send a message to this player as they have private messaging disabled!";
 
         tempmuteExpired = "%aYour tempmute has expired and you have been unmuted!";
+
+        maintenanceModeEnabled = "%aMaintenance mode is currently enabled on the server, please try again later.";
     }
 
     public String getPrefix() {
@@ -665,6 +669,11 @@ public class GSONMessages {
                     PATTERN_URL.matcher(cmdAddProofSuccess).replaceAll(Matcher.quoteReplacement(url))
                 ).replaceAll(Matcher.quoteReplacement(bannedPlayerName))
         );
+    }
+
+    public BaseComponent[] getMaintenanceModeEnabled() {
+
+        return generateMessage(true, maintenanceModeEnabled);
     }
 
     public BaseComponent[] generateMessage(boolean prefix, String message) {

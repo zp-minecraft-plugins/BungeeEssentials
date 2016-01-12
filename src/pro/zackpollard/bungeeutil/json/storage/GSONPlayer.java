@@ -5,7 +5,6 @@ import pro.zackpollard.bungeeutil.utils.Utils;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -51,6 +50,7 @@ public class GSONPlayer extends Lockable {
     private long firstSeenTime;
     private byte[] offlineModePasswordHash;
     private byte[] offlineModePasswordSalt;
+    private boolean maintenanceModeBypass;
 
     public GSONPlayer() {
 
@@ -287,5 +287,16 @@ public class GSONPlayer extends Lockable {
 
     public GSONMute getCurrentMute() {
         return currentMute;
+    }
+
+    public boolean isMaintenanceModeBypass() {
+
+        return maintenanceModeBypass;
+    }
+
+    public boolean toggleMaintenanceModeBypass() {
+
+        this.fileChanged = true;
+        return maintenanceModeBypass = !maintenanceModeBypass;
     }
 }

@@ -6,6 +6,7 @@ public class GSONProxyPing {
     private int maxPlayers;
     private final String motd;
     private String offlineSessionsMotd;
+    private String maintenanceModeMotd;
 
     public GSONProxyPing() {
 
@@ -13,6 +14,7 @@ public class GSONProxyPing {
         //maxPlayers = BungeeEssentials.getInstance().getProxy().getConfig().getPlayerLimit();
         motd = "%cThis server is running BungeeEssentials\nChange the motd in the config!";
         offlineSessionsMotd = "%6&lSessions are offline but you can still connect! Join now!";
+        maintenanceModeMotd = "%6%lServer is in maintenance mode, please try again later!";
     }
 
     public boolean isEditPingResponse() {
@@ -32,5 +34,9 @@ public class GSONProxyPing {
 
     public String getOfflineSessionsMotd() {
         return offlineSessionsMotd;
+    }
+
+    public String getMaintenanceModeMotd() {
+        return maintenanceModeMotd;
     }
 }

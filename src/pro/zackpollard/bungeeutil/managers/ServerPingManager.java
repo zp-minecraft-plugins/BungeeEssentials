@@ -23,14 +23,22 @@ public class ServerPingManager implements Listener {
 
         GSONProxyPing pingConfig = instance.getConfigs().getMainConfig().getProxyPing();
 
-        if(instance.getSessionServerManager().isSessionsOnline()) {
+        if(instance.getConfigs().getMainConfig().isMaintenanceMode()) {
+
+            if(pingConfig.isEditPingResponse()) {
+
+                ServerPing ping = event.getResponse();
+                ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getMaintenanceModeMotd()));
+                ping.getPlayers().setMax(pingConfig.getMaxPlayers());
+                event.setResponse(ping);
+            }
+        } else if(instance.getSessionServerManager().isSessionsOnline()) {
 
             if (pingConfig.isEditPingResponse()) {
 
                 ServerPing ping = event.getResponse();
                 ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getMotd()));
-                ServerPing.Players players = ping.getPlayers();
-                players.setMax(pingConfig.getMaxPlayers());
+                ping.getPlayers().setMax(pingConfig.getMaxPlayers());
                 event.setResponse(ping);
             }
         } else {
@@ -39,8 +47,7 @@ public class ServerPingManager implements Listener {
 
                 ServerPing ping = event.getResponse();
                 ping.setDescription(ChatColor.translateAlternateColorCodes('%', pingConfig.getOfflineSessionsMotd()));
-                ServerPing.Players players = ping.getPlayers();
-                players.setMax(pingConfig.getMaxPlayers());
+                ping.getPlayers().setMax(pingConfig.getMaxPlayers());
                 event.setResponse(ping);
             }
         }

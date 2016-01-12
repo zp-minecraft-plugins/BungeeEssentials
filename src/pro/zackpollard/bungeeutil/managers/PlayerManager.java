@@ -160,6 +160,15 @@ public class PlayerManager implements Listener {
                 event.setCancelled(true);
                 event.setCancelReason(BaseComponent.toLegacyText(banned));
             }
+
+            if(instance.getConfigs().getMainConfig().isMaintenanceMode()) {
+
+                if(instance.getConfigs().getRoles().getRole(gsonPlayer.getUUID()) < instance.getConfigs().getMainConfig().getPermissions().getOverridePermissions().getBypassMaintenanceMode() && !instance.getPlayerManager().getPlayer(gsonPlayer.getUUID()).isMaintenanceModeBypass()) {
+
+                    event.setCancelled(true);
+                    event.setCancelReason(BaseComponent.toLegacyText(instance.getConfigs().getMessages().getMaintenanceModeEnabled()));
+                }
+            }
         }
     }
 

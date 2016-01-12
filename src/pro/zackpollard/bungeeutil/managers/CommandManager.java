@@ -110,6 +110,10 @@ public class CommandManager implements Listener {
             commands.add(new CMDLogin(instance, "login"));
         }
 
+        if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMaintenance() != -1) {
+            commands.add(new CMDMaintenance(instance, "maintenance"));
+        }
+
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getMessage() != -1) {
             commands.add(new CMDMessage(instance, "msg", "message", "pm", "tell", "m", "t", "whisper"));
         }

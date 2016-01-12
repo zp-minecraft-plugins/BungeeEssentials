@@ -11,7 +11,6 @@ import org.yaml.snakeyaml.introspector.PropertyUtils;
 import pro.zackpollard.bungeeutil.json.storage.GSONIPAddress;
 import pro.zackpollard.bungeeutil.json.storage.GSONPlayer;
 import pro.zackpollard.bungeeutil.managers.*;
-import sun.plugin.security.PluginClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -181,6 +180,24 @@ public class BungeeEssentials extends Plugin {
 
             instance.getProxy().getLogger().log(Level.WARNING, "Could not load BungeeUtils from file!");
         }
+    }
+
+    public boolean toggleMaintenanceMode() {
+
+        if(getConfigs().getMainConfig().toggleMaintenanceMode()) {
+
+            getProxy().getPlayers().stream()
+                    .filter(player -> getConfigs().getRoles().getRole(player.getUniqueId()) < getConfigs().getMainConfig().getPermissions().getOverridePermissions().getBypassMaintenanceMode()
+                            && !getPlayerManager().getPlayer(player.getUniqueId()).isMaintenanceModeBypass()
+                    )
+                    .forEach(player -> player.disconnect(getConfigs().getMessages().getMaintenanceModeEnabled()));
+
+            getConfigs().saveConfigs();
+
+            return true;
+        }
+
+        return false;
     }
 
     public PlayerManager getPlayerManager() {

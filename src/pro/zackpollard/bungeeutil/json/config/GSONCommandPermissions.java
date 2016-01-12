@@ -14,6 +14,7 @@ public class GSONCommandPermissions {
     private final int crestart;
     private final int kick;
     private final int login;
+    private final int maintenance;
     private final int message;
     private final int messageToggle;
     private final int mute;
@@ -61,6 +62,7 @@ public class GSONCommandPermissions {
         removeRole = 4;
         reply = 0;
         report = 0;
+        maintenance = 4;
         message = 0;
         messageToggle = 0;
         search = 2;
@@ -145,37 +147,30 @@ public class GSONCommandPermissions {
     }
 
     public int getSocialSpy() {
-
         return socialSpy;
     }
 
     public int getChatLock() {
-
         return chatLock;
     }
 
     public int getCReload() {
-
         return creload;
     }
 
     public int getReply() {
-
         return reply;
     }
 
     public int getChatClear() {
-
         return chatClear;
     }
 
     public int getStaff() {
-
         return staff;
     }
 
     public int getOnlineStaff() {
-
         return onlineStaff;
     }
 
@@ -184,27 +179,22 @@ public class GSONCommandPermissions {
     }
 
     public int getAccounts() {
-
         return accounts;
     }
 
     public int getCRestart() {
-
         return crestart;
     }
 
     public int getWarn() {
-
         return warn;
     }
 
     public int getStaffHelp() {
-
         return staffHelp;
     }
 
     public int getBanlist() {
-
         return bans;
     }
 
@@ -234,5 +224,9 @@ public class GSONCommandPermissions {
 
     public int getLogin() {
         return login;
+    }
+
+    public int getMaintenance() {
+        return maintenance;
     }
 }
