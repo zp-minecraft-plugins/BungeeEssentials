@@ -201,5 +201,9 @@ public class CommandManager implements Listener {
         if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getWarn() != -1) {
             commands.add(new CMDWarn(instance, "warn"));
         }
+
+        if (instance.getConfigs().getMainConfig().getPermissions().getCommandPermissions().getWebsite() != -1) {
+            commands.add(new CMDWebsite(instance, "website", "forum", "forums", "websites", "site", "sites"));
+        }
     }
 }

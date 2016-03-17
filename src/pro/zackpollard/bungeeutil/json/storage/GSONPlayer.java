@@ -51,6 +51,7 @@ public class GSONPlayer extends Lockable {
     private byte[] offlineModePasswordHash;
     private byte[] offlineModePasswordSalt;
     private boolean maintenanceModeBypass;
+    private int forumUserID;
 
     public GSONPlayer() {
 
@@ -298,5 +299,16 @@ public class GSONPlayer extends Lockable {
 
         this.fileChanged = true;
         return maintenanceModeBypass = !maintenanceModeBypass;
+    }
+
+    public int getForumUserID() {
+
+        return forumUserID;
+    }
+
+    public void setForumUserID(int forumUserID) {
+
+        this.fileChanged = true;
+        this.forumUserID = forumUserID;
     }
 }

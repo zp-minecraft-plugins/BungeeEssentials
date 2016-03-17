@@ -59,7 +59,7 @@ public class CMDLogin extends BungeeEssentialsCommand {
                     }
                 } else {
 
-                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect syntax. Correct syntax is " + ChatColor.BOLD + "/register (password)"));
+                    player.sendMessage(instance.getConfigs().getMessages().generateMessage(true, ChatColor.RED + "Incorrect syntax. Correct syntax is " + ChatColor.BOLD + "/login (password)"));
                 }
             } else {
 

@@ -38,6 +38,7 @@ public class GSONCommandPermissions {
     private final int unbanIP;
     private final int unmute;
     private final int warn;
+    private final int website;
     private final int debugInfo;
 
 
@@ -80,6 +81,7 @@ public class GSONCommandPermissions {
         unbanIP = 4;
         unmute = 1;
         warn = 1;
+        website = 0;
     }
 
     public int getAlts() {
@@ -228,5 +230,9 @@ public class GSONCommandPermissions {
 
     public int getMaintenance() {
         return maintenance;
+    }
+
+    public int getWebsite() {
+        return website;
     }
 }
